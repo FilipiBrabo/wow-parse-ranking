@@ -1,0 +1,64 @@
+{
+  "name": "parse-ranking-back-end",
+  "$schema": "../../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "apps/parse-ranking-back-end/src",
+  "projectType": "application",
+  "targets": {
+    "build": {
+      "executor": "@nx/webpack:webpack",
+      "outputs": ["{options.outputPath}"],
+      "defaultConfiguration": "production",
+      "options": {
+        "target": "node",
+        "compiler": "tsc",
+        "outputPath": "dist/apps/parse-ranking-back-end",
+        "main": "apps/parse-ranking-back-end/src/main.ts",
+        "tsConfig": "apps/parse-ranking-back-end/tsconfig.app.json",
+        "assets": ["apps/parse-ranking-back-end/src/assets"],
+        "isolatedConfig": true,
+        "webpackConfig": "apps/parse-ranking-back-end/webpack.config.js"
+      },
+      "configurations": {
+        "development": {},
+        "production": {}
+      }
+    },
+    "serve": {
+      "executor": "@nx/js:node",
+      "defaultConfiguration": "development",
+      "options": {
+        "buildTarget": "parse-ranking-back-end:build"
+      },
+      "configurations": {
+        "development": {
+          "buildTarget": "parse-ranking-back-end:build:development"
+        },
+        "production": {
+          "buildTarget": "parse-ranking-back-end:build:production"
+        }
+      }
+    },
+    "lint": {
+      "executor": "@nx/linter:eslint",
+      "outputs": ["{options.outputFile}"],
+      "options": {
+        "lintFilePatterns": ["apps/parse-ranking-back-end/**/*.ts"]
+      }
+    },
+    "test": {
+      "executor": "@nx/jest:jest",
+      "outputs": ["{workspaceRoot}/coverage/{projectRoot}"],
+      "options": {
+        "jestConfig": "apps/parse-ranking-back-end/jest.config.ts",
+        "passWithNoTests": true
+      },
+      "configurations": {
+        "ci": {
+          "ci": true,
+          "codeCoverage": true
+        }
+      }
+    }
+  },
+  "tags": []
+}
