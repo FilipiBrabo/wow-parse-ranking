@@ -1,4 +1,4 @@
-import './global.css';
+import './styles.css';
 
 export const metadata = {
   title: 'Welcome to wotlk-classic-brazilian-parse-ranking-front-end',

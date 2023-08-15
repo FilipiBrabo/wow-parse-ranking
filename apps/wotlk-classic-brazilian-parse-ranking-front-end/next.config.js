@@ -15,7 +15,7 @@ const nextConfig = {
 
   compiler: {
     // For other options, see https://nextjs.org/docs/architecture/nextjs-compiler#emotion
-    emotion: true,
+    // emotion: true,
   },
 };
 
