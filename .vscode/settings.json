@@ -1,6 +1,6 @@
 {
   // Prettify and lint on save
-  "[typescript][typescriptreact][javascript][javascriptreact]": {
+  "[typescript][typescriptreact][javascript][javascriptreact][prisma]": {
     "editor.formatOnSave": true
   },
   "editor.defaultFormatter": "esbenp.prettier-vscode",
