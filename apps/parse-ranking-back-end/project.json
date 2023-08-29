@@ -77,7 +77,7 @@
       "executor": "nx:run-commands",
       "cwd": "apps/parse-ranking-back-end",
       "options": {
-        "command": "pnpx prisma db seed"
+        "command": "pnpx ts-node --compiler-options {\"module\":\"CommonJS\"} apps/parse-ranking-back-end/prisma/seed.ts"
       }
     },
     "serve-db": {
