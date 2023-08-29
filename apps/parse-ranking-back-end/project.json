@@ -58,6 +58,34 @@
           "codeCoverage": true
         }
       }
+    },
+    "prisma-generate": {
+      "executor": "nx:run-commands",
+      "cwd": "apps/parse-ranking-back-end",
+      "options": {
+        "command": "pnpx prisma generate"
+      }
+    },
+    "prisma-push": {
+      "executor": "nx:run-commands",
+      "cwd": "apps/parse-ranking-back-end",
+      "options": {
+        "command": "pnpx prisma db generate"
+      }
+    },
+    "prisma-seed": {
+      "executor": "nx:run-commands",
+      "cwd": "apps/parse-ranking-back-end",
+      "options": {
+        "command": "pnpx prisma db seed"
+      }
+    },
+    "serve-db": {
+      "executor": "nx:run-commands",
+      "cwd": "apps/parse-ranking-back-end",
+      "options": {
+        "command": "docker-compose up"
+      }
     }
   },
   "tags": []
