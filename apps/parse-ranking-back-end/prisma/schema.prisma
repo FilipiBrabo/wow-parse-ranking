@@ -1,0 +1,62 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Character {
+  id       Int       @id @default(autoincrement())
+  name     String    @unique
+  wclId    Int?      @unique
+  guild    Guild?    @relation(fields: [guildId], references: [id])
+  guildId  Int?
+  class    String?
+  rankings Ranking[]
+}
+
+model Guild {
+  id           Int         @id @default(autoincrement())
+  name         String      @unique
+  wclId        Int         @unique
+  serverRegion String
+  serverSlug   String
+  character    Character[]
+}
+
+model Ranking {
+  id          Int        @id @default(autoincrement())
+  character   Character? @relation(fields: [characterId], references: [id])
+  characterId Int?
+
+  todayPercent Float
+  lockedIn     Boolean
+  spec         String
+  reportCode   String
+  duration     Int
+  amount       Float
+
+  encounter   Encounter @relation(fields: [encounterId], references: [id])
+  encounterId Int
+
+  @@unique([characterId, encounterId, reportCode])
+}
+
+model Encounter {
+  id         Int       @id @default(autoincrement())
+  name       String    @unique
+  wclId      Int       @unique
+  size       Int
+  difficulty Int
+  isActive   Boolean
+  Ranking    Ranking[]
+}
+
+model Test {
+  id Int @id @default(autoincrement())
+}
