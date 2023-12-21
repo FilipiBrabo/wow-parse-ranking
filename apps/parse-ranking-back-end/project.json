@@ -63,21 +63,21 @@
       "executor": "nx:run-commands",
       "cwd": "apps/parse-ranking-back-end",
       "options": {
-        "command": "pnpx prisma generate"
+        "command": "npx prisma generate"
       }
     },
     "prisma-push": {
       "executor": "nx:run-commands",
       "cwd": "apps/parse-ranking-back-end",
       "options": {
-        "command": "pnpx prisma db generate"
+        "command": "npx prisma db generate"
       }
     },
     "prisma-seed": {
       "executor": "nx:run-commands",
       "cwd": "apps/parse-ranking-back-end",
       "options": {
-        "command": "pnpx ts-node --compiler-options {\"module\":\"CommonJS\"} apps/parse-ranking-back-end/prisma/seed.ts"
+        "command": "npx ts-node --compiler-options {\\\"module\\\":\\\"CommonJS\\\"} apps/parse-ranking-back-end/prisma/seed.ts"
       }
     },
     "serve-db": {
