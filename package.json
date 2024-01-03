@@ -2,9 +2,6 @@
   "name": "@wotlk-classic-brazilian-parse-ranking/source",
   "version": "0.0.0",
   "license": "MIT",
-  "scripts": {
-      "postinstall": "prisma generate"
-  },
   "private": true,
   "dependencies": {
     "@apollo/client": "^3.8.1",
