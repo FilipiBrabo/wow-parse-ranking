@@ -11,7 +11,18 @@ module.exports = {
     ...createGlobPatternsForDependencies(__dirname),
   ],
   theme: {
-    extend: {},
+    extend: {
+      colors: {
+        // WCL rank colors
+        'rank-gold': '#e5cc80',
+        'rank-pink': '#e268a8',
+        'rank-orange': '#ff8000',
+        'rank-purple': '#a335ee',
+        'rank-blue': '#0070ff',
+        'rank-green': '#1eff00',
+        'rank-gray': '#666666',
+      },
+    },
   },
   plugins: [],
 };

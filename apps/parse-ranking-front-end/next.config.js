@@ -13,6 +13,10 @@ const nextConfig = {
     svgr: false,
   },
 
+  images: {
+    domains: ['assets.rpglogs.com'],
+  },
+
   compiler: {
     // For other options, see https://nextjs.org/docs/architecture/nextjs-compiler
   },
