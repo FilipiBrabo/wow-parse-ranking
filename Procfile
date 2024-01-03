@@ -1,3 +1,3 @@
 web: npm start
 
-release: echo "a" && cd ./apps/parse-ranking-back-end && npx prisma migrate deploy
+release: echo "a" && pwd && cd ./apps/parse-ranking-back-end && pwd && npx prisma migrate deploy
