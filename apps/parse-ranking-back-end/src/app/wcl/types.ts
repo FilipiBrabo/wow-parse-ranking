@@ -57,6 +57,7 @@ export type EncounterRanking = {
 export type CharacterRankingsResponse = {
   characterData: {
     character: {
+      //TODO: include other properties (name, id, classId)
       [key: string]: EncounterRanking;
     };
   };

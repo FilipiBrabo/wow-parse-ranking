@@ -2,9 +2,11 @@ import { Module } from '@nestjs/common';
 
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
+import { RankingsModule } from './rankings/rankings.module';
+import { WclModule } from './wcl/wcl.module';
 
 @Module({
-  imports: [],
+  imports: [RankingsModule, WclModule],
   controllers: [AppController],
   providers: [AppService],
 })

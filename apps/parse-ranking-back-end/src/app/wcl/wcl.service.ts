@@ -4,6 +4,7 @@ import { Injectable } from '@nestjs/common';
 import { parseEncounterName } from '../../utils';
 import { ApolloService } from '../apollo.service';
 import { PrismaService } from '../prisma.service';
+import { CLASS_BY_WCL_CLASS_ID } from './constants';
 import { CharacterRankingsResponse, GuildReportsResponse } from './types';
 
 @Injectable()
@@ -78,7 +79,9 @@ export class WclService {
           serverSlug: $serverSlug
           serverRegion: $serverRegion
         ) {
+          id
           name
+          classID
           ${activeEncounters
             .map(
               (encounter) =>
@@ -112,19 +115,27 @@ export class WclService {
               },
             });
 
+          console.log({
+            name: characterDataResponse.data.characterData.character.name,
+            classId: characterDataResponse.data.characterData.character.classID,
+          });
+
+          const characterData =
+            characterDataResponse.data.characterData.character;
+
           const characterRanks = activeEncounters.flatMap((encounter) => {
-            return characterDataResponse.data.characterData.character[
-              parseEncounterName(encounter.name)
-            ].ranks.map((rank) => ({
-              encounterId: encounter.id,
-              reportCode: rank.report.code,
-              spec: rank.spec,
-              characterId: character.id,
-              lockedIn: rank.lockedIn,
-              todayPercent: rank.todayPercent,
-              duration: rank.duration,
-              amount: rank.amount,
-            }));
+            return characterData[parseEncounterName(encounter.name)].ranks.map(
+              (rank) => ({
+                encounterId: encounter.id,
+                reportCode: rank.report.code,
+                spec: rank.spec,
+                characterId: character.id,
+                lockedIn: rank.lockedIn,
+                todayPercent: rank.todayPercent,
+                duration: rank.duration,
+                amount: rank.amount,
+              })
+            );
           });
 
           createdRankings.push(characterRanks);
@@ -132,6 +143,14 @@ export class WclService {
           await this.prismaService.ranking.createMany({
             data: characterRanks,
             skipDuplicates: true,
+          });
+
+          await this.prismaService.character.update({
+            data: {
+              wclId: (characterData as any).id,
+              class: CLASS_BY_WCL_CLASS_ID[(characterData as any).classID],
+            },
+            where: { id: character.id },
           });
         } catch (error) {
           errors.push({ error, character });
