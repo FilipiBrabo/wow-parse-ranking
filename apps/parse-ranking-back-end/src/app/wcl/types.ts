@@ -8,6 +8,7 @@ export type GuildReportsResponse = {
           code: string;
           players: {
             name: string;
+            type: string;
           }[];
         }[];
       };
@@ -57,7 +58,7 @@ export type EncounterRanking = {
 export type CharacterRankingsResponse = {
   characterData: {
     character: {
-      //TODO: include other properties (name, id, classId)
+      //TODO: how to include other properties (name, id, classId)
       [key: string]: EncounterRanking;
     };
   };

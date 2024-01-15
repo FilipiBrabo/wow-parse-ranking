@@ -1,10 +1,11 @@
 import { gql } from '@apollo/client';
 import { Injectable } from '@nestjs/common';
+import { groupBy, maxBy, pickBy } from 'lodash';
 
 import { parseEncounterName } from '../../utils';
 import { ApolloService } from '../apollo.service';
 import { PrismaService } from '../prisma.service';
-import { CLASS_BY_WCL_CLASS_ID } from './constants';
+import { CLASS_BY_WCL_CLASS_ID, INVALID_SPECS_BY_CLASS } from './constants';
 import { CharacterRankingsResponse, GuildReportsResponse } from './types';
 
 @Injectable()
@@ -29,6 +30,7 @@ export class WclService {
                   code
                   players {
                     name
+                    type
                   }
                 }
               }
@@ -43,6 +45,7 @@ export class WclService {
       (report) =>
         report.players.map((player) => ({
           name: player.name,
+          class: player.type,
           guildId: guild.id,
         }))
     );
@@ -56,11 +59,10 @@ export class WclService {
   }
 
   async getCharactersParses() {
-    // This should be done by a async service...
-    // Do we need to batch?
-
     const characters = await this.prismaService.character.findMany({
       include: { guild: true },
+      orderBy: { lastRankUpdate: { sort: 'asc', nulls: 'first' } },
+      where: { isActive: true },
     });
 
     const activeEncounters = await this.prismaService.encounter.findMany({
@@ -89,7 +91,9 @@ export class WclService {
                   encounter.name
                 )}: encounterRankings(encounterID: ${
                   encounter.wclId
-                }, role: DPS, difficulty: ${encounter.difficulty}, size: 25)`
+                }, role: DPS, difficulty: ${encounter.difficulty}, size: ${
+                  encounter.size
+                })`
             )
             .concat('\n')}
         }
@@ -115,40 +119,61 @@ export class WclService {
               },
             });
 
-          console.log({
-            name: characterDataResponse.data.characterData.character.name,
-            classId: characterDataResponse.data.characterData.character.classID,
-          });
-
           const characterData =
             characterDataResponse.data.characterData.character;
 
+          const characterClass =
+            CLASS_BY_WCL_CLASS_ID[(characterData as any).classID];
+
           const characterRanks = activeEncounters.flatMap((encounter) => {
-            return characterData[parseEncounterName(encounter.name)].ranks.map(
-              (rank) => ({
-                encounterId: encounter.id,
-                reportCode: rank.report.code,
-                spec: rank.spec,
-                characterId: character.id,
-                lockedIn: rank.lockedIn,
-                todayPercent: rank.todayPercent,
-                duration: rank.duration,
-                amount: rank.amount,
-              })
-            );
+            const encounterRanks =
+              characterData[parseEncounterName(encounter.name)].ranks;
+
+            // Group by spec and get for each spec the best rank
+            // Also filters invalid specs
+            const bestEncounterRanks = Object.values(
+              pickBy(
+                groupBy(encounterRanks, (rank) => rank.spec),
+                (_, spec) => {
+                  const invalidSpecs = INVALID_SPECS_BY_CLASS[characterClass];
+
+                  return !invalidSpecs?.includes(spec);
+                }
+              )
+            ).map((ranks) => maxBy(ranks, (rank) => rank.todayPercent));
+
+            return bestEncounterRanks.map((rank) => ({
+              encounterId: encounter.id,
+              reportCode: rank.report.code,
+              spec: rank.spec,
+              characterId: character.id,
+              lockedIn: rank.lockedIn,
+              todayPercent: rank.todayPercent,
+              duration: rank.duration,
+              amount: rank.amount,
+            }));
           });
 
           createdRankings.push(characterRanks);
 
-          await this.prismaService.ranking.createMany({
-            data: characterRanks,
-            skipDuplicates: true,
-          });
+          for (const rank of characterRanks) {
+            await this.prismaService.ranking.upsert({
+              where: {
+                characterId_encounterId_spec: {
+                  characterId: rank.characterId,
+                  encounterId: rank.encounterId,
+                  spec: rank.spec,
+                },
+              },
+              update: rank,
+              create: rank,
+            });
+          }
 
           await this.prismaService.character.update({
             data: {
               wclId: (characterData as any).id,
-              class: CLASS_BY_WCL_CLASS_ID[(characterData as any).classID],
+              lastRankUpdate: new Date(),
             },
             where: { id: character.id },
           });

@@ -11,13 +11,17 @@ datasource db {
 }
 
 model Character {
-  id       Int       @id @default(autoincrement())
-  name     String    @unique
-  wclId    Int?      @unique
-  guild    Guild?    @relation(fields: [guildId], references: [id])
-  guildId  Int?
-  class    String?
-  rankings Ranking[]
+  id             Int       @id @default(autoincrement())
+  name           String    @unique
+  wclId          Int?      @unique
+  guild          Guild?    @relation(fields: [guildId], references: [id])
+  guildId        Int?
+  class          String
+  serverRegion   String?
+  serverSlug     String?
+  lastRankUpdate DateTime?
+  isActive       Boolean   @default(true)
+  rankings       Ranking[]
 }
 
 model Guild {
@@ -44,7 +48,7 @@ model Ranking {
   encounter   Encounter @relation(fields: [encounterId], references: [id])
   encounterId Int
 
-  @@unique([characterId, encounterId, reportCode])
+  @@unique([characterId, encounterId, spec])
 }
 
 model Encounter {
@@ -55,8 +59,4 @@ model Encounter {
   difficulty Int
   isActive   Boolean
   Ranking    Ranking[]
-}
-
-model Test {
-  id Int @id @default(autoincrement())
 }

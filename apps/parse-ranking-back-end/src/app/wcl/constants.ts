@@ -10,3 +10,12 @@ export const CLASS_BY_WCL_CLASS_ID = {
   10: 'Warlock',
   11: 'Warrior',
 };
+
+export const INVALID_SPECS_BY_CLASS = {
+  Warrior: ['Gladiator'],
+  Paladin: ['Justicar', 'Protection', 'Holy'],
+  Shaman: ['Restoration'],
+  Priest: ['Discipline', 'Holy'],
+  Druid: ['Guardian', 'Restoration', 'Warden'],
+  'Death Knight': ['Runeblade'],
+};
