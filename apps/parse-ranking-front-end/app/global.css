@@ -34,6 +34,25 @@
     --ring: 215 20.2% 65.1%;
 
     --radius: 0.5rem;
+
+    --rank-gold: 45 66% 70%;
+    --rank-pink: 329 68% 65%;
+    --rank-orange: 30 100% 50%;
+    --rank-purple: 276 84% 57%;
+    --rank-blue: 214 100% 50%;
+    --rank-green: 113 100% 50%;
+    --rank-gray: 0 0% 40%;
+
+    --death-knight: 350 73% 445;
+    --druid: 28 100% 52%;
+    --hunter: 85 52% 64%;
+    --mage: 193 81% 58%;
+    --paladin: 333 83% 75%;
+    --priest: 0 0% 100%;
+    --rogue: 60 100% 78%;
+    --shaman: 210 100% 43%;
+    --warlock: 239 75% 73%;
+    --warrior: 31 44% 60%;
   }
 
   .dark {
@@ -67,6 +86,25 @@
     --ring: 216 34% 17%;
 
     --radius: 0.5rem;
+
+    --rank-gold: 45 66% 70%;
+    --rank-pink: 329 68% 65%;
+    --rank-orange: 30 100% 50%;
+    --rank-purple: 276 84% 57%;
+    --rank-blue: 214 100% 50%;
+    --rank-green: 113 100% 50%;
+    --rank-gray: 0 0% 40%;
+
+    --death-knight: 350 73% 445;
+    --druid: 28 100% 52%;
+    --hunter: 85 52% 64%;
+    --mage: 193 81% 58%;
+    --paladin: 333 83% 75%;
+    --priest: 0 0% 100%;
+    --rogue: 60 100% 78%;
+    --shaman: 210 100% 43%;
+    --warlock: 239 75% 73%;
+    --warrior: 31 44% 60%;
   }
 }
 
@@ -76,6 +114,6 @@
   }
   body {
     @apply bg-background text-foreground;
-    font-feature-settings: "rlig" 1, "calt" 1;
+    font-feature-settings: 'rlig' 1, 'calt' 1;
   }
 }
