@@ -45,14 +45,14 @@
 
     --death-knight: 350 73% 445;
     --druid: 28 100% 52%;
-    --hunter: 85 52% 64%;
-    --mage: 193 81% 58%;
-    --paladin: 333 83% 75%;
+    --hunter: 85 65% 40%;
+    --mage: 193 86% 40%;
+    --paladin: 333 83% 70%;
     --priest: 0 0% 100%;
-    --rogue: 60 100% 78%;
+    --rogue: 60 100% 35%;
     --shaman: 210 100% 43%;
-    --warlock: 239 75% 73%;
-    --warrior: 31 44% 60%;
+    --warlock: 239 75% 64%;
+    --warrior: 31 50% 50%;
   }
 
   .dark {
