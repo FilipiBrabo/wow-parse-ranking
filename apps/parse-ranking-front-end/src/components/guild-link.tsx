@@ -1,3 +1,5 @@
+import { ExternalLink } from './external-link';
+
 type GuildLinkProps = {
   guildName: string;
   guildId: number;
@@ -5,11 +7,9 @@ type GuildLinkProps = {
 
 export function GuildLink({ guildName, guildId }: GuildLinkProps) {
   return (
-    <a
-      target="_blank"
+    <ExternalLink
       href={`https://classic.warcraftlogs.com/guild/id/${guildId}`}
-    >
-      {guildName}
-    </a>
+      title={guildName}
+    />
   );
 }

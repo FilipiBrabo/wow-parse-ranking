@@ -1,10 +1,10 @@
 export function getRankColor(rank: number) {
-  if (rank === 100) return '#e5cc80';
-  if (rank >= 99) return '#e268a8';
-  if (rank >= 95) return '#ff8000';
-  if (rank >= 75) return '#a335ee';
-  if (rank >= 50) return '#0070ff';
-  if (rank >= 25) return '#1eff00';
+  if (rank === 100) return 'rank-gold';
+  if (rank >= 99) return 'rank-pink';
+  if (rank >= 95) return 'rank-orange';
+  if (rank >= 75) return 'rank-purple';
+  if (rank >= 50) return 'rank-blue';
+  if (rank >= 25) return 'rank-green';
 
-  return '#666666';
+  return 'rank-gray';
 }

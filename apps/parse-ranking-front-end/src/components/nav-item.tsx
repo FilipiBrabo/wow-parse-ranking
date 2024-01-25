@@ -1,0 +1,19 @@
+import { buttonVariants } from '@parse-ranking/shadcn-ui';
+import { ReactNode } from 'react';
+
+type NavItemProps = {
+  href: string;
+  icon: ReactNode;
+};
+
+export function NavItem({ href, icon }: NavItemProps) {
+  return (
+    <a
+      target="_blank"
+      className={buttonVariants({ variant: 'ghost', size: 'icon' })}
+      href={href}
+    >
+      {icon}
+    </a>
+  );
+}

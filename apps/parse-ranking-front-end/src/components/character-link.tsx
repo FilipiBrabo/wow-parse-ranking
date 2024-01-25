@@ -1,4 +1,4 @@
-import { getClassColor } from '../utils/getClassColor';
+import { ExternalLink } from './external-link';
 
 type CharacterLinkProps = {
   name: string;
@@ -13,13 +13,16 @@ export function CharacterLink({
   realm,
   region,
 }: CharacterLinkProps) {
+  const cssClassName = className
+    .split(/(?=[A-Z])/)
+    .join('-')
+    .toLowerCase();
+
   return (
-    <a
-      target="_blank"
-      style={{ color: getClassColor(className) }}
+    <ExternalLink
       href={`https://classic.warcraftlogs.com/character/${region.toLowerCase()}/${realm.toLowerCase()}/${name.toLowerCase()}`}
-    >
-      {name}
-    </a>
+      title={name}
+      className={`text-${cssClassName}`}
+    />
   );
 }

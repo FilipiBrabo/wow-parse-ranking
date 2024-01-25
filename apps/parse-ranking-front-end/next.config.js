@@ -16,7 +16,15 @@ const nextConfig = {
   images: {
     domains: ['assets.rpglogs.com'],
   },
-
+  async redirects() {
+    return [
+      {
+        source: '/',
+        destination: '/ranks',
+        permanent: true,
+      },
+    ];
+  },
   compiler: {
     // For other options, see https://nextjs.org/docs/architecture/nextjs-compiler
   },
