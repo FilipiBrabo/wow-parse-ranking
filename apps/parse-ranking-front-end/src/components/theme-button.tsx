@@ -1,11 +1,21 @@
 'use client';
 
-import { Button } from '@parse-ranking/shadcn-ui';
+import { Button, Skeleton } from '@parse-ranking/shadcn-ui';
 import { Moon, Sun } from 'lucide-react';
 import { useTheme } from 'next-themes';
+import { useEffect, useState } from 'react';
 
 export function ThemeButton() {
+  const [mounted, setMounted] = useState(false);
   const { setTheme, theme } = useTheme();
+
+  useEffect(() => {
+    setMounted(true);
+  }, []);
+
+  if (!mounted) {
+    return <Skeleton className="h-9 w-9 rounded-2" />;
+  }
 
   return (
     <Button

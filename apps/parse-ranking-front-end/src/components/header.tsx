@@ -21,8 +21,8 @@ export function Header() {
       <div className="container flex items-center justify-between max-w-screen-xl mx-auto h-16 px-4">
         <Link href="#">Ranking Brasileiro</Link>
 
-        <div className="flex gap-2">
-          <nav className="flex">
+        <div className="flex gap-2 items-center">
+          <nav className="flex items-center">
             {navItems.map((item) => (
               <NavItem key={item.href} href={item.href} icon={item.icon} />
             ))}
