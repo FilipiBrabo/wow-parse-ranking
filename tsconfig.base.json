@@ -14,7 +14,11 @@
     "skipLibCheck": true,
     "skipDefaultLibCheck": true,
     "baseUrl": ".",
-    "paths": {}
+    "paths": {
+      "@parse-ranking/shadcn-ui": [
+        "libs/shadcn-ui/src/index.ts"
+      ],
+    }
   },
   "exclude": ["node_modules", "tmp"]
 }
