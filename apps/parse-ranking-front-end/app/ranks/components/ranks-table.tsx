@@ -12,22 +12,37 @@ import {
   ColumnDef,
   flexRender,
   getCoreRowModel,
+  getPaginationRowModel,
   useReactTable,
 } from '@tanstack/react-table';
 
+import { PaginationMenu } from './pagination-menu';
+
+type Paginated<T> = {
+  items: T[];
+  total: number;
+  limit: number;
+  offset: number;
+};
+
 interface RanksTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[];
-  data: TData[];
+  data: Paginated<TData>;
 }
 
 export function RanksTable<TData, TValue>({
   columns,
   data,
 }: RanksTableProps<TData, TValue>) {
+  const pageCount = Math.ceil(data.limit / data.total) || 1;
+
   const table = useReactTable({
-    data,
+    data: data.items,
     columns,
     getCoreRowModel: getCoreRowModel(),
+    getPaginationRowModel: getPaginationRowModel(),
+    manualPagination: true,
+    pageCount,
   });
 
   return (
@@ -74,6 +89,11 @@ export function RanksTable<TData, TValue>({
           )}
         </TableBody>
       </Table>
+      <PaginationMenu
+        limit={data.limit}
+        offset={data.offset}
+        total={data.total}
+      />
     </div>
   );
 }

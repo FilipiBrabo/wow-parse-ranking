@@ -2,14 +2,14 @@ import { ExternalLink } from './external-link';
 
 type CharacterLinkProps = {
   name: string;
-  className: string;
+  class: string;
   realm: string;
   region: string;
 };
 
 export function CharacterLink({
   name,
-  className,
+  class: className,
   realm,
   region,
 }: CharacterLinkProps) {

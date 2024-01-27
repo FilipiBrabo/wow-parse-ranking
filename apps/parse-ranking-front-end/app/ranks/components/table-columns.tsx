@@ -1,11 +1,11 @@
 'use client';
 
 import { createColumnHelper } from '@tanstack/react-table';
-import { getRankColor } from 'apps/parse-ranking-front-end/src/utils/getRankColor';
 
 import { CharacterLink } from '../../../src/components/character-link';
 import { GuildLink } from '../../../src/components/guild-link';
 import { SpecIcon } from '../../../src/components/SpecIcon';
+import { getRankColor } from '../../../src/utils/getRankColor';
 
 const columnHelper = createColumnHelper<Character>();
 
@@ -13,7 +13,7 @@ export type Character = {
   name: string;
   guildName: string;
   guildId: number;
-  className: string;
+  class: string;
   rank: string;
   spec: string;
   realm: string;
@@ -32,12 +32,12 @@ export const columns = [
   columnHelper.accessor('name', {
     header: () => <span>Nome</span>,
     cell: ({ getValue, row }) => {
-      const { realm, className, region } = row.original;
+      const { realm, class: className, region } = row.original;
       return (
         <CharacterLink
           name={getValue()}
           realm={realm}
-          className={className}
+          class={className}
           region={region}
         />
       );
