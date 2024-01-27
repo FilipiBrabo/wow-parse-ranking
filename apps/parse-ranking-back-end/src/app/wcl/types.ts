@@ -15,6 +15,33 @@ export type GuildReportsResponse = {
     };
   };
 };
+export type Rank = {
+  lockedIn: boolean;
+  rankPercent: number;
+  historicalPercent: number;
+  todayPercent: number;
+  rankTotalParses: number;
+  historicalTotalParses: number;
+  todayTotalParses: number;
+  guild: {
+    id?: number | null;
+    name?: string | null;
+    faction?: number | null;
+  };
+  report: {
+    code: string;
+    startTime: number;
+    fightID: number;
+  };
+  duration: number;
+  startTime: number;
+  amount: number;
+  bracketData: number;
+  spec: string;
+  bestSpec: string;
+  class: number;
+  faction: number;
+};
 
 export type EncounterRanking = {
   bestAmount: number;
@@ -26,33 +53,7 @@ export type EncounterRanking = {
   metric: string;
   partition: number;
   zone: number;
-  ranks: {
-    lockedIn: boolean;
-    rankPercent: number;
-    historicalPercent: number;
-    todayPercent: number;
-    rankTotalParses: number;
-    historicalTotalParses: number;
-    todayTotalParses: number;
-    guild: {
-      id?: number | null;
-      name?: string | null;
-      faction?: number | null;
-    };
-    report: {
-      code: string;
-      startTime: number;
-      fightID: number;
-    };
-    duration: number;
-    startTime: number;
-    amount: number;
-    bracketData: number;
-    spec: string;
-    bestSpec: string;
-    class: number;
-    faction: number;
-  }[];
+  ranks: Rank[];
 };
 
 export type CharacterRankingsResponse = {

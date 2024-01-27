@@ -11,7 +11,7 @@ export const CLASS_BY_WCL_CLASS_ID = {
   11: 'Warrior',
 };
 
-export const INVALID_SPECS_BY_CLASS = {
+export const INVALID_SPECS_BY_CLASS: Record<string, string[]> = {
   Warrior: ['Gladiator'],
   Paladin: ['Justicar', 'Protection', 'Holy'],
   Shaman: ['Restoration'],

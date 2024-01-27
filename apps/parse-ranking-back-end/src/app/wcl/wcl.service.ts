@@ -6,7 +6,7 @@ import { parseEncounterName } from '../../utils';
 import { ApolloService } from '../apollo.service';
 import { PrismaService } from '../prisma.service';
 import { CLASS_BY_WCL_CLASS_ID, INVALID_SPECS_BY_CLASS } from './constants';
-import { CharacterRankingsResponse, GuildReportsResponse } from './types';
+import { CharacterRankingsResponse, GuildReportsResponse, Rank } from './types';
 
 @Injectable()
 export class WclService {
@@ -17,6 +17,8 @@ export class WclService {
 
   async updateCharactersDatabase() {
     const guild = await this.prismaService.guild.findFirst();
+
+    if (!guild) return;
 
     const reports = await this.apolloService.query<GuildReportsResponse>({
       query: gql`
@@ -114,8 +116,9 @@ export class WclService {
               query: gql(query),
               variables: {
                 characterName: character.name,
-                serverSlug: character.guild.serverSlug,
-                serverRegion: character.guild.serverRegion,
+                serverSlug: character.serverSlug ?? character.guild?.serverSlug,
+                serverRegion:
+                  character.serverRegion ?? character.guild?.serverRegion,
               },
             });
 
@@ -123,11 +126,13 @@ export class WclService {
             characterDataResponse.data.characterData.character;
 
           const characterClass =
-            CLASS_BY_WCL_CLASS_ID[(characterData as any).classID];
+            // TODO: fix this types
+            // eslint-disable-next-line @typescript-eslint/no-explicit-any
+            (CLASS_BY_WCL_CLASS_ID as any)[(characterData as any).classID];
 
           const characterRanks = activeEncounters.flatMap((encounter) => {
             const encounterRanks =
-              characterData[parseEncounterName(encounter.name)].ranks;
+              characterData[parseEncounterName(encounter.name)]?.ranks;
 
             // Group by spec and get for each spec the best rank
             // Also filters invalid specs
@@ -135,14 +140,18 @@ export class WclService {
               pickBy(
                 groupBy(encounterRanks, (rank) => rank.spec),
                 (_, spec) => {
-                  const invalidSpecs = INVALID_SPECS_BY_CLASS[characterClass];
+                  const invalidSpecs =
+                    // TODO: fix type assertion
+                    INVALID_SPECS_BY_CLASS[characterClass as string];
 
                   return !invalidSpecs?.includes(spec);
                 }
               )
             ).map((ranks) => maxBy(ranks, (rank) => rank.todayPercent));
 
-            return bestEncounterRanks.map((rank) => ({
+            const isRank = (rank: Rank | undefined): rank is Rank => !!rank;
+
+            return bestEncounterRanks.filter(isRank).map((rank) => ({
               encounterId: encounter.id,
               reportCode: rank.report.code,
               spec: rank.spec,
