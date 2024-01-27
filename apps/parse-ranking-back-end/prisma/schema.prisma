@@ -59,4 +59,12 @@ model Encounter {
   difficulty Int
   isActive   Boolean
   Ranking    Ranking[]
+  Raid       Raid      @relation(fields: [raidId], references: [id])
+  raidId     Int
+}
+
+model Raid {
+  id        Int         @id @default(autoincrement())
+  name      String      @unique
+  Encounter Encounter[]
 }

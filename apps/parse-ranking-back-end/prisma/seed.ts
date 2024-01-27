@@ -3,6 +3,7 @@ import { PrismaClient } from '@prisma/client';
 const prisma = new PrismaClient();
 
 async function main() {
+  // GUILD
   await prisma.guild.upsert({
     where: { name: 'Posto Ipiranga' },
     update: {},
@@ -15,56 +16,11 @@ async function main() {
     },
   });
 
-  await prisma.encounter.upsert({
-    where: { name: 'Northrend Beasts' },
+  // RAID
+  await prisma.raid.upsert({
+    where: { name: 'Icecrown Citadel' },
     update: {},
-    create: {
-      id: 1,
-      name: 'Northrend Beasts',
-      wclId: 629,
-      difficulty: 4,
-      size: 25,
-      isActive: false,
-    },
-  });
-
-  await prisma.encounter.upsert({
-    where: { name: 'Jaraxxus' },
-    update: {},
-    create: {
-      id: 2,
-      name: 'Jaraxxus',
-      wclId: 633,
-      difficulty: 4,
-      size: 25,
-      isActive: false,
-    },
-  });
-
-  await prisma.encounter.upsert({
-    where: { name: 'Twin Valkyr' },
-    update: {},
-    create: {
-      id: 3,
-      name: 'Twin Valkyr',
-      wclId: 641,
-      difficulty: 4,
-      size: 25,
-      isActive: false,
-    },
-  });
-
-  await prisma.encounter.upsert({
-    where: { name: 'Anubarak' },
-    update: {},
-    create: {
-      id: 4,
-      name: 'Anubarak',
-      wclId: 645,
-      difficulty: 4,
-      size: 25,
-      isActive: false,
-    },
+    create: { id: 1, name: 'Icecrown Citadel' },
   });
 
   await prisma.encounter.upsert({
@@ -77,6 +33,7 @@ async function main() {
       difficulty: 4,
       size: 25,
       isActive: true,
+      raidId: 1,
     },
   });
 
@@ -90,6 +47,7 @@ async function main() {
       difficulty: 4,
       size: 25,
       isActive: true,
+      raidId: 1,
     },
   });
 
@@ -103,6 +61,7 @@ async function main() {
       difficulty: 4,
       size: 25,
       isActive: true,
+      raidId: 1,
     },
   });
 
@@ -116,6 +75,7 @@ async function main() {
       difficulty: 4,
       size: 25,
       isActive: true,
+      raidId: 1,
     },
   });
 
@@ -129,6 +89,7 @@ async function main() {
       difficulty: 4,
       size: 25,
       isActive: true,
+      raidId: 1,
     },
   });
 
@@ -142,6 +103,7 @@ async function main() {
       difficulty: 4,
       size: 25,
       isActive: true,
+      raidId: 1,
     },
   });
 
@@ -155,6 +117,7 @@ async function main() {
       difficulty: 4,
       size: 25,
       isActive: true,
+      raidId: 1,
     },
   });
 
@@ -168,6 +131,7 @@ async function main() {
       difficulty: 4,
       size: 25,
       isActive: true,
+      raidId: 1,
     },
   });
 
@@ -181,17 +145,7 @@ async function main() {
       difficulty: 4,
       size: 25,
       isActive: true,
-    },
-  });
-
-  await prisma.character.upsert({
-    where: { name: 'Akimbro' },
-    update: {},
-    create: {
-      id: 1,
-      name: 'Akimbro',
-      class: 'Mage',
-      guildId: 1,
+      raidId: 1,
     },
   });
 }
