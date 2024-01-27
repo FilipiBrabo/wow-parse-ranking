@@ -61,9 +61,8 @@
     },
     "prisma-generate": {
       "executor": "nx:run-commands",
-      "cwd": "apps/parse-ranking-back-end",
       "options": {
-        "command": "npx prisma generate"
+        "command": "npx prisma generate --schema=./apps/parse-ranking-back-end/prisma/schema.prisma"
       }
     },
     "prisma-push": {
