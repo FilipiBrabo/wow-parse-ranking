@@ -66,7 +66,7 @@ export class RankingService {
       LEFT JOIN "Guild" ON "Guild".id = "guildId"
       GROUP BY "maxRanks"."characterId", "maxRanks".name, "spec", "guildId", "Guild".name, "Guild"."serverSlug", "class", "Guild"."wclId",  "Guild"."serverRegion"
       ORDER BY "rank" DESC
-      LIMIT 20
+      LIMIT ${options?.limit ?? 15}
       OFFSET ${options?.offset ?? 0}
     `;
 

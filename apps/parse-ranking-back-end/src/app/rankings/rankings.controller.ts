@@ -8,7 +8,7 @@ import { RankingService } from './rankings.service';
 export class RankingsOptions {
   @IsNumber()
   @Type(() => Number)
-  public limit = 20;
+  public limit = 15;
 
   @IsNumber()
   @Type(() => Number)
