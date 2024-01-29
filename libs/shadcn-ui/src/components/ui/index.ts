@@ -5,5 +5,4 @@ export * from './button';
 export * from './skeleton';
 export * from './pagination';
 export * from './input';
-export * from './form';
 export * from './select';
