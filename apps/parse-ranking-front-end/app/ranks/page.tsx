@@ -16,15 +16,19 @@ type PaginatedCharacters = {
 
 const DEFAULT_LIMIT = 15;
 
-async function getRanks({
-  pageIndex,
-}: {
-  pageIndex: number;
-}): Promise<PaginatedCharacters> {
+async function getRanks(
+  pageIndex: number,
+  filters: Record<string, string | string[] | undefined>
+): Promise<PaginatedCharacters> {
   const offset = pageIndex * DEFAULT_LIMIT;
 
   const searchParams = new URLSearchParams();
   searchParams.set('offset', String(offset));
+
+  for (const [key, value] of Object.entries(filters)) {
+    if (!value || Array.isArray(value)) continue;
+    searchParams.set(key, value);
+  }
 
   const response = await fetch(
     `${process.env.API_BASE_PATH}/rankings/icc?${searchParams.toString()}`
@@ -38,7 +42,7 @@ async function getRanks({
 }
 
 export default async function RanksPage({ searchParams }: PageProps) {
-  const { page } = searchParams;
+  const { page, ...filters } = searchParams;
 
   const pageIndex = z.coerce
     .number()
@@ -47,6 +51,6 @@ export default async function RanksPage({ searchParams }: PageProps) {
     .transform((page) => (page ? page - 1 : 0))
     .parse(page);
 
-  const data = await getRanks({ pageIndex });
+  const data = await getRanks(pageIndex, filters);
   return <RanksTable columns={columns} data={data} />;
 }

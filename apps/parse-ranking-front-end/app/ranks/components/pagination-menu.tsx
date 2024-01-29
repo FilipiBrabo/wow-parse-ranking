@@ -5,9 +5,8 @@ import {
   PaginationNext,
   PaginationPrevious,
 } from '@parse-ranking/shadcn-ui';
+import { useCreateQueryString } from 'apps/parse-ranking-front-end/src/hooks/useCreateQueryString';
 import { usePathname } from 'next/navigation';
-
-import { createQueryString } from '../../../src/utils/createQueryString';
 
 export type PaginationMenuProps = {
   total: number;
@@ -17,12 +16,16 @@ export type PaginationMenuProps = {
 
 export function PaginationMenu({ total, offset, limit }: PaginationMenuProps) {
   const pathname = usePathname();
+  const createQueryString = useCreateQueryString();
 
   const currentPage = Math.floor(offset / limit) + 1;
   const pageCount = Math.ceil(total / limit) || 1;
 
   const previousPage = Math.max(currentPage - 1, 1);
   const nextPage = Math.min(currentPage + 1, pageCount);
+
+  const hasNextPage = nextPage !== currentPage;
+  const hasPreviousPage = previousPage !== currentPage;
 
   return (
     <div className="flex items-center justify-between px-2">
@@ -38,17 +41,25 @@ export function PaginationMenu({ total, offset, limit }: PaginationMenuProps) {
           <PaginationContent>
             <PaginationItem>
               <PaginationPrevious
+                isDisabled={!hasPreviousPage}
                 href={
                   pathname +
                   '?' +
-                  createQueryString('page', String(previousPage))
+                  createQueryString('page', String(previousPage), {
+                    keepPreviousParams: true,
+                  })
                 }
               />
             </PaginationItem>
             <PaginationItem>
               <PaginationNext
+                isDisabled={!hasNextPage}
                 href={
-                  pathname + '?' + createQueryString('page', String(nextPage))
+                  pathname +
+                  '?' +
+                  createQueryString('page', String(nextPage), {
+                    keepPreviousParams: true,
+                  })
                 }
               />
             </PaginationItem>

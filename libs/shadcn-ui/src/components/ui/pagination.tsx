@@ -3,7 +3,7 @@ import Link from 'next/link';
 import * as React from 'react';
 
 import { cn } from '../../utils';
-import { ButtonProps, buttonVariants } from './button';
+import { Button, ButtonProps, buttonVariants } from './button';
 
 const Pagination = ({ className, ...props }: React.ComponentProps<'nav'>) => (
   <nav
@@ -63,33 +63,53 @@ PaginationLink.displayName = 'PaginationLink';
 const PaginationPrevious = ({
   className,
   ...props
-}: React.ComponentProps<typeof PaginationLink>) => (
-  <PaginationLink
-    aria-label="Go to previous page"
-    size="icon"
-    className={className}
-    {...props}
-  >
-    <ChevronLeftIcon className="h-4 w-4" />
-    <span className="sr-only">Previous</span>
-  </PaginationLink>
-);
+}: React.ComponentProps<typeof PaginationLink> & { isDisabled?: boolean }) => {
+  if (props.isDisabled) {
+    return (
+      <Button size="icon" variant="ghost" disabled aria-disabled>
+        <ChevronLeftIcon className="h-4 w-4" />
+      </Button>
+    );
+  }
+
+  return (
+    <PaginationLink
+      aria-label="Go to previous page"
+      size="icon"
+      className={className}
+      {...props}
+    >
+      <ChevronLeftIcon className="h-4 w-4" />
+      <span className="sr-only">Previous</span>
+    </PaginationLink>
+  );
+};
 PaginationPrevious.displayName = 'PaginationPrevious';
 
 const PaginationNext = ({
   className,
   ...props
-}: React.ComponentProps<typeof PaginationLink>) => (
-  <PaginationLink
-    aria-label="Go to next page"
-    size="icon"
-    className={className}
-    {...props}
-  >
-    <span className="sr-only">Próxima</span>
-    <ChevronRightIcon className="h-4 w-4" />
-  </PaginationLink>
-);
+}: React.ComponentProps<typeof PaginationLink> & { isDisabled?: boolean }) => {
+  if (props.isDisabled) {
+    return (
+      <Button size="icon" variant="ghost" disabled aria-disabled>
+        <ChevronRightIcon className="h-4 w-4" />
+      </Button>
+    );
+  }
+
+  return (
+    <PaginationLink
+      aria-label="Go to next page"
+      size="icon"
+      className={className}
+      {...props}
+    >
+      <span className="sr-only">Próxima</span>
+      <ChevronRightIcon className="h-4 w-4" />
+    </PaginationLink>
+  );
+};
 PaginationNext.displayName = 'PaginationNext';
 
 export {
