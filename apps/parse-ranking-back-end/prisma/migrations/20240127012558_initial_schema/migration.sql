@@ -4,7 +4,11 @@ CREATE TABLE "Character" (
     "name" TEXT NOT NULL,
     "wclId" INTEGER,
     "guildId" INTEGER,
-    "class" TEXT,
+    "class" TEXT NOT NULL,
+    "serverRegion" TEXT,
+    "serverSlug" TEXT,
+    "lastRankUpdate" TIMESTAMP(3),
+    "isActive" BOOLEAN NOT NULL DEFAULT true,
 
     CONSTRAINT "Character_pkey" PRIMARY KEY ("id")
 );
@@ -43,15 +47,17 @@ CREATE TABLE "Encounter" (
     "size" INTEGER NOT NULL,
     "difficulty" INTEGER NOT NULL,
     "isActive" BOOLEAN NOT NULL,
+    "raidId" INTEGER NOT NULL,
 
     CONSTRAINT "Encounter_pkey" PRIMARY KEY ("id")
 );
 
 -- CreateTable
-CREATE TABLE "Test" (
+CREATE TABLE "Raid" (
     "id" SERIAL NOT NULL,
+    "name" TEXT NOT NULL,
 
-    CONSTRAINT "Test_pkey" PRIMARY KEY ("id")
+    CONSTRAINT "Raid_pkey" PRIMARY KEY ("id")
 );
 
 -- CreateIndex
@@ -67,13 +73,16 @@ CREATE UNIQUE INDEX "Guild_name_key" ON "Guild"("name");
 CREATE UNIQUE INDEX "Guild_wclId_key" ON "Guild"("wclId");
 
 -- CreateIndex
-CREATE UNIQUE INDEX "Ranking_characterId_encounterId_reportCode_key" ON "Ranking"("characterId", "encounterId", "reportCode");
+CREATE UNIQUE INDEX "Ranking_characterId_encounterId_spec_key" ON "Ranking"("characterId", "encounterId", "spec");
 
 -- CreateIndex
 CREATE UNIQUE INDEX "Encounter_name_key" ON "Encounter"("name");
 
 -- CreateIndex
 CREATE UNIQUE INDEX "Encounter_wclId_key" ON "Encounter"("wclId");
+
+-- CreateIndex
+CREATE UNIQUE INDEX "Raid_name_key" ON "Raid"("name");
 
 -- AddForeignKey
 ALTER TABLE "Character" ADD CONSTRAINT "Character_guildId_fkey" FOREIGN KEY ("guildId") REFERENCES "Guild"("id") ON DELETE SET NULL ON UPDATE CASCADE;
@@ -83,3 +92,6 @@ ALTER TABLE "Ranking" ADD CONSTRAINT "Ranking_characterId_fkey" FOREIGN KEY ("ch
 
 -- AddForeignKey
 ALTER TABLE "Ranking" ADD CONSTRAINT "Ranking_encounterId_fkey" FOREIGN KEY ("encounterId") REFERENCES "Encounter"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "Encounter" ADD CONSTRAINT "Encounter_raidId_fkey" FOREIGN KEY ("raidId") REFERENCES "Raid"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
