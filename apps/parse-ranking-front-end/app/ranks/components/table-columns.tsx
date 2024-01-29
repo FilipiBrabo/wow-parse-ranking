@@ -14,16 +14,17 @@ export type Character = {
   guildName: string;
   guildId: number;
   class: string;
-  rank: string;
+  rank: number;
   spec: string;
   realm: string;
   region: string;
+  todayPercent: string;
 };
 
 export const columns = [
-  columnHelper.display({
-    id: 'order',
-    cell: (props) => <span>{props.row.index + 1}</span>,
+  columnHelper.accessor('rank', {
+    header: () => <span>Rank</span>,
+    cell: ({ getValue }) => <span>{getValue()}</span>,
   }),
   columnHelper.accessor('spec', {
     header: () => <span>Spec</span>,
@@ -49,13 +50,13 @@ export const columns = [
       <GuildLink guildName={getValue()} guildId={row.original.guildId} />
     ),
   }),
-  columnHelper.accessor('rank', {
+  columnHelper.accessor('todayPercent', {
     header: () => <span>Today %</span>,
     cell: ({ getValue }) => {
-      const rank = getValue();
+      const todayPercent = getValue();
       return (
-        <span className={`text-${getRankColor(Number(rank))}`}>
-          {Number(rank).toFixed(2)}
+        <span className={`text-${getRankColor(Number(todayPercent))}`}>
+          {Number(todayPercent).toFixed(2)}
         </span>
       );
     },

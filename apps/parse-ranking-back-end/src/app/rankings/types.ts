@@ -1,4 +1,5 @@
 export type CharacterWithRank = {
+  rank: number;
   id: number;
   name: string;
   guildName: string;
@@ -7,5 +8,5 @@ export type CharacterWithRank = {
   region: string;
   class: string;
   spec: string;
-  rank: string;
+  todayPercent: string;
 };

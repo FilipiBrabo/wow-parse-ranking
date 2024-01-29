@@ -32,7 +32,8 @@ export class RankingService {
       : Prisma.empty;
 
     // TODO: is there a way to make this query type safe?
-    const averageBestRanksWithCount: (CharacterWithRank & { count: number })[] =
+    // TODO: need to analyze performance with a lot of data
+    const bestCharactersWithCount: (CharacterWithRank & { count: number })[] =
       await this.prismaService.$queryRaw`
       SELECT
         (COUNT(*) over())::int,
@@ -46,7 +47,7 @@ export class RankingService {
         "spec",
         ROUND(SUM("maxTodayPercent"::numeric)/${
           encounterIds.length
-        }, 2) AS "rank"
+        }, 2) AS "todayPercent"
       FROM (
         SELECT
           "name",
@@ -65,20 +66,25 @@ export class RankingService {
         ) as "maxRanks"
       LEFT JOIN "Guild" ON "Guild".id = "guildId"
       GROUP BY "maxRanks"."characterId", "maxRanks".name, "spec", "guildId", "Guild".name, "Guild"."serverSlug", "class", "Guild"."wclId",  "Guild"."serverRegion"
-      ORDER BY "rank" DESC
+      ORDER BY "todayPercent" DESC
       LIMIT ${options?.limit ?? 15}
       OFFSET ${options?.offset ?? 0}
     `;
 
-    const count = averageBestRanksWithCount[0]?.count ?? 0;
+    const count = bestCharactersWithCount[0]?.count ?? 0;
 
-    const averageBestRanks = averageBestRanksWithCount.map((rankWithCount) => {
+    const bestCharacters = bestCharactersWithCount.map((rankWithCount) => {
       // eslint-disable-next-line @typescript-eslint/no-unused-vars, unused-imports/no-unused-vars
       const { count, ...bestRank } = rankWithCount;
 
       return bestRank;
     });
 
-    return { total: count, items: averageBestRanks };
+    // TODO: How to do this on sql? Is it necessary?
+    const bestCharactersWithRank = bestCharacters.map((char, index) => {
+      return { ...char, rank: index + 1 + (options?.offset ?? 0) };
+    });
+
+    return { total: count, items: bestCharactersWithRank };
   }
 }
