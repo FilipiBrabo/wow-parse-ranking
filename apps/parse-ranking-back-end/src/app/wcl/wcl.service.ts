@@ -65,6 +65,7 @@ export class WclService {
       include: { guild: true },
       orderBy: { lastRankUpdate: { sort: 'asc', nulls: 'first' } },
       where: { isActive: true },
+      take: 15,
     });
 
     const activeEncounters = await this.prismaService.encounter.findMany({
