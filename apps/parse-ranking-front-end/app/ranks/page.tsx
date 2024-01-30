@@ -35,7 +35,8 @@ async function getRanks(
     `${process.env.API_BASE_PATH}/rankings/icc?${searchParams.toString()}`
   );
   const response = await fetch(
-    `${process.env.API_BASE_PATH}/rankings/icc?${searchParams.toString()}`
+    `${process.env.API_BASE_PATH}/rankings/icc?${searchParams.toString()}`,
+    { next: { revalidate: 0 } }
   );
 
   console.log('response', response.ok);
