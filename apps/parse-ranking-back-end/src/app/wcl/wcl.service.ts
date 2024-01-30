@@ -1,5 +1,6 @@
 import { gql } from '@apollo/client';
 import { Injectable } from '@nestjs/common';
+import { uniqBy } from 'lodash';
 
 import { ApolloService } from '../apollo.service';
 import { PrismaService } from '../prisma.service';
@@ -14,7 +15,23 @@ export class WclService {
   ) {}
 
   async updateCharactersDatabase() {
-    const guild = await this.prismaService.guild.findFirst();
+    const now = new Date();
+    const oneWeekMilliSeconds = 7 * 24 * 60 * 60 * 1000;
+    const lastWeek = new Date(now.getTime() - oneWeekMilliSeconds);
+
+    const guild = await this.prismaService.guild.findFirst({
+      orderBy: { lastCharacterUpdate: { sort: 'asc', nulls: 'first' } },
+      where: {
+        OR: [
+          {
+            lastCharacterUpdate: {
+              lte: lastWeek,
+            },
+          },
+          { lastCharacterUpdate: null },
+        ],
+      },
+    });
 
     if (!guild) return;
 
@@ -50,15 +67,22 @@ export class WclService {
         }))
     );
 
+    const uniqueCharacters = uniqBy(characters, (character) => character.name);
+
     await this.prismaService.character.createMany({
-      data: characters,
+      data: uniqueCharacters,
       skipDuplicates: true,
+    });
+
+    await this.prismaService.guild.update({
+      data: { lastCharacterUpdate: new Date() },
+      where: { id: guild.id },
     });
 
     return characters;
   }
 
-  async getCharactersParses() {
+  async updateCharacterRanks() {
     const characters = await this.prismaService.character.findMany({
       include: { guild: true },
       orderBy: { lastRankUpdate: { sort: 'asc', nulls: 'first' } },

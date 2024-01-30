@@ -28,12 +28,13 @@ model Character {
 }
 
 model Guild {
-  id           Int         @id @default(autoincrement())
-  name         String      @unique
-  wclId        Int         @unique
-  serverRegion String
-  serverSlug   String
-  character    Character[]
+  id                  Int         @id @default(autoincrement())
+  name                String      @unique
+  wclId               Int         @unique
+  serverRegion        String
+  serverSlug          String
+  lastCharacterUpdate DateTime?
+  character           Character[]
 }
 
 model Ranking {

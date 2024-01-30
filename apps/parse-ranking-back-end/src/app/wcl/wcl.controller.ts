@@ -6,13 +6,13 @@ import { WclService } from './wcl.service';
 export class WclController {
   constructor(private readonly wclService: WclService) {}
 
-  @Get()
+  @Get('/characters')
   updateGuildReports() {
     return this.wclService.updateCharactersDatabase();
   }
 
-  @Get('rank')
-  getCharacterRanks() {
-    return this.wclService.getCharactersParses();
+  @Get('/ranks')
+  updateCharacterRanks() {
+    return this.wclService.updateCharacterRanks();
   }
 }
