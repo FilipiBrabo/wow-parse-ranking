@@ -3,9 +3,7 @@
   "version": "0.0.0",
   "license": "MIT",
   "scripts": {
-    "build": "cd ./apps/parse-ranking-back-end && npx prisma generate && npx nx build parse-ranking-back-end",
-    "start": "node dist/apps/parse-ranking-back-end/main.js",
-    "postinstall":  "prisma generate"
+    "postinstall":  "cd ./apps/parse-ranking-back-end && npx prisma generate"
   },
   "private": true,
   "dependencies": {
