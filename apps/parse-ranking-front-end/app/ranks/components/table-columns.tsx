@@ -1,6 +1,6 @@
 'use client';
 
-import { createColumnHelper } from '@tanstack/react-table';
+import { ColumnDef, createColumnHelper } from '@tanstack/react-table';
 
 import { CharacterLink } from '../../../src/components/character-link';
 import { GuildLink } from '../../../src/components/guild-link';
@@ -61,4 +61,4 @@ export const columns = [
       );
     },
   }),
-];
+] as ColumnDef<Character>[];
