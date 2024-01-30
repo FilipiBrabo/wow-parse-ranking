@@ -3,7 +3,7 @@
   "version": "0.0.0",
   "license": "MIT",
   "scripts": {
-    "postinstall":  "cd ./apps/parse-ranking-back-end && npx prisma generate"
+    "postinstall": "cd ./apps/parse-ranking-back-end && npx prisma generate"
   },
   "private": true,
   "dependencies": {
@@ -20,6 +20,7 @@
     "@radix-ui/react-slot": "^1.0.2",
     "@swc/helpers": "~0.5.0",
     "@tanstack/react-table": "^8.11.2",
+    "@vercel/analytics": "^1.1.2",
     "axios": "^1.0.0",
     "class-transformer": "^0.5.1",
     "class-validator": "^0.14.0",

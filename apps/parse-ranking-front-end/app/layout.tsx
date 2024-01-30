@@ -1,6 +1,7 @@
 import './global.css';
 
 import { cn } from '@parse-ranking/shadcn-ui';
+import { Analytics } from '@vercel/analytics';
 import { Inter as FontSans } from 'next/font/google';
 
 import { Header } from '../src/components/header';
@@ -35,6 +36,7 @@ export default function RootLayout({
             <div className="max-w-2xl flex-1">{children}</div>
           </main>
         </ThemeProvider>
+        <Analytics />
       </body>
     </html>
   );
