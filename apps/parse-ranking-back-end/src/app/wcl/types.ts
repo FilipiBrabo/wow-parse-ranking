@@ -1,4 +1,4 @@
-export type GuildReportsResponse = {
+export type WclGuildReportsResponse = {
   guildData: {
     guild: {
       name: string;
@@ -15,7 +15,8 @@ export type GuildReportsResponse = {
     };
   };
 };
-export type Rank = {
+
+export type WclRank = {
   lockedIn: boolean;
   rankPercent: number;
   historicalPercent: number;
@@ -43,7 +44,7 @@ export type Rank = {
   faction: number;
 };
 
-export type EncounterRanking = {
+export type WclEncounterRanking = {
   bestAmount: number;
   medianPerformance: number;
   averagePerformance: number;
@@ -53,14 +54,15 @@ export type EncounterRanking = {
   metric: string;
   partition: number;
   zone: number;
-  ranks: Rank[];
+  ranks: WclRank[];
 };
 
-export type CharacterRankingsResponse = {
+export type WclCharacterWithRanks = {
+  [key: string]: WclEncounterRanking;
+} & { id: number; name: string; classID: number };
+
+export type WclCharacterRankingsResponse = {
   characterData: {
-    character: {
-      //TODO: how to include other properties (name, id, classId)
-      [key: string]: EncounterRanking;
-    };
+    character: WclCharacterWithRanks;
   };
 };

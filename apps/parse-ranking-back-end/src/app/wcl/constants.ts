@@ -1,4 +1,4 @@
-export const CLASS_BY_WCL_CLASS_ID = {
+export const CLASS_BY_WCL_CLASS_ID: Record<number, string> = {
   1: 'Death Knight',
   2: 'Druid',
   3: 'Hunter',
@@ -11,11 +11,11 @@ export const CLASS_BY_WCL_CLASS_ID = {
   11: 'Warrior',
 };
 
-export const INVALID_SPECS_BY_CLASS: Record<string, string[]> = {
-  Warrior: ['Gladiator'],
-  Paladin: ['Justicar', 'Protection', 'Holy'],
-  Shaman: ['Restoration'],
-  Priest: ['Discipline', 'Holy'],
-  Druid: ['Guardian', 'Restoration', 'Warden'],
-  'Death Knight': ['Runeblade'],
+export const INVALID_SPECS_BY_CLASS_ID: Record<string, string[]> = {
+  11: ['Gladiator'],
+  6: ['Justicar', 'Protection', 'Holy'],
+  9: ['Restoration'],
+  7: ['Discipline', 'Holy'],
+  2: ['Guardian', 'Restoration', 'Warden'],
+  1: ['Runeblade'],
 };
