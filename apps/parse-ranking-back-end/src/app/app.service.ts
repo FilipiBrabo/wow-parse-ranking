@@ -1,8 +1,14 @@
 import { Injectable } from '@nestjs/common';
 
+import { PrismaService } from './prisma.service';
+
 @Injectable()
 export class AppService {
-  getData(): { message: string } {
-    return { message: 'Hello API' };
+  public constructor(private readonly prisma: PrismaService) {}
+
+  async healthz() {
+    await this.prisma.$queryRaw`Select 1+1`;
+
+    return 'OK';
   }
 }
