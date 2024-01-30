@@ -1,7 +1,7 @@
 import './global.css';
 
 import { cn } from '@parse-ranking/shadcn-ui';
-import { Analytics } from '@vercel/analytics';
+import { Analytics } from '@vercel/analytics/react';
 import { Inter as FontSans } from 'next/font/google';
 
 import { Header } from '../src/components/header';
