@@ -30,9 +30,15 @@ async function getRanks(
     searchParams.set(key, value);
   }
 
+  console.log(
+    'api endpoint: ',
+    `${process.env.API_BASE_PATH}/rankings/icc?${searchParams.toString()}`
+  );
   const response = await fetch(
     `${process.env.API_BASE_PATH}/rankings/icc?${searchParams.toString()}`
   );
+
+  console.log('response', response.ok);
 
   if (!response.ok) {
     throw new Error('Failed to fetch');
@@ -52,5 +58,7 @@ export default async function RanksPage({ searchParams }: PageProps) {
     .parse(page);
 
   const data = await getRanks(pageIndex, filters);
+
+  console.log({ data });
   return <RanksTable columns={columns} data={data} />;
 }
