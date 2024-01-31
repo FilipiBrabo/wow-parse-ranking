@@ -1,5 +1,6 @@
 import { z } from 'zod';
 
+import { ICC_RANKINGS_TAG } from '../constants';
 import { RanksTable } from './components/ranks-table';
 import { Character, columns } from './components/table-columns';
 
@@ -30,16 +31,10 @@ async function getRanks(
     searchParams.set(key, value);
   }
 
-  console.log(
-    'api endpoint: ',
-    `${process.env.API_BASE_PATH}/rankings/icc?${searchParams.toString()}`
-  );
   const response = await fetch(
     `${process.env.API_BASE_PATH}/rankings/icc?${searchParams.toString()}`,
-    { next: { revalidate: 0 } }
+    { next: { tags: [ICC_RANKINGS_TAG] } }
   );
-
-  console.log('response', response.ok);
 
   if (!response.ok) {
     throw new Error('Failed to fetch');
@@ -60,6 +55,5 @@ export default async function RanksPage({ searchParams }: PageProps) {
 
   const data = await getRanks(pageIndex, filters);
 
-  console.log({ data });
   return <RanksTable columns={columns} data={data} />;
 }
