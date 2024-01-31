@@ -5,8 +5,9 @@ import {
   PaginationNext,
   PaginationPrevious,
 } from '@parse-ranking/shadcn-ui';
-import { useCreateQueryString } from 'apps/parse-ranking-front-end/src/hooks/useCreateQueryString';
 import { usePathname } from 'next/navigation';
+
+import { useCreateQueryString } from '../../../src/hooks/useCreateQueryString';
 
 export type PaginationMenuProps = {
   total: number;
