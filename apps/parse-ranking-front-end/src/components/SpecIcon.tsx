@@ -2,27 +2,25 @@ import Image from 'next/image';
 
 type SpecIconProps = {
   spec: string;
-  size?: number;
 };
 
-export function SpecIcon({ spec, size = 18 }: SpecIconProps) {
+export function SpecIcon({ spec }: SpecIconProps) {
   const iconOffset = ICON_OFFSET_BY_SPEC[spec];
 
   return (
     <Image
       src="https://assets.rpglogs.com/img/warcraft/icons/actors.jpg?v=25"
-      width={18}
-      height={18}
+      width={30}
+      height={30}
       style={{
         boxSizing: 'border-box',
-        objectPosition: `calc(-${iconOffset}px*${size - 2})0`,
+        objectPosition: `calc(-${iconOffset}px*${30 - 2})0`,
         objectFit: 'cover',
-        width: size,
-        height: size,
+        width: 30,
+        height: 30,
         border: '1px solid black',
       }}
-      // TODO: add alt
-      alt=""
+      alt={`Ícone da spec ${spec}`}
     />
   );
 }

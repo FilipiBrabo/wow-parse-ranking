@@ -28,7 +28,7 @@ export const columns = [
   }),
   columnHelper.accessor('spec', {
     header: () => <span>Spec</span>,
-    cell: ({ getValue }) => <SpecIcon spec={getValue()} size={30} />,
+    cell: ({ getValue }) => <SpecIcon spec={getValue()} />,
   }),
   columnHelper.accessor('name', {
     header: () => <span>Nome</span>,
