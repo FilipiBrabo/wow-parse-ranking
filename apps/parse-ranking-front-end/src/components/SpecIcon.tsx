@@ -1,5 +1,7 @@
 import Image from 'next/image';
 
+import specIcons from '../../public/images/spec-icons.jpg';
+
 type SpecIconProps = {
   spec: string;
 };
@@ -9,9 +11,7 @@ export function SpecIcon({ spec }: SpecIconProps) {
 
   return (
     <Image
-      src="/images/spec-icons.jpg"
-      width={30}
-      height={30}
+      src={specIcons}
       style={{
         boxSizing: 'border-box',
         objectPosition: `calc(-${iconOffset}px*${30 - 2})0`,
