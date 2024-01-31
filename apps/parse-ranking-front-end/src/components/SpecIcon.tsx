@@ -9,7 +9,7 @@ export function SpecIcon({ spec }: SpecIconProps) {
 
   return (
     <Image
-      src="https://assets.rpglogs.com/img/warcraft/icons/actors.jpg?v=25"
+      src="/images/spec-icons.jpg"
       width={30}
       height={30}
       style={{
@@ -25,8 +25,6 @@ export function SpecIcon({ spec }: SpecIconProps) {
   );
 }
 
-// https://assets.rpglogs.com/img/warcraft/icons/actors.jpg?v=25
-// This are the offsets of each icon
 const ICON_OFFSET_BY_SPEC: Record<string, any> = {
   Frost: 3,
   Unholy: 7,
