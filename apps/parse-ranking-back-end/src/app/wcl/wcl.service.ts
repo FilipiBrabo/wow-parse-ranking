@@ -1,10 +1,11 @@
-import { gql } from '@apollo/client';
 import { Injectable } from '@nestjs/common';
+import { Character, Encounter, Guild } from '@prisma/client';
 import { uniqBy } from 'lodash';
 
 import { ApolloService } from '../apollo.service';
 import { PrismaService } from '../prisma.service';
-import { WclGuildReportsResponse } from './types';
+import { getCharacterRankingsQuery, getGuildReportsQuery } from './gql-queries';
+import { WclCharacterRankingsResponse, WclGuildReportsResponse } from './types';
 import { getBestRanks } from './utils';
 
 @Injectable()
@@ -35,36 +36,21 @@ export class WclService {
 
     if (!guild) return;
 
-    const reports = await this.apolloService.query<WclGuildReportsResponse>({
-      query: gql`
-        query GuildReports($guildId: Int!) {
-          guildData {
-            guild(id: $guildId) {
-              name
-              attendance(limit: 25) {
-                data {
-                  startTime
-                  code
-                  players {
-                    name
-                    type
-                  }
-                }
-              }
-            }
-          }
-        }
-      `,
-      variables: { guildId: guild.wclId },
-    });
+    const guildReports = await this.getGuildReports(guild);
 
-    const characters = reports.data.guildData.guild.attendance.data.flatMap(
-      (report) =>
-        report.players.map((player) => ({
-          name: player.name,
-          class: player.type,
-          guildId: guild.id,
-        }))
+    // Filter reports that are at max two weeks old
+    const recentReports = guildReports.filter(
+      (report) => report.startTime > lastWeek.getTime() - oneWeekMilliSeconds
+    );
+
+    const characters = recentReports.flatMap((report) =>
+      report.players.map((player) => ({
+        name: player.name,
+        class: player.type,
+        serverRegion: guild.serverRegion,
+        serverSlug: guild.serverSlug,
+        guildId: guild.id,
+      }))
     );
 
     const uniqueCharacters = uniqBy(characters, (character) => character.name);
@@ -101,11 +87,10 @@ export class WclService {
 
     await Promise.all(
       characters.map(async (character) => {
-        const characterWithRanks =
-          await this.apolloService.getCharacterRankings(
-            character,
-            activeEncounters
-          );
+        const characterWithRanks = await this.getCharacterRankings(
+          character,
+          activeEncounters
+        );
 
         if (!characterWithRanks) return;
 
@@ -139,5 +124,47 @@ export class WclService {
     );
 
     console.timeEnd();
+  }
+
+  private async getGuildReports(guild: Guild) {
+    const { query, variables } = getGuildReportsQuery(guild);
+
+    // TODO: handle error
+    const {
+      data: {
+        guildData: {
+          guild: {
+            attendance: { data: reports },
+          },
+        },
+      },
+    } = await this.apolloService.query<WclGuildReportsResponse>({
+      query,
+      variables,
+    });
+
+    return reports;
+  }
+
+  private async getCharacterRankings(
+    character: Character & { guild: Guild | null },
+    encounters: Encounter[]
+  ) {
+    const { query, variables } = getCharacterRankingsQuery(
+      character,
+      encounters
+    );
+
+    // TODO: handle error
+    const {
+      data: {
+        characterData: { character: characterWithRanks },
+      },
+    } = await this.apolloService.query<WclCharacterRankingsResponse>({
+      query,
+      variables,
+    });
+
+    return characterWithRanks;
   }
 }

@@ -1,9 +1,13 @@
-import { Encounter } from '@prisma/client';
+import { gql } from '@apollo/client';
+import { Character, Encounter } from '@prisma/client';
 
 import { parseEncounterName } from '../utils';
 
-export function getCharacterRankingsQuery(encounters: Encounter[]) {
-  return `
+export function getCharacterRankingsQuery(
+  character: Character,
+  encounters: Encounter[]
+) {
+  const query = gql`
     query GetCharacterRankings(
       $characterName: String!
       $serverSlug: String!
@@ -34,4 +38,11 @@ export function getCharacterRankingsQuery(encounters: Encounter[]) {
       }
     }
   `;
+  const variables = {
+    name: character.name,
+    serverSlug: character.serverSlug,
+    serverRegion: character.serverRegion,
+  };
+
+  return { query, variables };
 }
