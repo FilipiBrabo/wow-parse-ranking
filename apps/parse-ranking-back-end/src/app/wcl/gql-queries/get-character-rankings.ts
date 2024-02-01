@@ -38,8 +38,9 @@ export function getCharacterRankingsQuery(
       }
     }
   `;
+
   const variables = {
-    name: character.name,
+    characterName: character.name,
     serverSlug: character.serverSlug,
     serverRegion: character.serverRegion,
   };
