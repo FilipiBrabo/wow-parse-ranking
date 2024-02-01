@@ -31,60 +31,67 @@ export class RankingService {
       ? Prisma.sql`AND ${Prisma.join(filterConditions, ' AND ')}`
       : Prisma.empty;
 
-    // TODO: is there a way to make this query type safe?
-    // TODO: need to analyze performance with a lot of data
-    const bestCharactersWithCount: (CharacterWithRank & { count: number })[] =
-      await this.prismaService.$queryRaw`
-      SELECT
-        (COUNT(*) over())::int,
-        "maxRanks".name,
-        "Guild".name as "guildName",
-        "Guild"."wclId" as "guildId",
-        "Guild"."serverSlug" as "realm",
-        "Guild"."serverRegion" as "region",
-        "characterId" as "id",
-        "class",
-        "spec",
-        ROUND(SUM("maxTodayPercent"::numeric)/${
-          encounterIds.length
-        }, 2) AS "todayPercent"
-      FROM (
+    const rankedCharactersWithTotalCount: (CharacterWithRank & {
+      totalCount: number;
+    })[] = await this.prismaService.$queryRaw`WITH "RankedSpecs" AS (
         SELECT
-          "name",
-          "guildId",
-          "class",
-          "characterId",
-          "encounterId",
-          "spec",
-          MAX("todayPercent") AS "maxTodayPercent"
-        FROM "Ranking" as R INNER JOIN "Character" as C ON C.id = R."characterId"
+          r."characterId",
+          r."spec",
+          SUM(CAST(r."todayPercent" AS NUMERIC)) / ${encounterIds.length} AS "avgTodayPercent",
+          CAST(ROW_NUMBER() OVER (PARTITION BY r."characterId" ORDER BY ROUND(SUM(CAST(r."todayPercent" AS NUMERIC)) / ${encounterIds.length}, 2) DESC) AS INT) AS "specRank"
+        FROM
+          "Ranking" r
+        JOIN
+          "Encounter" e ON r."encounterId" = e."id"
+        JOIN
+          "Character" c ON r."characterId" = c."id"
         WHERE
-          "todayPercent" IS NOT NULL
-          AND "encounterId" = ANY(${encounterIds})
+          r."todayPercent" IS NOT NULL
+          AND e."id" = ANY(${encounterIds})
           ${sqlFilter}
-        GROUP BY "characterId", "encounterId", "name", "spec", "guildId", "class"
-        ) as "maxRanks"
-      LEFT JOIN "Guild" ON "Guild".id = "guildId"
-      GROUP BY "maxRanks"."characterId", "maxRanks".name, "spec", "guildId", "Guild".name, "Guild"."serverSlug", "class", "Guild"."wclId",  "Guild"."serverRegion"
-      ORDER BY "todayPercent" DESC
-      LIMIT ${options?.limit ?? 15}
-      OFFSET ${options?.offset ?? 0}
-    `;
+        GROUP BY
+          r."characterId", r."spec"
+      )
 
-    const count = bestCharactersWithCount[0]?.count ?? 0;
+      SELECT
+        c."id" AS "id",
+        c."name" AS "name",
+        g."name" AS "guildName",
+        g."wclId" AS "guildId",
+        c."serverRegion" AS "region",
+        c."serverSlug" AS "realm",
+        c."class",
+        rs."spec",
+        rs."avgTodayPercent" as "todayPercent",
+        CAST(DENSE_RANK() OVER (ORDER BY MAX(rs."avgTodayPercent") DESC) AS INT) AS "rank",
+        (COUNT(*) OVER ())::int AS "totalCount"
+      FROM
+        "RankedSpecs" rs
+      JOIN
+        "Character" c ON rs."characterId" = c."id"
+      JOIN
+        "Guild" g ON c."guildId" = g."id"
+      WHERE
+        rs."specRank" = 1
+      GROUP BY
+        c."id", g."id", rs."spec", rs."avgTodayPercent"
+      ORDER BY
+        rs."avgTodayPercent" DESC
+      LIMIT ${options?.limit} OFFSET ${options?.offset};`;
 
-    const bestCharacters = bestCharactersWithCount.map((rankWithCount) => {
-      // eslint-disable-next-line @typescript-eslint/no-unused-vars, unused-imports/no-unused-vars
-      const { count, ...bestRank } = rankWithCount;
+    const totalCount = rankedCharactersWithTotalCount[0]?.totalCount ?? 0;
 
-      return bestRank;
-    });
+    const rankedCharacters = rankedCharactersWithTotalCount.map(
+      (rankWithCount) => {
+        // eslint-disable-next-line @typescript-eslint/no-unused-vars, unused-imports/no-unused-vars
+        const { totalCount, ...bestRank } = rankWithCount;
+        return bestRank;
+      }
+    );
 
-    // TODO: How to do this on sql? Is it necessary?
-    const bestCharactersWithRank = bestCharacters.map((char, index) => {
-      return { ...char, rank: index + 1 + (options?.offset ?? 0) };
-    });
-
-    return { total: count, items: bestCharactersWithRank };
+    return {
+      total: totalCount,
+      items: rankedCharacters,
+    };
   }
 }
