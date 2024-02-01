@@ -38,7 +38,7 @@ export class RankingService {
           r."characterId",
           r."spec",
           SUM(CAST(r."todayPercent" AS NUMERIC)) / ${encounterIds.length} AS "avgTodayPercent",
-          CAST(ROW_NUMBER() OVER (PARTITION BY r."characterId" ORDER BY ROUND(SUM(CAST(r."todayPercent" AS NUMERIC)) / ${encounterIds.length}, 2) DESC) AS INT) AS "specRank"
+          CAST(ROW_NUMBER() OVER (PARTITION BY r."characterId" ORDER BY SUM(CAST(r."todayPercent" AS NUMERIC)) / ${encounterIds.length} DESC) AS INT) AS "specRank"
         FROM
           "Ranking" r
         JOIN
