@@ -1,5 +1,4 @@
 {
-  // Prettify and lint on save
   "[typescript][typescriptreact][javascript][javascriptreact][prisma]": {
     "editor.formatOnSave": true
   },
