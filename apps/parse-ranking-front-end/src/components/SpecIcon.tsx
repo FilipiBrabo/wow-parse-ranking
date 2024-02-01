@@ -25,8 +25,9 @@ export function SpecIcon({ spec }: SpecIconProps) {
   );
 }
 
-const ICON_OFFSET_BY_SPEC: Record<string, any> = {
+const ICON_OFFSET_BY_SPEC: Record<string, number> = {
   Frost: 3,
+  BloodDPS: 2,
   Unholy: 7,
   Balance: 12,
   Feral: 14,

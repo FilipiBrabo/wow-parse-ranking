@@ -6,29 +6,12 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from '@parse-ranking/shadcn-ui';
-import { useCreateQueryString } from 'apps/parse-ranking-front-end/src/hooks/useCreateQueryString';
 import { ChevronDownIcon, FilterX, SlidersHorizontal } from 'lucide-react';
 import Link from 'next/link';
 import { usePathname, useSearchParams } from 'next/navigation';
 
-const CLASSES = [
-  {
-    name: 'Mage',
-    icon: '',
-  },
-  {
-    name: 'Warrior',
-    icon: '',
-  },
-  {
-    name: 'Priest',
-    icon: '',
-  },
-  {
-    name: 'Rogue',
-    icon: '',
-  },
-];
+import { useCreateQueryString } from '../../../src/hooks/useCreateQueryString';
+import { WOW_CLASSES } from '../../constants';
 
 export function RankFilters() {
   const searchParams = useSearchParams();
@@ -45,7 +28,7 @@ export function RankFilters() {
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
             <Button variant="outline" className="flex items-center gap-1">
-              {selectedClass ? selectedClass : 'Classe'}
+              {selectedClass ? beautifyClassName(selectedClass) : 'Classe'}
               <ChevronDownIcon className="w-4 h-4" />
             </Button>
           </DropdownMenuTrigger>
@@ -54,11 +37,16 @@ export function RankFilters() {
               <Link href={pathName}>Todas</Link>
             </DropdownMenuItem>
             <DropdownMenuSeparator />
-            {CLASSES.map((wowClass) => (
+            {WOW_CLASSES.map((wowClass) => (
               <DropdownMenuItem key={wowClass.name} asChild>
                 <Link
                   href={
-                    pathName + '?' + createQueryString('class', wowClass.name)
+                    pathName +
+                    '?' +
+                    createQueryString(
+                      'class',
+                      parseClassNameToQueryString(wowClass.name)
+                    )
                   }
                 >
                   {wowClass.name}
@@ -82,4 +70,16 @@ export function RankFilters() {
       </Button>
     </div>
   );
+}
+
+function parseClassNameToQueryString(className: string) {
+  return className.toLowerCase().split(' ').join('');
+}
+
+function beautifyClassName(className: string) {
+  if (className === 'deathknight') {
+    return 'Death Knight';
+  }
+
+  return className.charAt(0).toUpperCase() + className.slice(1);
 }
