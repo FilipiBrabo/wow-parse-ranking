@@ -43,10 +43,7 @@ export function RankFilters() {
       <div className="flex items-center gap-2">
         <SlidersHorizontal className="w-6 h-6" />
         <DropdownMenu>
-          <DropdownMenuTrigger
-            onChange={(data) => console.log({ data })}
-            asChild
-          >
+          <DropdownMenuTrigger asChild>
             <Button variant="outline" className="flex items-center gap-1">
               {selectedClass ? selectedClass : 'Classe'}
               <ChevronDownIcon className="w-4 h-4" />
