@@ -14,7 +14,7 @@ export class RankingService {
     options?: RankingsOptions
   ): Promise<{ total: number; items: CharacterWithRank[] }> {
     const filterConditions: Prisma.Sql[] = [];
-
+    // TODO: surely I can find a better way to structure this
     if (options?.class) {
       filterConditions.push(Prisma.sql`class ILIKE ${options.class}`);
     }
@@ -52,7 +52,6 @@ export class RankingService {
         GROUP BY
           r."characterId", r."spec"
       )
-
       SELECT
         c."id" AS "id",
         c."name" AS "name",
@@ -64,7 +63,7 @@ export class RankingService {
         rs."spec",
         rs."avgTodayPercent" as "todayPercent",
         CAST(DENSE_RANK() OVER (ORDER BY MAX(rs."avgTodayPercent") DESC) AS INT) AS "rank",
-        (COUNT(*) OVER ())::int AS "totalCount"
+        CAST(COUNT(*) OVER () AS NUMERIC) AS "totalCount"
       FROM
         "RankedSpecs" rs
       JOIN
