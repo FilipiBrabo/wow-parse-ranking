@@ -47,6 +47,7 @@ export class RankingService {
           "Character" c ON r."characterId" = c."id"
         WHERE
           r."todayPercent" IS NOT NULL
+          AND c."isActive" = TRUE
           AND e."id" = ANY(${encounterIds})
           ${sqlFilter}
         GROUP BY
