@@ -44,5 +44,7 @@ Thumbs.db
 # NX
 .nx/
 
+# Env files
+.env*
 !.env.example
-.env.*
+!.env.local
