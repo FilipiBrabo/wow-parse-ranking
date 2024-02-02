@@ -69,7 +69,7 @@ export class RankingService {
         "RankedSpecs" rs
       JOIN
         "Character" c ON rs."characterId" = c."id"
-      JOIN
+      LEFT JOIN
         "Guild" g ON c."guildId" = g."id"
       WHERE
         rs."specRank" = 1
