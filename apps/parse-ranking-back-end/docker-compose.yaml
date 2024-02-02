@@ -7,7 +7,3 @@ services:
       POSTGRES_DB: parse-ranking
       POSTGRES_PASSWORD: example
 
-  adminer:
-    image: adminer
-    ports:
-      - 8080:8080
