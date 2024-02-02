@@ -33,6 +33,7 @@ model Guild {
   wclId               Int         @unique
   serverRegion        String
   serverSlug          String
+  isBrazilian         Boolean     @default(false)
   lastCharacterUpdate DateTime?
   character           Character[]
 }
