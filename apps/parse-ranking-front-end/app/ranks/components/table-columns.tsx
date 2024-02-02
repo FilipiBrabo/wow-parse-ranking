@@ -11,7 +11,7 @@ const columnHelper = createColumnHelper<Character>();
 
 export type Character = {
   name: string;
-  guildName: string;
+  guildName?: string;
   guildId: number;
   class: string;
   rank: number;
@@ -25,10 +25,12 @@ export const columns = [
   columnHelper.accessor('rank', {
     header: () => <span>Rank</span>,
     cell: ({ getValue }) => <span>{getValue()}</span>,
+    maxSize: 100,
   }),
   columnHelper.accessor('spec', {
     header: () => <span>Spec</span>,
     cell: ({ getValue }) => <SpecIcon spec={getValue()} />,
+    maxSize: 100,
   }),
   columnHelper.accessor('name', {
     header: () => <span>Nome</span>,
@@ -46,9 +48,13 @@ export const columns = [
   }),
   columnHelper.accessor('guildName', {
     header: () => <span>Guild</span>,
-    cell: ({ getValue, row }) => (
-      <GuildLink guildName={getValue()} guildId={row.original.guildId} />
-    ),
+    cell: ({ getValue, row }) => {
+      const guildName = getValue();
+
+      if (!guildName) return 'Sem guild';
+      return <GuildLink guildName={guildName} guildId={row.original.guildId} />;
+    },
+    minSize: 250,
   }),
   columnHelper.accessor('todayPercent', {
     header: () => <span>Today %</span>,
