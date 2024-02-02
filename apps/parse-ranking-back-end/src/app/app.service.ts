@@ -7,7 +7,9 @@ export class AppService {
   public constructor(private readonly prisma: PrismaService) {}
 
   async healthz() {
-    await this.prisma.$queryRaw`Select 1+1`;
+    // TODO: add wcl connection check
+
+    // await this.prisma.$queryRaw`Select 1+1`;
 
     return 'OK';
   }
