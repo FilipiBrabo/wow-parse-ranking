@@ -1,5 +1,5 @@
 {
-  "name": "@wotlk-classic-brazilian-parse-ranking/source",
+  "name": "@wow-parse-ranking/source",
   "version": "0.0.0",
   "license": "MIT",
   "scripts": {
