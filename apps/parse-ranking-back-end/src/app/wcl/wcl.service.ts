@@ -23,13 +23,19 @@ export class WclService {
     const guild = await this.prismaService.guild.findFirst({
       orderBy: { lastCharacterUpdate: { sort: 'asc', nulls: 'first' } },
       where: {
-        OR: [
+        // this syntax sux
+        AND: [
+          { isBrazilian: true },
           {
-            lastCharacterUpdate: {
-              lte: lastWeek,
-            },
+            OR: [
+              {
+                lastCharacterUpdate: {
+                  lte: lastWeek,
+                },
+              },
+              { lastCharacterUpdate: null },
+            ],
           },
-          { lastCharacterUpdate: null },
         ],
       },
     });
@@ -40,7 +46,7 @@ export class WclService {
 
     // Filter reports that are at max two weeks old
     const recentReports = guildReports.filter(
-      (report) => report.startTime > lastWeek.getTime() * ONE_WEEK_MILLI_SECONDS
+      (report) => report.startTime > lastWeek.getTime() - ONE_WEEK_MILLI_SECONDS
     );
 
     const characters = recentReports.flatMap((report) =>
