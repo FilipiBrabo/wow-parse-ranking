@@ -6,7 +6,9 @@ import { ApolloService } from '../apollo.service';
 import { PrismaService } from '../prisma.service';
 import { getCharacterRankingsQuery, getGuildReportsQuery } from './gql-queries';
 import { WclCharacterRankingsResponse, WclGuildReportsResponse } from './types';
-import { getBestRanks } from './utils';
+import { getBestRanks, getMostRecentReportDate } from './utils';
+
+const ONE_WEEK_MILLI_SECONDS = 7 * 24 * 60 * 60 * 1000;
 
 @Injectable()
 export class WclService {
@@ -16,9 +18,7 @@ export class WclService {
   ) {}
 
   async updateCharactersDatabase() {
-    const now = new Date();
-    const oneWeekMilliSeconds = 7 * 24 * 60 * 60 * 1000;
-    const lastWeek = new Date(now.getTime() - oneWeekMilliSeconds);
+    const lastWeek = new Date(new Date().getTime() - ONE_WEEK_MILLI_SECONDS);
 
     const guild = await this.prismaService.guild.findFirst({
       orderBy: { lastCharacterUpdate: { sort: 'asc', nulls: 'first' } },
@@ -40,7 +40,7 @@ export class WclService {
 
     // Filter reports that are at max two weeks old
     const recentReports = guildReports.filter(
-      (report) => report.startTime > lastWeek.getTime() - oneWeekMilliSeconds
+      (report) => report.startTime > lastWeek.getTime() * ONE_WEEK_MILLI_SECONDS
     );
 
     const characters = recentReports.flatMap((report) =>
@@ -55,10 +55,13 @@ export class WclService {
 
     const uniqueCharacters = uniqBy(characters, (character) => character.name);
 
-    await this.prismaService.character.createMany({
-      data: uniqueCharacters,
-      skipDuplicates: true,
-    });
+    for (const character of uniqueCharacters) {
+      await this.prismaService.character.upsert({
+        create: character,
+        update: { isActive: true },
+        where: { name: character.name },
+      });
+    }
 
     await this.prismaService.guild.update({
       data: { lastCharacterUpdate: new Date() },
@@ -76,9 +79,6 @@ export class WclService {
       take: 15,
     });
 
-    // TODO:
-    // mark inactive characters that didn't raid in the last 30 days
-
     const activeEncounters = await this.prismaService.encounter.findMany({
       where: { isActive: true },
     });
@@ -87,15 +87,36 @@ export class WclService {
 
     await Promise.all(
       characters.map(async (character) => {
-        const characterWithRanks = await this.getCharacterRankings(
+        const characterEncounterRankings = await this.getCharacterRankings(
           character,
           activeEncounters
         );
 
-        if (!characterWithRanks) return;
+        if (!characterEncounterRankings) return;
+
+        const mostRecentReportDate = getMostRecentReportDate(
+          characterEncounterRankings
+        );
+
+        const lastMonth = new Date(
+          new Date().getTime() - 4 * ONE_WEEK_MILLI_SECONDS
+        );
+        // Deactivate character if he didn't raid in the last month
+        if (mostRecentReportDate && mostRecentReportDate < lastMonth) {
+          await this.prismaService.character.update({
+            data: {
+              isActive: false,
+            },
+            where: {
+              id: character.id,
+            },
+          });
+
+          return;
+        }
 
         const bestCharacterRanks = getBestRanks(
-          characterWithRanks,
+          characterEncounterRankings,
           activeEncounters
         );
 
@@ -115,7 +136,7 @@ export class WclService {
 
         await this.prismaService.character.update({
           data: {
-            wclId: characterWithRanks.id,
+            wclId: characterEncounterRankings.id,
             lastRankUpdate: new Date(),
           },
           where: { id: character.id },
