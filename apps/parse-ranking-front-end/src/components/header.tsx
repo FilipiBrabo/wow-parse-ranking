@@ -1,4 +1,4 @@
-import { SiDiscord, SiGithub } from '@icons-pack/react-simple-icons';
+import { SiGithub } from '@icons-pack/react-simple-icons';
 import Link from 'next/link';
 
 import { NavItem } from './nav-item';
@@ -7,12 +7,8 @@ import { ThemeButton } from './theme-button';
 export function Header() {
   const navItems = [
     {
-      href: 'https://github.com/filipibrabo',
+      href: 'https://github.com/FilipiBrabo/wow-parse-ranking',
       icon: <SiGithub size="20" />,
-    },
-    {
-      href: 'https://discord.com/users/248966937428623360',
-      icon: <SiDiscord size="20" />,
     },
   ];
 
