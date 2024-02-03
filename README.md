@@ -41,7 +41,7 @@ The frontend application is developed using Next.js in conjunction with ShadcnUI
 1. Execute `pnpm install` to install dependencies
 2. Create a `.env` file. Refer to `.env.example` to see which variables are needed.
     1. If using `docker-compose` to start the database refer to `.env.local` to see connection strings.
-    2. To obtain a token, refer to the [Warcraft Logs page](https://www.warcraftlogs.com/accounts/changeuser) for instructions.
+    2. To obtain a token, refer to the [Warcraft Logs documentation](https://www.warcraftlogs.com/api/docs) for instructions.
 3. Execute `docker-compose up -d` to start the PostgreSQL database
 4. Execute `npx nx run parse-ranking-back-end:prisma-generate` to generate prisma client
 5. Execute `npx nx run parse-ranking-back-end:prisma-migrate` to apply migrations
