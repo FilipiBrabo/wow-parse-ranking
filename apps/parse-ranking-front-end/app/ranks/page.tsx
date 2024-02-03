@@ -1,6 +1,5 @@
 import { z } from 'zod';
 
-import { ICC_RANKINGS_TAG } from '../constants';
 import { RanksTable } from './components/ranks-table';
 import { Character, columns } from './components/table-columns';
 
@@ -33,7 +32,7 @@ async function getRanks(
 
   const response = await fetch(
     `${process.env.API_BASE_PATH}/rankings/icc?${searchParams.toString()}`,
-    { next: { tags: [ICC_RANKINGS_TAG] } }
+    { next: { revalidate: 60 * 60 * 6 } } // Revalidate every hours
   );
 
   if (!response.ok) {
