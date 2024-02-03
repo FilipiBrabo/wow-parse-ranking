@@ -29,7 +29,7 @@ The frontend application is developed using Next.js in conjunction with ShadcnUI
 
 #### Main Technologies:
 - [Next.js](https://nextjs.org/)
-- [ShadcnUI](https://shadcn.github.io/ui/)
+- [shadcn/ui](https://ui.shadcn.com/)
 
 #### Features:
 - Display of ranked data provided by the backend
