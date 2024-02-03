@@ -30,7 +30,11 @@ export default function RootLayout({
           fontSans.variable
         )}
       >
-        <ThemeProvider attribute="class" disableTransitionOnChange>
+        <ThemeProvider
+          attribute="class"
+          defaultTheme="dark"
+          disableTransitionOnChange
+        >
           <Header />
           <main className="flex justify-center mx-6 my-4">
             <div className="max-w-2xl flex-1">{children}</div>
