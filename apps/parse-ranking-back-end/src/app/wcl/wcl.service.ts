@@ -89,8 +89,6 @@ export class WclService {
       where: { isActive: true },
     });
 
-    console.time();
-
     await Promise.all(
       characters.map(async (character) => {
         const characterEncounterRankings = await this.getCharacterRankings(
@@ -150,7 +148,7 @@ export class WclService {
       })
     );
 
-    console.timeEnd();
+    return characters;
   }
 
   private async getGuildReports(guild: Guild) {
