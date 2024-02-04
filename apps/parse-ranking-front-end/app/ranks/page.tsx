@@ -32,7 +32,7 @@ async function getRanks(
 
   const response = await fetch(
     `${process.env.API_BASE_PATH}/rankings/icc?${searchParams.toString()}`,
-    { next: { revalidate: 60 * 60 * 6 } } // Revalidate every hours
+    { next: { revalidate: 60 * 60 * 6 } } // Revalidate every 6 hours
   );
 
   if (!response.ok) {
