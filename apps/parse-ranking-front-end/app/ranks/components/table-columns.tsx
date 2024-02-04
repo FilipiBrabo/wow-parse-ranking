@@ -86,9 +86,7 @@ export const columns = [
     header: () => <span>Today %</span>,
     cell: ({ getValue, row }) => {
       const todayPercent = getValue();
-      const lastRankUpdate = new Date(
-        row.original.lastRankUpdate
-      ).toLocaleString('pt-BR');
+      const dateString = row.original.lastRankUpdate;
 
       return (
         <TooltipProvider>
@@ -99,7 +97,11 @@ export const columns = [
               </span>
             </TooltipTrigger>
             <TooltipContent>
-              <span>Atualizado em {lastRankUpdate}</span>
+              {dateString && (
+                <span>
+                  Atualizado em {new Date(dateString).toLocaleString('pt-BR')}
+                </span>
+              )}
             </TooltipContent>
           </Tooltip>
         </TooltipProvider>
