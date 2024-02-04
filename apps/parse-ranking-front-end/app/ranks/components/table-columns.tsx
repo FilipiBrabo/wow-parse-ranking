@@ -29,7 +29,9 @@ export const columns = [
   }),
   columnHelper.accessor('spec', {
     header: () => <span>Spec</span>,
-    cell: ({ getValue }) => <SpecIcon spec={getValue()} />,
+    cell: ({ getValue, row }) => (
+      <SpecIcon spec={getValue()} wowClass={row.original.class} />
+    ),
     maxSize: 100,
   }),
   columnHelper.accessor('name', {
