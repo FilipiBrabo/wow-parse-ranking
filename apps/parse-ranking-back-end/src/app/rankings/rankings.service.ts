@@ -60,6 +60,7 @@ export class RankingService {
         g."wclId" AS "guildId",
         c."serverRegion" AS "region",
         c."serverSlug" AS "realm",
+        c."lastRankUpdate" AS "lastRankUpdate",
         c."class",
         rs."spec",
         rs."avgTodayPercent" as "todayPercent",

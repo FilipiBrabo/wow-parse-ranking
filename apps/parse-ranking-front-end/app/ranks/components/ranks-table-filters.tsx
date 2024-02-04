@@ -12,6 +12,7 @@ import { usePathname, useSearchParams } from 'next/navigation';
 
 import { useCreateQueryString } from '../../../src/hooks/useCreateQueryString';
 import { WOW_CLASSES } from '../../constants';
+import { beautifyClassName } from '../utils/beautify-class-name';
 
 export function RankFilters() {
   const searchParams = useSearchParams();
@@ -74,12 +75,4 @@ export function RankFilters() {
 
 function parseClassNameToQueryString(className: string) {
   return className.toLowerCase().split(' ').join('');
-}
-
-function beautifyClassName(className: string) {
-  if (className === 'deathknight') {
-    return 'Death Knight';
-  }
-
-  return className.charAt(0).toUpperCase() + className.slice(1);
 }

@@ -1,11 +1,18 @@
 'use client';
 
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from '@parse-ranking/shadcn-ui';
 import { ColumnDef, createColumnHelper } from '@tanstack/react-table';
 
 import { CharacterLink } from '../../../src/components/character-link';
 import { GuildLink } from '../../../src/components/guild-link';
 import { SpecIcon } from '../../../src/components/SpecIcon';
 import { getRankColor } from '../../../src/utils/getRankColor';
+import { beautifyClassName } from '../utils/beautify-class-name';
 
 const columnHelper = createColumnHelper<Character>();
 
@@ -19,6 +26,7 @@ export type Character = {
   realm: string;
   region: string;
   todayPercent: string;
+  lastRankUpdate: string;
 };
 
 export const columns = [
@@ -29,9 +37,25 @@ export const columns = [
   }),
   columnHelper.accessor('spec', {
     header: () => <span>Spec</span>,
-    cell: ({ getValue, row }) => (
-      <SpecIcon spec={getValue()} wowClass={row.original.class} />
-    ),
+    cell: ({ getValue, row }) => {
+      const spec = getValue();
+      return (
+        <TooltipProvider>
+          <Tooltip>
+            <TooltipTrigger asChild>
+              <div>
+                <SpecIcon spec={spec} wowClass={row.original.class} />
+              </div>
+            </TooltipTrigger>
+            <TooltipContent>
+              <span>
+                {beautifyClassName(row.original.class)} - {getValue()}
+              </span>
+            </TooltipContent>
+          </Tooltip>
+        </TooltipProvider>
+      );
+    },
     maxSize: 100,
   }),
   columnHelper.accessor('name', {
@@ -60,12 +84,25 @@ export const columns = [
   }),
   columnHelper.accessor('todayPercent', {
     header: () => <span>Today %</span>,
-    cell: ({ getValue }) => {
+    cell: ({ getValue, row }) => {
       const todayPercent = getValue();
+      const lastRankUpdate = new Date(
+        row.original.lastRankUpdate
+      ).toLocaleString('pt-BR');
+
       return (
-        <span className={`text-${getRankColor(Number(todayPercent))}`}>
-          {Number(todayPercent).toFixed(2)}
-        </span>
+        <TooltipProvider>
+          <Tooltip>
+            <TooltipTrigger asChild>
+              <span className={`text-${getRankColor(Number(todayPercent))}`}>
+                {Number(todayPercent).toFixed(2)}
+              </span>
+            </TooltipTrigger>
+            <TooltipContent>
+              <span>Atualizado em {lastRankUpdate}</span>
+            </TooltipContent>
+          </Tooltip>
+        </TooltipProvider>
       );
     },
   }),
