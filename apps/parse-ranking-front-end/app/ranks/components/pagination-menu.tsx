@@ -29,7 +29,7 @@ export function PaginationMenu({ total, offset, limit }: PaginationMenuProps) {
   const hasPreviousPage = previousPage !== currentPage;
 
   return (
-    <div className="flex items-center justify-between px-2">
+    <div className="flex items-center justify-between px-2 py-2 gap-2">
       <span className="text-sm text-muted-foreground">
         {total} personagens encontrados
       </span>
