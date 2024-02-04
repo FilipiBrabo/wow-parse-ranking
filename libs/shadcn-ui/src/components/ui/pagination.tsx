@@ -64,7 +64,8 @@ const PaginationPrevious = ({
   className,
   ...props
 }: React.ComponentProps<typeof PaginationLink> & { isDisabled?: boolean }) => {
-  if (props.isDisabled) {
+  const { isDisabled, ...rest } = props;
+  if (isDisabled) {
     return (
       <Button size="icon" variant="ghost" disabled aria-disabled>
         <ChevronLeftIcon className="h-4 w-4" />
@@ -77,7 +78,7 @@ const PaginationPrevious = ({
       aria-label="Go to previous page"
       size="icon"
       className={className}
-      {...props}
+      {...rest}
     >
       <ChevronLeftIcon className="h-4 w-4" />
       <span className="sr-only">Previous</span>
@@ -90,7 +91,8 @@ const PaginationNext = ({
   className,
   ...props
 }: React.ComponentProps<typeof PaginationLink> & { isDisabled?: boolean }) => {
-  if (props.isDisabled) {
+  const { isDisabled, ...rest } = props;
+  if (isDisabled) {
     return (
       <Button size="icon" variant="ghost" disabled aria-disabled>
         <ChevronRightIcon className="h-4 w-4" />
@@ -103,7 +105,7 @@ const PaginationNext = ({
       aria-label="Go to next page"
       size="icon"
       className={className}
-      {...props}
+      {...rest}
     >
       <span className="sr-only">Próxima</span>
       <ChevronRightIcon className="h-4 w-4" />
