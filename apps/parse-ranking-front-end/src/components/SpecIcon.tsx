@@ -12,7 +12,7 @@ export function SpecIcon({ spec, wowClass }: SpecIconProps) {
       height={30}
       width={30}
       quality={100}
-      className="border-solid border-2 border-black"
+      className="border-solid border-1 border-black"
       alt={`Ícone da spec ${spec}`}
     />
   );
