@@ -96,13 +96,13 @@ export const columns = [
                 {Number(todayPercent).toFixed(2)}
               </span>
             </TooltipTrigger>
-            <TooltipContent>
-              {dateString && (
+            {dateString && (
+              <TooltipContent>
                 <span>
                   Atualizado em {new Date(dateString).toLocaleString('pt-BR')}
                 </span>
-              )}
-            </TooltipContent>
+              </TooltipContent>
+            )}
           </Tooltip>
         </TooltipProvider>
       );
