@@ -81,7 +81,7 @@ export class WclService {
     const characters = await this.prismaService.character.findMany({
       include: { guild: true },
       orderBy: { lastRankUpdate: { sort: 'asc', nulls: 'first' } },
-      where: { isActive: true },
+      where: { isActive: true, isBrazilian: true },
       take: 15,
     });
 

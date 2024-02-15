@@ -24,6 +24,7 @@ model Character {
   serverSlug     String?
   lastRankUpdate DateTime?
   isActive       Boolean   @default(true)
+  isBrazilian    Boolean   @default(true)
   rankings       Ranking[]
 }
 
