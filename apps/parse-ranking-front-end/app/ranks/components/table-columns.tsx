@@ -12,7 +12,7 @@ import { CharacterLink } from '../../../src/components/character-link';
 import { GuildLink } from '../../../src/components/guild-link';
 import { SpecIcon } from '../../../src/components/SpecIcon';
 import { getRankColor } from '../../../src/utils/getRankColor';
-import { beautifyClassName } from '../utils/beautify-class-name';
+import { capitalizeClassName } from '../utils/capitalize-class-name';
 
 const columnHelper = createColumnHelper<Character>();
 
@@ -49,7 +49,7 @@ export const columns = [
             </TooltipTrigger>
             <TooltipContent>
               <span>
-                {beautifyClassName(row.original.class)} - {getValue()}
+                {capitalizeClassName(row.original.class)} - {getValue()}
               </span>
             </TooltipContent>
           </Tooltip>

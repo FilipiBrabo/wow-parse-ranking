@@ -1,4 +1,4 @@
-export function beautifyClassName(className: string) {
+export function capitalizeClassName(className: string) {
   if (className.toLowerCase() === 'deathknight') {
     return 'Death Knight';
   }

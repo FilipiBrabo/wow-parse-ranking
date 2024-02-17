@@ -12,7 +12,7 @@ import { usePathname, useSearchParams } from 'next/navigation';
 
 import { useCreateQueryString } from '../../../src/hooks/useCreateQueryString';
 import { WOW_CLASSES } from '../../constants';
-import { beautifyClassName } from '../utils/beautify-class-name';
+import { capitalizeClassName } from '../utils/capitalize-class-name';
 
 export function RankFilters() {
   const searchParams = useSearchParams();
@@ -29,7 +29,7 @@ export function RankFilters() {
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
             <Button variant="outline" className="flex items-center gap-1">
-              {selectedClass ? beautifyClassName(selectedClass) : 'Classe'}
+              {selectedClass ? capitalizeClassName(selectedClass) : 'Classe'}
               <ChevronDownIcon className="w-4 h-4" />
             </Button>
           </DropdownMenuTrigger>
