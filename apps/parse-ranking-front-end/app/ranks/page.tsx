@@ -30,9 +30,11 @@ async function getRanks(
     searchParams.set(key, value);
   }
 
+  // TODO: Fix page invalidation. Every page should be invalidated synchronously to avoid having one page
+  // with updated data and another with old data.
   const response = await fetch(
     `${process.env.API_BASE_PATH}/rankings/icc?${searchParams.toString()}`,
-    { next: { revalidate: 60 * 60 * 6 } } // Revalidate every 6 hours
+    { next: { revalidate: 60 * 60 * 1 } } // Revalidate every hour
   );
 
   if (!response.ok) {
