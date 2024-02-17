@@ -29,7 +29,16 @@ export function ClassFilter() {
       <SelectTrigger className="min-w-[160px]">
         <SelectValue placeholder="Selecione uma classe..." />
       </SelectTrigger>
-      <SelectContent>
+      <SelectContent
+        // Workaround to stop touch event to leak to underneath elements
+        // https://github.com/radix-ui/primitives/issues/1658#issuecomment-1664079551
+        ref={(ref) => {
+          if (!ref) return;
+          ref.ontouchstart = (e) => {
+            e.preventDefault();
+          };
+        }}
+      >
         {WOW_CLASSES.map((wowClass) => (
           <SelectItem
             key={wowClass.name}
