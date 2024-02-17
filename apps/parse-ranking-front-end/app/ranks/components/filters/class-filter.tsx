@@ -26,8 +26,8 @@ export function ClassFilter() {
 
   return (
     <Select onValueChange={handleSelectClass} value={selectedClass ?? ''}>
-      <SelectTrigger className="w-[180px]">
-        <SelectValue placeholder="Classe" />
+      <SelectTrigger className="min-w-[160px]">
+        <SelectValue placeholder="Selecione uma classe..." />
       </SelectTrigger>
       <SelectContent>
         {WOW_CLASSES.map((wowClass) => (
