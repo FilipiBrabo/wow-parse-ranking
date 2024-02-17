@@ -1,4 +1,5 @@
 import { SiGithub } from '@icons-pack/react-simple-icons';
+import Image from 'next/image';
 import Link from 'next/link';
 
 import { NavItem } from './nav-item';
@@ -15,7 +16,12 @@ export function Header() {
   return (
     <header className="sticky top-0 bg-background z-50 w-full shadow-sm">
       <div className="container flex items-center justify-between max-w-screen-xl mx-auto h-16 px-4">
-        <Link href="#">Ranking Brasileiro</Link>
+        <div className="flex items-center gap-1">
+          <div className="w-8 h-8 md:w-10 md:h-10 relative">
+            <Image src="/images/wow-token.png" fill={true} alt="Logo" />
+          </div>
+          <Link href="#">Ranking Brasileiro</Link>
+        </div>
 
         <div className="flex gap-2 items-center">
           <nav className="flex items-center">
