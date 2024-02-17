@@ -1,61 +1,22 @@
-import {
-  Button,
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuSeparator,
-  DropdownMenuTrigger,
-} from '@parse-ranking/shadcn-ui';
-import { ChevronDownIcon, FilterX, SlidersHorizontal } from 'lucide-react';
+import { Button } from '@parse-ranking/shadcn-ui';
+import { FilterX, SlidersHorizontal } from 'lucide-react';
 import Link from 'next/link';
 import { usePathname, useSearchParams } from 'next/navigation';
 
-import { useCreateQueryString } from '../../../src/hooks/useCreateQueryString';
-import { WOW_CLASSES } from '../../constants';
-import { capitalizeClassName } from '../utils/capitalize-class-name';
+import { ClassFilter } from './filters/class-filter';
 
 export function RankFilters() {
   const searchParams = useSearchParams();
   const pathName = usePathname();
-  const createQueryString = useCreateQueryString();
 
   const currentPage = searchParams.get('page') ?? 0;
-  const selectedClass = searchParams.get('class');
 
   return (
     <div className="flex items-center justify-between">
       <div className="flex items-center gap-2">
         <SlidersHorizontal className="w-6 h-6" />
-        <DropdownMenu>
-          <DropdownMenuTrigger asChild>
-            <Button variant="outline" className="flex items-center gap-1">
-              {selectedClass ? capitalizeClassName(selectedClass) : 'Classe'}
-              <ChevronDownIcon className="w-4 h-4" />
-            </Button>
-          </DropdownMenuTrigger>
-          <DropdownMenuContent>
-            <DropdownMenuItem asChild>
-              <Link href={pathName}>Todas</Link>
-            </DropdownMenuItem>
-            <DropdownMenuSeparator />
-            {WOW_CLASSES.map((wowClass) => (
-              <DropdownMenuItem key={wowClass.name} asChild>
-                <Link
-                  href={
-                    pathName +
-                    '?' +
-                    createQueryString(
-                      'class',
-                      parseClassNameToQueryString(wowClass.name)
-                    )
-                  }
-                >
-                  {wowClass.name}
-                </Link>
-              </DropdownMenuItem>
-            ))}
-          </DropdownMenuContent>
-        </DropdownMenu>
+
+        <ClassFilter />
       </div>
       <Button variant="outline" className="gap-1" asChild>
         <Link
