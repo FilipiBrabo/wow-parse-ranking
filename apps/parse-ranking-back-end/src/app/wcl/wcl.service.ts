@@ -91,8 +91,9 @@ export class WclService {
         const lastMonth = new Date(
           new Date().getTime() - 4 * ONE_WEEK_MILLISECONDS
         );
-        // Deactivate character if he didn't raid in the last month
-        if (mostRecentReportDate && mostRecentReportDate < lastMonth) {
+
+        // Deactivate character if he didn't raid in the last month or if he doesn't have a DPS parse
+        if (!mostRecentReportDate || mostRecentReportDate < lastMonth) {
           await this.prismaService.character.update({
             data: {
               isActive: false,
