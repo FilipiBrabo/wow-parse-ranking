@@ -8,7 +8,7 @@ import { getCharacterRankingsQuery, getGuildReportsQuery } from './gql-queries';
 import { WclCharacterRankingsResponse, WclGuildReportsResponse } from './types';
 import { getBestRanks, getMostRecentReportDate } from './utils';
 
-const ONE_WEEK_MILLI_SECONDS = 7 * 24 * 60 * 60 * 1000;
+const ONE_WEEK_MILLISECONDS = 7 * 24 * 60 * 60 * 1000;
 
 @Injectable()
 export class WclService {
@@ -18,25 +18,10 @@ export class WclService {
   ) {}
 
   async updateCharactersDatabase() {
-    const lastWeek = new Date(new Date().getTime() - ONE_WEEK_MILLI_SECONDS);
-
     const guild = await this.prismaService.guild.findFirst({
       orderBy: { lastCharacterUpdate: { sort: 'asc', nulls: 'first' } },
       where: {
-        // this syntax sux
-        AND: [
-          { isBrazilian: true },
-          {
-            OR: [
-              {
-                lastCharacterUpdate: {
-                  lte: lastWeek,
-                },
-              },
-              { lastCharacterUpdate: null },
-            ],
-          },
-        ],
+        isBrazilian: true,
       },
     });
 
@@ -46,7 +31,8 @@ export class WclService {
 
     // Filter reports that are at max two weeks old
     const recentReports = guildReports.filter(
-      (report) => report.startTime > lastWeek.getTime() - ONE_WEEK_MILLI_SECONDS
+      (report) =>
+        report.startTime > new Date().getTime() - 2 * ONE_WEEK_MILLISECONDS
     );
 
     const characters = recentReports.flatMap((report) =>
@@ -103,7 +89,7 @@ export class WclService {
         );
 
         const lastMonth = new Date(
-          new Date().getTime() - 4 * ONE_WEEK_MILLI_SECONDS
+          new Date().getTime() - 4 * ONE_WEEK_MILLISECONDS
         );
         // Deactivate character if he didn't raid in the last month
         if (mostRecentReportDate && mostRecentReportDate < lastMonth) {
