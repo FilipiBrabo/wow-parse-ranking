@@ -12,7 +12,7 @@ import { useCreateQueryString } from '../../../../src/hooks/useCreateQueryString
 import { WOW_CLASSES } from '../../../constants';
 import { querifyString } from '../../utils/querify-string';
 
-export function ClassFilter() {
+export function SpecFilter() {
   const searchParams = useSearchParams();
   const pathName = usePathname();
   const router = useRouter();
@@ -20,14 +20,34 @@ export function ClassFilter() {
 
   const selectedClass = searchParams.get('class');
 
-  const handleSelectClass = (className?: string) => {
+  const availableSpecs =
+    WOW_CLASSES.find((c) => querifyString(c.name) === selectedClass)?.specs ??
+    [];
+
+  const selectedSpec =
+    availableSpecs.length === 1
+      ? querifyString(availableSpecs[0]?.name ?? '')
+      : searchParams.get('spec');
+
+  const handleSelectSpec = (className?: string) => {
     if (!className) return;
-    router.push(pathName + '?' + createQueryString('class', className));
+    router.push(
+      pathName +
+        '?' +
+        createQueryString('spec', className, { keepPreviousParams: true })
+    );
   };
 
   return (
-    <Select onValueChange={handleSelectClass} value={selectedClass ?? ''}>
-      <SelectTrigger className="min-w-[160px]">
+    <Select
+      onValueChange={handleSelectSpec}
+      value={selectedSpec ?? ''}
+      disabled={!availableSpecs?.length}
+    >
+      <SelectTrigger
+        className="min-w-[160px]"
+        disabled={!availableSpecs?.length}
+      >
         <SelectValue placeholder="Selecione..." />
       </SelectTrigger>
       <SelectContent
@@ -40,17 +60,17 @@ export function ClassFilter() {
           };
         }}
       >
-        {WOW_CLASSES.map((wowClass) => (
-          <SelectItem key={wowClass.name} value={querifyString(wowClass.name)}>
+        {availableSpecs?.map((spec) => (
+          <SelectItem key={spec.name} value={querifyString(spec.name)}>
             <div className="flex items-center gap-2">
               <Image
                 width={16}
                 height={16}
                 quality={100}
-                src={wowClass.icon}
-                alt={`Ícone da classe ${wowClass.name}`}
+                src={spec.icon}
+                alt={`Ícone da spec ${spec.name}`}
               />
-              {wowClass.name}
+              {spec.name}
             </div>
           </SelectItem>
         ))}
