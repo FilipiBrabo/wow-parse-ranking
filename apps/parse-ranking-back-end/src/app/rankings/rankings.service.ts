@@ -19,16 +19,16 @@ export class RankingService {
       filterConditions.push(Prisma.sql`class ILIKE ${options.class}`);
     }
 
-    if (options?.spec) {
-      filterConditions.push(Prisma.sql`spec ILIKE ${options.spec}`);
-    }
-
     if (options?.guildId) {
       filterConditions.push(Prisma.sql`"guildId" = ${options.guildId}`);
     }
 
     const sqlFilter = filterConditions.length
       ? Prisma.sql`AND ${Prisma.join(filterConditions, ' AND ')}`
+      : Prisma.empty;
+
+    const specFilter = options?.spec
+      ? Prisma.sql`AND rs.spec ILIKE ${options.spec}`
       : Prisma.empty;
 
     const rankedCharactersWithTotalCount: (CharacterWithRank & {
@@ -75,6 +75,7 @@ export class RankingService {
         "Guild" g ON c."guildId" = g."id"
       WHERE
         rs."specRank" = 1
+        ${specFilter}
       GROUP BY
         c."id", g."id", rs."spec", rs."avgTodayPercent"
       ORDER BY
