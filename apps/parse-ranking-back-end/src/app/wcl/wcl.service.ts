@@ -6,7 +6,7 @@ import { ApolloService } from '../apollo.service';
 import { PrismaService } from '../prisma.service';
 import { getCharacterRankingsQuery, getGuildReportsQuery } from './gql-queries';
 import { WclCharacterRankingsResponse, WclGuildReportsResponse } from './types';
-import { getBestRanks, getMostRecentReportDate } from './utils';
+import { getBestRanks } from './utils';
 
 const ONE_WEEK_MILLISECONDS = 7 * 24 * 60 * 60 * 1000;
 
@@ -84,28 +84,6 @@ export class WclService {
         );
 
         if (!characterEncounterRankings) return;
-
-        const mostRecentReportDate = getMostRecentReportDate(
-          characterEncounterRankings
-        );
-
-        const lastMonth = new Date(
-          new Date().getTime() - 4 * ONE_WEEK_MILLISECONDS
-        );
-
-        // Deactivate character if he didn't raid in the last month or if he doesn't have a DPS parse
-        if (!mostRecentReportDate || mostRecentReportDate < lastMonth) {
-          await this.prismaService.character.update({
-            data: {
-              isActive: false,
-            },
-            where: {
-              id: character.id,
-            },
-          });
-
-          return;
-        }
 
         const bestCharacterRanks = getBestRanks(
           characterEncounterRankings,
