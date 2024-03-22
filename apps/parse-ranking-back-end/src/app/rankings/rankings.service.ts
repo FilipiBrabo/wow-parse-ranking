@@ -56,7 +56,7 @@ export class RankingService {
           AND e."id" = ANY(${encounterIds})
           ${sqlFilter}
         GROUP BY
-          r."characterId", r."spec"
+          r."characterId", r."spec", r."partition"
       )
       SELECT
         c."id" AS "id",
