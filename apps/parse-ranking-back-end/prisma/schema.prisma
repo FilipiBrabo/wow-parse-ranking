@@ -50,12 +50,12 @@ model Ranking {
   reportCode   String
   duration     Int
   amount       Float
-  partition    Int     @default(0)
+  partition    Int
 
   encounter   Encounter @relation(fields: [encounterId], references: [id])
   encounterId Int
 
-  @@unique([characterId, encounterId, spec])
+  @@unique([characterId, encounterId, spec, partition])
 }
 
 model Encounter {
@@ -73,6 +73,6 @@ model Encounter {
 model Raid {
   id        Int         @id @default(autoincrement())
   name      String      @unique
-  partition Int         @default(0)
+  partition Int
   Encounter Encounter[]
 }
