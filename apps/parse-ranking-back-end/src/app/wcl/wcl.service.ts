@@ -83,7 +83,15 @@ export class WclService {
           activeEncounters
         );
 
-        if (!characterEncounterRankings) return;
+        if (!characterEncounterRankings) {
+          await this.prismaService.character.update({
+            data: {
+              lastRankUpdate: new Date(),
+            },
+            where: { id: character.id },
+          });
+          return;
+        }
 
         const bestCharacterRanks = getBestRanks(
           characterEncounterRankings,
