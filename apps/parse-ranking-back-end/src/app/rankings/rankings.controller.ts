@@ -26,6 +26,11 @@ export class RankingsOptions {
   @IsOptional()
   @Type(() => Number)
   public guildId: string;
+
+  @IsNumber()
+  @IsOptional()
+  @Type(() => Number)
+  public partition: number;
 }
 
 @Controller('/rankings')

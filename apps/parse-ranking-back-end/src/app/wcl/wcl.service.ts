@@ -1,5 +1,5 @@
 import { Injectable } from '@nestjs/common';
-import { Character, Encounter, Guild } from '@prisma/client';
+import { Character, Encounter, Guild, Raid } from '@prisma/client';
 import { uniqBy } from 'lodash';
 
 import { ApolloService } from '../apollo.service';
@@ -73,6 +73,7 @@ export class WclService {
 
     const activeEncounters = await this.prismaService.encounter.findMany({
       where: { isActive: true },
+      include: { Raid: true },
     });
 
     await Promise.all(
@@ -114,10 +115,11 @@ export class WclService {
         for (const rank of bestCharacterRanks) {
           await this.prismaService.ranking.upsert({
             where: {
-              characterId_encounterId_spec: {
+              characterId_encounterId_spec_partition: {
                 characterId: character.id,
                 encounterId: rank.encounterId,
                 spec: rank.spec,
+                partition: rank.partition,
               },
             },
             update: { ...rank, characterId: character.id },
@@ -160,7 +162,7 @@ export class WclService {
 
   private async getCharacterRankings(
     character: Character & { guild: Guild | null },
-    encounters: Encounter[]
+    encounters: (Encounter & { Raid: Raid })[]
   ) {
     const { query, variables } = getCharacterRankingsQuery(
       character,

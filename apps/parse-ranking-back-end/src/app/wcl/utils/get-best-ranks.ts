@@ -1,4 +1,4 @@
-import { Encounter } from '@prisma/client';
+import { Encounter, Raid, Ranking } from '@prisma/client';
 import { groupBy, maxBy, pickBy } from 'lodash';
 
 import { INVALID_SPECS_BY_CLASS_ID } from '../constants';
@@ -7,8 +7,8 @@ import { parseEncounterName } from './parse-encounter-name';
 
 export function getBestRanks(
   characterWithRanks: WclCharacterWithRanks,
-  encounters: Encounter[]
-) {
+  encounters: (Encounter & { Raid: Raid })[]
+): Omit<Ranking, 'id' | 'characterId'>[] {
   const bestCharacterRanks = encounters.flatMap((encounter) => {
     const encounterRanks =
       characterWithRanks[parseEncounterName(encounter.name)]?.ranks;
@@ -28,15 +28,18 @@ export function getBestRanks(
 
     const isRank = (rank: WclRank | undefined): rank is WclRank => !!rank;
 
-    return bestEncounterRanks.filter(isRank).map((rank) => ({
-      encounterId: encounter.id,
-      reportCode: rank.report.code,
-      spec: rank.spec,
-      lockedIn: rank.lockedIn,
-      todayPercent: rank.todayPercent,
-      duration: rank.duration,
-      amount: rank.amount,
-    }));
+    return bestEncounterRanks
+      .filter(isRank)
+      .map<Omit<Ranking, 'id' | 'characterId'>>((rank) => ({
+        encounterId: encounter.id,
+        reportCode: rank.report.code,
+        spec: rank.spec,
+        lockedIn: rank.lockedIn,
+        todayPercent: rank.todayPercent,
+        duration: rank.duration,
+        amount: rank.amount,
+        partition: encounter.Raid.partition,
+      }));
   });
 
   return bestCharacterRanks;

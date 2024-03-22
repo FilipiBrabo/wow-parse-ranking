@@ -23,6 +23,10 @@ export class RankingService {
       filterConditions.push(Prisma.sql`"guildId" = ${options.guildId}`);
     }
 
+    if (options?.partition) {
+      filterConditions.push(Prisma.sql`"partition" = ${options.partition}`);
+    }
+
     const sqlFilter = filterConditions.length
       ? Prisma.sql`AND ${Prisma.join(filterConditions, ' AND ')}`
       : Prisma.empty;

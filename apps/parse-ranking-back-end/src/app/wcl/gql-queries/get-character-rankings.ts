@@ -1,11 +1,11 @@
 import { gql } from '@apollo/client';
-import { Character, Encounter } from '@prisma/client';
+import { Character, Encounter, Raid } from '@prisma/client';
 
 import { parseEncounterName } from '../utils';
 
 export function getCharacterRankingsQuery(
   character: Character,
-  encounters: Encounter[]
+  encounters: (Encounter & { Raid: Raid })[]
 ) {
   const query = gql`
     query GetCharacterRankings(
@@ -31,7 +31,9 @@ export function getCharacterRankingsQuery(
                   encounter.wclId
                 }, role: DPS, metric: dps, difficulty: ${
                   encounter.difficulty
-                }, size: ${encounter.size})`
+                }, size: ${encounter.size}, partition: ${
+                  encounter.Raid.partition
+                })`
             )
             .concat('\n')}
         }
