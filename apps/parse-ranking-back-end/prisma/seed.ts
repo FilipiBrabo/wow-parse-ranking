@@ -20,7 +20,7 @@ async function main() {
   await prisma.raid.upsert({
     where: { name: 'Icecrown Citadel' },
     update: {},
-    create: { id: 1, name: 'Icecrown Citadel' },
+    create: { id: 1, name: 'Icecrown Citadel', partition: 4 },
   });
 
   await prisma.encounter.upsert({
