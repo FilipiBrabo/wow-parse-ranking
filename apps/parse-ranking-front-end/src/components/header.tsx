@@ -18,7 +18,12 @@ export function Header() {
       <div className="container flex items-center justify-between max-w-screen-xl mx-auto h-16 px-4">
         <div className="flex items-center gap-1">
           <div className="w-8 h-8 md:w-10 md:h-10 relative">
-            <Image src="/images/wow-token.png" fill={true} alt="Logo" />
+            <Image
+              src="/images/wow-token.png"
+              fill={true}
+              sizes="(max-width: 768px) 2rem, 2.5rem"
+              alt="Logo"
+            />
           </div>
           <Link href="#">Ranking Brasileiro</Link>
         </div>
