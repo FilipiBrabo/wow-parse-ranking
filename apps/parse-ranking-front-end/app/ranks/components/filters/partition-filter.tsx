@@ -5,34 +5,43 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@parse-ranking/shadcn-ui';
-import Image from 'next/image';
 import { usePathname, useRouter, useSearchParams } from 'next/navigation';
 
-import { WOW_CLASSES } from '../../../constants';
-import { querifyString } from '../../utils/querify-string';
+export type Partition = {
+  label: string;
+  value: number;
+};
 
-export function ClassFilter() {
+type PartitionFilterProps = {
+  partitions: Partition[];
+};
+
+export function PartitionFilter({ partitions }: PartitionFilterProps) {
   const searchParams = useSearchParams();
   const pathName = usePathname();
   const router = useRouter();
 
-  const selectedClass = searchParams.get('class');
+  const selectedPartition =
+    searchParams.get('partition') ??
+    String(Math.max(...partitions.map((p) => p.value)));
 
-  const handleSelectClass = (className?: string) => {
-    if (!className) return;
+  const handleSelectPartition = (partition?: string) => {
+    if (!partition) return;
 
     const newSearchParams = new URLSearchParams(searchParams.toString());
     newSearchParams.delete('page');
-    newSearchParams.delete('spec');
-    newSearchParams.set('class', className);
+    newSearchParams.set('partition', partition);
 
     router.push(pathName + '?' + newSearchParams.toString());
   };
 
   return (
-    <Select onValueChange={handleSelectClass} value={selectedClass ?? ''}>
+    <Select
+      onValueChange={handleSelectPartition}
+      value={selectedPartition ?? ''}
+    >
       <SelectTrigger>
-        <SelectValue placeholder="Classe" />
+        <SelectValue placeholder="Partição" />
       </SelectTrigger>
       <SelectContent
         // Workaround to stop touch event to leak to underneath elements
@@ -44,18 +53,9 @@ export function ClassFilter() {
           };
         }}
       >
-        {WOW_CLASSES.map((wowClass) => (
-          <SelectItem key={wowClass.name} value={querifyString(wowClass.name)}>
-            <div className="flex items-center gap-2">
-              <Image
-                width={16}
-                height={16}
-                quality={100}
-                src={wowClass.icon}
-                alt={`Ícone da classe ${wowClass.name}`}
-              />
-              {wowClass.name}
-            </div>
+        {partitions.map((partition) => (
+          <SelectItem key={partition.value} value={String(partition.value)}>
+            {partition.label}
           </SelectItem>
         ))}
       </SelectContent>

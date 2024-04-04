@@ -1,5 +1,6 @@
 import { z } from 'zod';
 
+import { Partition } from './components/filters/partition-filter';
 import { RanksTable } from './components/ranks-table';
 import { Character, columns } from './components/table-columns';
 
@@ -44,6 +45,13 @@ async function getRanks(
   return response.json();
 }
 
+// TODO: this should come from api
+const ICC_PARTITIONS: Partition[] = [
+  { label: 'P4', value: 4 },
+  { label: 'P4 (Buff)', value: 5 },
+  { label: 'P4.5', value: 6 },
+];
+
 export default async function RanksPage({ searchParams }: PageProps) {
   const { page, ...filters } = searchParams;
 
@@ -56,5 +64,7 @@ export default async function RanksPage({ searchParams }: PageProps) {
 
   const data = await getRanks(pageIndex, filters);
 
-  return <RanksTable columns={columns} data={data} />;
+  return (
+    <RanksTable columns={columns} data={data} partitions={ICC_PARTITIONS} />
+  );
 }

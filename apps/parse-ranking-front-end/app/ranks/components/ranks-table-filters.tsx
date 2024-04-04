@@ -4,9 +4,14 @@ import Link from 'next/link';
 import { usePathname, useSearchParams } from 'next/navigation';
 
 import { ClassFilter } from './filters/class-filter';
+import { Partition, PartitionFilter } from './filters/partition-filter';
 import { SpecFilter } from './filters/spec-filter';
 
-export function RankFilters() {
+type RankFilterProps = {
+  partitions: Partition[];
+};
+
+export function RankFilters({ partitions }: RankFilterProps) {
   const searchParams = useSearchParams();
   const pathName = usePathname();
 
@@ -34,11 +39,13 @@ export function RankFilters() {
       </div>
       <div className="flex flex-col gap-2 md:flex-row md:gap-4">
         <div className="flex items-center gap-2">
-          Classe:
+          <PartitionFilter partitions={partitions} />
+        </div>
+        <div className="flex items-center gap-2">
           <ClassFilter />
         </div>
         <div className="flex items-center gap-2">
-          Spec: <SpecFilter />
+          <SpecFilter />
         </div>
       </div>
     </div>

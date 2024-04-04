@@ -8,7 +8,6 @@ import {
 import Image from 'next/image';
 import { usePathname, useRouter, useSearchParams } from 'next/navigation';
 
-import { useCreateQueryString } from '../../../../src/hooks/useCreateQueryString';
 import { WOW_CLASSES } from '../../../constants';
 import { querifyString } from '../../utils/querify-string';
 
@@ -16,7 +15,6 @@ export function SpecFilter() {
   const searchParams = useSearchParams();
   const pathName = usePathname();
   const router = useRouter();
-  const createQueryString = useCreateQueryString();
 
   const selectedClass = searchParams.get('class');
 
@@ -29,13 +27,13 @@ export function SpecFilter() {
       ? querifyString(availableSpecs[0]?.name ?? '')
       : searchParams.get('spec');
 
-  const handleSelectSpec = (className?: string) => {
-    if (!className) return;
-    router.push(
-      pathName +
-        '?' +
-        createQueryString('spec', className, { keepPreviousParams: true })
-    );
+  const handleSelectSpec = (spec?: string) => {
+    if (!spec) return;
+    const newSearchParams = new URLSearchParams(searchParams.toString());
+    newSearchParams.delete('page');
+    newSearchParams.set('spec', spec);
+
+    router.push(pathName + '?' + newSearchParams.toString());
   };
 
   return (
@@ -44,11 +42,8 @@ export function SpecFilter() {
       value={selectedSpec ?? ''}
       disabled={!availableSpecs?.length}
     >
-      <SelectTrigger
-        className="min-w-[160px]"
-        disabled={!availableSpecs?.length}
-      >
-        <SelectValue placeholder="Selecione..." />
+      <SelectTrigger disabled={!availableSpecs?.length}>
+        <SelectValue placeholder="Spec" />
       </SelectTrigger>
       <SelectContent
         // Workaround to stop touch event to leak to underneath elements

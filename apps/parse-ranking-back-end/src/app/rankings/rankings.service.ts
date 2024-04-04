@@ -24,7 +24,9 @@ export class RankingService {
     }
 
     if (options?.partition) {
-      filterConditions.push(Prisma.sql`"partition" = ${options.partition}`);
+      filterConditions.push(Prisma.sql`r.partition = ${options.partition}`);
+    } else {
+      filterConditions.push(Prisma.sql`r.partition = raid.partition`);
     }
 
     const sqlFilter = filterConditions.length
@@ -49,6 +51,8 @@ export class RankingService {
           "Encounter" e ON r."encounterId" = e."id"
         JOIN
           "Character" c ON r."characterId" = c."id"
+        JOIN
+          "Raid" raid ON r."partition" = raid."partition"
         WHERE
           r."todayPercent" IS NOT NULL
           AND c."isActive" = TRUE

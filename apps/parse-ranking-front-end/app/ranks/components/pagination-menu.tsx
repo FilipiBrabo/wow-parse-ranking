@@ -5,9 +5,7 @@ import {
   PaginationNext,
   PaginationPrevious,
 } from '@parse-ranking/shadcn-ui';
-import { usePathname } from 'next/navigation';
-
-import { useCreateQueryString } from '../../../src/hooks/useCreateQueryString';
+import { usePathname, useSearchParams } from 'next/navigation';
 
 export type PaginationMenuProps = {
   total: number;
@@ -17,7 +15,7 @@ export type PaginationMenuProps = {
 
 export function PaginationMenu({ total, offset, limit }: PaginationMenuProps) {
   const pathname = usePathname();
-  const createQueryString = useCreateQueryString();
+  const searchParams = useSearchParams();
 
   const currentPage = Math.floor(offset / limit) + 1;
   const pageCount = Math.ceil(total / limit) || 1;
@@ -27,6 +25,13 @@ export function PaginationMenu({ total, offset, limit }: PaginationMenuProps) {
 
   const hasNextPage = nextPage !== currentPage;
   const hasPreviousPage = previousPage !== currentPage;
+
+  const getNextPageUrl = (newPage: number) => {
+    const newSearchParams = new URLSearchParams(searchParams.toString());
+    newSearchParams.set('page', String(newPage));
+
+    return pathname + '?' + newSearchParams.toString();
+  };
 
   return (
     <div className="flex items-center justify-between px-2 py-2 gap-2">
@@ -43,25 +48,13 @@ export function PaginationMenu({ total, offset, limit }: PaginationMenuProps) {
             <PaginationItem>
               <PaginationPrevious
                 isDisabled={!hasPreviousPage}
-                href={
-                  pathname +
-                  '?' +
-                  createQueryString('page', String(previousPage), {
-                    keepPreviousParams: true,
-                  })
-                }
+                href={getNextPageUrl(previousPage)}
               />
             </PaginationItem>
             <PaginationItem>
               <PaginationNext
                 isDisabled={!hasNextPage}
-                href={
-                  pathname +
-                  '?' +
-                  createQueryString('page', String(nextPage), {
-                    keepPreviousParams: true,
-                  })
-                }
+                href={getNextPageUrl(nextPage)}
               />
             </PaginationItem>
           </PaginationContent>
