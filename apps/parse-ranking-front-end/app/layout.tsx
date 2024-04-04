@@ -2,6 +2,7 @@ import './global.css';
 
 import { cn } from '@parse-ranking/shadcn-ui';
 import { Analytics } from '@vercel/analytics/react';
+import { Metadata } from 'next';
 import { Inter as FontSans } from 'next/font/google';
 
 import { Header } from '../src/components/header';
@@ -12,9 +13,23 @@ const fontSans = FontSans({
   variable: '--font-sans',
 });
 
-export const metadata = {
+export const metadata: Metadata = {
   title: 'Ranking Brasileiro - WoW Classic',
   description: 'Rank brasileiro de World of Warcraft Classic',
+  verification: {
+    google: 'WTHVt4kEc6HE0pkFM3poHYR5dor7usP9TwB37ZLBoKc',
+  },
+
+  keywords: [
+    'world of warcraft',
+    'classic',
+    'brasil',
+    'brasileiro',
+    'ranking',
+    'parse',
+    'warcraft logs',
+    'wow',
+  ],
 };
 
 export default function RootLayout({
