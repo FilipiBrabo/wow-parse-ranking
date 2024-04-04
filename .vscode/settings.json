@@ -13,4 +13,5 @@
   "[prisma]": {
     "editor.defaultFormatter": "Prisma.prisma"
   },
+  "cSpell.language": "en,pt-BR,lorem",
 }
