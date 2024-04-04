@@ -51,7 +51,7 @@ export class RankingService {
           "Encounter" e ON r."encounterId" = e."id"
         JOIN
           "Character" c ON r."characterId" = c."id"
-        JOIN
+        LEFT JOIN
           "Raid" raid ON r."partition" = raid."partition"
         WHERE
           r."todayPercent" IS NOT NULL
