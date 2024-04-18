@@ -20,9 +20,7 @@
     "skipDefaultLibCheck": true,
     "baseUrl": ".",
     "paths": {
-      "@parse-ranking/shadcn-ui": [
-        "libs/shadcn-ui/src/index.ts"
-      ],
+      "@parse-ranking/shadcn-ui": ["libs/shadcn-ui/src/index.ts"]
     }
   },
   "exclude": ["node_modules", "tmp"]

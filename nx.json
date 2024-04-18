@@ -1,8 +1,5 @@
 {
   "$schema": "./node_modules/nx/schemas/nx-schema.json",
-  "affected": {
-    "defaultBase": "master"
-  },
   "tasksRunnerOptions": {
     "default": {
       "runner": "nx-cloud",
@@ -57,5 +54,8 @@
         "linter": "eslint"
       }
     }
-  }
+  },
+  "nxCloudAccessToken": "OTYxNzcyNjYtZTE4MS00YTY2LWJjMDctNWVhMTNlNjdjMmVmfHJlYWQtd3JpdGU=",
+  "useInferencePlugins": false,
+  "defaultBase": "master"
 }
