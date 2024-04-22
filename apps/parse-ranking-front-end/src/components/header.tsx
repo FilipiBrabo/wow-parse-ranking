@@ -25,7 +25,7 @@ export function Header() {
               alt="Logo"
             />
           </div>
-          <div>Ranking Brasileiro</div>
+          <div className="font-bold">Ranking Brasileiro</div>
         </Link>
 
         <div className="flex gap-2 items-center">
