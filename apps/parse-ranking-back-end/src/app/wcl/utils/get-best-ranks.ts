@@ -33,6 +33,7 @@ export function getBestRanks(
       .map<Omit<Ranking, 'id' | 'characterId'>>((rank) => ({
         encounterId: encounter.id,
         reportCode: rank.report.code,
+        fightId: rank.report.fightID,
         spec: rank.spec,
         lockedIn: rank.lockedIn,
         todayPercent: rank.todayPercent,

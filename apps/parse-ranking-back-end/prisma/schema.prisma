@@ -20,8 +20,8 @@ model Character {
   guild          Guild?    @relation(fields: [guildId], references: [id])
   guildId        Int?
   class          String
-  serverRegion   String?
-  serverSlug     String?
+  serverRegion   String
+  serverSlug     String
   lastRankUpdate DateTime?
   isActive       Boolean   @default(true)
   isBrazilian    Boolean   @default(true)
@@ -40,14 +40,15 @@ model Guild {
 }
 
 model Ranking {
-  id          Int        @id @default(autoincrement())
-  character   Character? @relation(fields: [characterId], references: [id])
-  characterId Int?
+  id          Int       @id @default(autoincrement())
+  character   Character @relation(fields: [characterId], references: [id])
+  characterId Int
 
   todayPercent Float
   lockedIn     Boolean
   spec         String
   reportCode   String
+  fightId      Int?
   duration     Int
   amount       Float
   partition    Int
