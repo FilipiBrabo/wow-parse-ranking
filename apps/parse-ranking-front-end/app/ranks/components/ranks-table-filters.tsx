@@ -8,10 +8,17 @@ import { Partition, PartitionFilter } from './filters/partition-filter';
 import { SpecFilter } from './filters/spec-filter';
 
 type RankFilterProps = {
-  partitions: Partition[];
+  partitions?: Partition[];
 };
 
-export function RankFilters({ partitions }: RankFilterProps) {
+// TODO: this should come from api
+const ICC_PARTITIONS: Partition[] = [
+  { label: 'P4', value: 4 },
+  { label: 'P4 (Buff)', value: 5 },
+  { label: 'P4.5', value: 6 },
+];
+
+export function RankFilters({ partitions = ICC_PARTITIONS }: RankFilterProps) {
   const searchParams = useSearchParams();
   const pathName = usePathname();
 

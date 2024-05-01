@@ -16,7 +16,6 @@ import {
   useReactTable,
 } from '@tanstack/react-table';
 
-import { Partition } from './filters/partition-filter';
 import { PaginationMenu } from './pagination-menu';
 import { RankFilters } from './ranks-table-filters';
 
@@ -29,14 +28,12 @@ type Paginated<T> = {
 
 interface RanksTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[];
-  partitions: Partition[];
   data: Paginated<TData>;
 }
 
 export function RanksTable<TData, TValue>({
   columns,
   data,
-  partitions,
 }: RanksTableProps<TData, TValue>) {
   const pageCount = Math.ceil(data.limit / data.total) || 1;
 
@@ -52,7 +49,7 @@ export function RanksTable<TData, TValue>({
 
   return (
     <div className="space-y-4">
-      <RankFilters partitions={partitions} />
+      <RankFilters />
       <div className="rounded-md border">
         <Table>
           <TableHeader>

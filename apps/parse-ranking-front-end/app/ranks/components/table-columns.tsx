@@ -7,12 +7,12 @@ import {
   TooltipTrigger,
 } from '@parse-ranking/shadcn-ui';
 import { ColumnDef, createColumnHelper } from '@tanstack/react-table';
+import { startCase } from 'lodash';
 
 import { CharacterLink } from '../../../src/components/character-link';
 import { GuildLink } from '../../../src/components/guild-link';
 import { SpecIcon } from '../../../src/components/SpecIcon';
 import { getRankColor } from '../../../src/utils/getRankColor';
-import { capitalizeClassName } from '../utils/capitalize-class-name';
 
 const columnHelper = createColumnHelper<Character>();
 
@@ -48,9 +48,7 @@ export const columns = [
               </div>
             </TooltipTrigger>
             <TooltipContent>
-              <span>
-                {capitalizeClassName(row.original.class)} - {getValue()}
-              </span>
+              <span>{startCase(`${row.original.class} - ${getValue()}`)}</span>
             </TooltipContent>
           </Tooltip>
         </TooltipProvider>
