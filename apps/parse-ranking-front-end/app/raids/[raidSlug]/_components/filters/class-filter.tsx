@@ -8,42 +8,31 @@ import {
 import Image from 'next/image';
 import { usePathname, useRouter, useSearchParams } from 'next/navigation';
 
-import { querifyString } from '../../../../src/utils/querify-string';
-import { WOW_CLASSES } from '../../../constants';
+import { querifyString } from '../../../../../../../src/utils/querify-string';
+import { WOW_CLASSES } from '../../../../../../constants';
 
-export function SpecFilter() {
+export function ClassFilter() {
   const searchParams = useSearchParams();
   const pathName = usePathname();
   const router = useRouter();
 
   const selectedClass = searchParams.get('class');
 
-  const availableSpecs =
-    WOW_CLASSES.find((c) => querifyString(c.name) === selectedClass)?.specs ??
-    [];
+  const handleSelectClass = (className?: string) => {
+    if (!className) return;
 
-  const selectedSpec =
-    availableSpecs.length === 1
-      ? querifyString(availableSpecs[0]?.name ?? '')
-      : searchParams.get('spec');
-
-  const handleSelectSpec = (spec?: string) => {
-    if (!spec) return;
     const newSearchParams = new URLSearchParams(searchParams.toString());
     newSearchParams.delete('page');
-    newSearchParams.set('spec', spec);
+    newSearchParams.delete('spec');
+    newSearchParams.set('class', className);
 
     router.push(pathName + '?' + newSearchParams.toString());
   };
 
   return (
-    <Select
-      onValueChange={handleSelectSpec}
-      value={selectedSpec ?? ''}
-      disabled={!availableSpecs?.length}
-    >
-      <SelectTrigger disabled={!availableSpecs?.length}>
-        <SelectValue placeholder="Spec" />
+    <Select onValueChange={handleSelectClass} value={selectedClass ?? ''}>
+      <SelectTrigger>
+        <SelectValue placeholder="Classe" />
       </SelectTrigger>
       <SelectContent
         // Workaround to stop touch event to leak to underneath elements
@@ -55,17 +44,17 @@ export function SpecFilter() {
           };
         }}
       >
-        {availableSpecs?.map((spec) => (
-          <SelectItem key={spec.name} value={querifyString(spec.name)}>
+        {WOW_CLASSES.map((wowClass) => (
+          <SelectItem key={wowClass.name} value={querifyString(wowClass.name)}>
             <div className="flex items-center gap-2">
               <Image
                 width={16}
                 height={16}
                 quality={100}
-                src={spec.icon}
-                alt={`Ícone da spec ${spec.name}`}
+                src={wowClass.icon}
+                alt={`Ícone da classe ${wowClass.name}`}
               />
-              {spec.name}
+              {wowClass.name}
             </div>
           </SelectItem>
         ))}

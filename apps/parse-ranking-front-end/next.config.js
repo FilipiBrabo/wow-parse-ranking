@@ -13,14 +13,16 @@ const nextConfig = {
     svgr: false,
   },
 
-  images: {
-    domains: ['assets.rpglogs.com'],
-  },
   async redirects() {
     return [
       {
+        source: '/ranks',
+        destination: '/raids/icecrown-citadel',
+        permanent: true,
+      },
+      {
         source: '/',
-        destination: '/ranks',
+        destination: '/raids/icecrown-citadel',
         permanent: true,
       },
     ];
