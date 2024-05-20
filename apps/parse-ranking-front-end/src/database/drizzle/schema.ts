@@ -104,6 +104,8 @@ export const raid = pgTable(
     id: serial('id').primaryKey().notNull(),
     name: text('name').notNull(),
     partition: integer('partition').notNull(),
+    slug: text('slug'),
+    expansionId: integer('expansionId'),
   },
   (table) => {
     return {
@@ -146,6 +148,14 @@ export const ranking = pgTable(
   }
 );
 
+export const expansion = pgTable('Expansion', {
+  id: serial('id').primaryKey(),
+  name: text('name'),
+  order: integer('order').default(0),
+  slug: text('slug'),
+});
+
+// Relations
 export const characterRelations = relations(character, ({ one, many }) => ({
   ranking: many(ranking),
   guild: one(guild, {
@@ -177,6 +187,14 @@ export const encounterRelations = relations(encounter, ({ one, many }) => ({
   }),
 }));
 
-export const raidRelations = relations(encounter, ({ many }) => ({
+export const raidRelations = relations(raid, ({ one, many }) => ({
   encounter: many(encounter),
+  expansion: one(expansion, {
+    fields: [raid.expansionId],
+    references: [expansion.id],
+  }),
+}));
+
+export const expansionRelations = relations(expansion, ({ many }) => ({
+  raid: many(raid),
 }));

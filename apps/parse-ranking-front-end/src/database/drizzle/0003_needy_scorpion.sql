@@ -1,0 +1,1 @@
+ALTER TABLE "Expansion" ADD COLUMN "slug" text;

@@ -8,6 +8,34 @@
       "when": 1713921156098,
       "tag": "0000_wet_nightcrawler",
       "breakpoints": true
+    },
+    {
+      "idx": 1,
+      "version": "5",
+      "when": 1715739326664,
+      "tag": "0001_wealthy_shockwave",
+      "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "6",
+      "when": 1715906921840,
+      "tag": "0002_conscious_ravenous",
+      "breakpoints": true
+    },
+    {
+      "idx": 3,
+      "version": "6",
+      "when": 1715908056743,
+      "tag": "0003_needy_scorpion",
+      "breakpoints": true
+    },
+    {
+      "idx": 4,
+      "version": "6",
+      "when": 1715910206281,
+      "tag": "0004_soft_dakota_north",
+      "breakpoints": true
     }
   ]
 }
