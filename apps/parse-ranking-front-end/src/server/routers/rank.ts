@@ -1,27 +1,21 @@
-import { Prisma } from '@prisma/client';
+import { and, desc, eq, ilike, inArray, isNotNull, sql } from 'drizzle-orm';
 import { z } from 'zod';
 
-import prisma from '../../database/prisma';
+import { db } from '../../database/drizzle/db';
+import {
+  character,
+  encounter,
+  guild,
+  raid,
+  ranking,
+} from '../../database/drizzle/schema';
 import { publicProcedure, router } from '../trpc';
 
-type CharacterWithRank = {
-  rank: number;
-  id: number;
-  name: string;
-  guildName: string;
-  guildId: number;
-  realm: string;
-  region: string;
-  class: string;
-  spec: string;
-  todayPercent: Prisma.Decimal;
-  lastRankUpdate: string;
-};
-
 export const rankRouter = router({
-  list: publicProcedure
+  getRanks: publicProcedure
     .input(
       z.object({
+        raidSlug: z.string(),
         limit: z.number().default(15),
         offset: z.number().default(0),
         class: z.string().optional(),
@@ -31,93 +25,129 @@ export const rankRouter = router({
       })
     )
     .query(async ({ input }) => {
-      const encounters = await prisma.encounter.findMany({
-        select: {
-          id: true,
-        },
-        where: {
-          Raid: { name: 'Icecrown Citadel' },
-        },
-      });
+      const encounters = await db
+        .select({ id: encounter.id })
+        .from(encounter)
+        .leftJoin(raid, eq(raid.id, encounter.raidId))
+        .where(eq(raid.slug, input.raidSlug));
 
       const encounterIds = encounters.map((encounter) => encounter.id);
 
-      const filterConditions: Prisma.Sql[] = [];
-      // TODO: surely I can find a better way to structure this
-      if (input?.class) {
-        filterConditions.push(Prisma.sql`class ILIKE ${input.class}`);
-      }
+      const rankedSpecs = db.$with('ranked_specs').as(
+        db
+          .select({
+            characterId: ranking.characterId,
+            characterName: character.name,
+            characterServerRegion: character.serverRegion,
+            characterServerSlug: character.serverSlug,
+            characterLastRankUpdate: character.lastRankUpdate,
+            characterGuildId: character.guildId,
+            characterClass: character.class,
 
-      if (input?.guildId) {
-        filterConditions.push(Prisma.sql`"guildId" = ${input.guildId}`);
-      }
+            spec: ranking.spec,
+            avgTodayPercent:
+              sql`SUM(CAST(${ranking.todayPercent} AS NUMERIC)) / ${encounterIds.length}`.as(
+                'avgTodayPercent'
+              ),
+            specRank:
+              sql`CAST(ROW_NUMBER() OVER (PARTITION BY ${ranking.characterId} ORDER BY SUM(CAST(${ranking.todayPercent} AS NUMERIC)) / ${encounterIds.length} DESC) AS INT)`.as(
+                'specRank'
+              ),
+          })
+          .from(ranking)
+          .innerJoin(encounter, eq(ranking.encounterId, encounter.id))
+          .innerJoin(character, eq(ranking.characterId, character.id))
+          .leftJoin(raid, eq(raid.partition, ranking.partition))
+          .groupBy(
+            ({
+              spec,
 
-      if (input?.partition) {
-        filterConditions.push(Prisma.sql`r.partition = ${input.partition}`);
-      } else {
-        filterConditions.push(Prisma.sql`r.partition = raid.partition`);
-      }
+              characterId,
+              characterName,
+              characterServerRegion,
+              characterServerSlug,
+              characterLastRankUpdate,
+              characterGuildId,
+              characterClass,
+            }) => [
+              spec,
+              characterId,
+              characterName,
+              characterServerRegion,
+              characterServerSlug,
+              characterLastRankUpdate,
+              characterGuildId,
+              characterClass,
+            ]
+          )
+          .where(
+            and(
+              isNotNull(ranking.todayPercent),
+              eq(character.isBrazilian, true),
+              inArray(encounter.id, encounterIds),
+              input.class ? ilike(character.class, input.class) : undefined,
+              input.guildId ? eq(guild.id, input.guildId) : undefined,
+              input.partition
+                ? eq(ranking.partition, input.partition)
+                : eq(raid.partition, ranking.partition)
+            )
+          )
+      );
 
-      const sqlFilter = filterConditions.length
-        ? Prisma.sql`AND ${Prisma.join(filterConditions, ' AND ')}`
-        : Prisma.empty;
-
-      const specFilter = input?.spec
-        ? Prisma.sql`AND rs.spec ILIKE ${input.spec}`
-        : Prisma.empty;
-
-      const rankedCharactersWithTotalCount: (CharacterWithRank & {
-        totalCount: Prisma.Decimal;
-      })[] = await prisma.$queryRaw`WITH "RankedSpecs" AS (
-        SELECT
-          r."characterId",
-          r."spec",
-          SUM(CAST(r."todayPercent" AS NUMERIC)) / ${encounterIds.length} AS "avgTodayPercent",
-          CAST(ROW_NUMBER() OVER (PARTITION BY r."characterId" ORDER BY SUM(CAST(r."todayPercent" AS NUMERIC)) / ${encounterIds.length} DESC) AS INT) AS "specRank"
-        FROM
-          "Ranking" r
-        JOIN
-          "Encounter" e ON r."encounterId" = e."id"
-        JOIN
-          "Character" c ON r."characterId" = c."id"
-        LEFT JOIN
-          "Raid" raid ON r."partition" = raid."partition"
-        WHERE
-          r."todayPercent" IS NOT NULL
-          AND c."isActive" = TRUE
-          AND c."isBrazilian" = TRUE
-          AND e."id" = ANY(${encounterIds})
-          ${sqlFilter}
-        GROUP BY
-          r."characterId", r."spec", r."partition"
-      )
-      SELECT
-        c."id" AS "id",
-        c."name" AS "name",
-        g."name" AS "guildName",
-        g."wclId" AS "guildId",
-        c."serverRegion" AS "region",
-        c."serverSlug" AS "realm",
-        c."lastRankUpdate" AS "lastRankUpdate",
-        c."class",
-        rs."spec",
-        ROUND(rs."avgTodayPercent", 2)  as "todayPercent",
-        CAST(DENSE_RANK() OVER (ORDER BY MAX(rs."avgTodayPercent") DESC) AS INT) AS "rank",
-        CAST(COUNT(*) OVER () AS NUMERIC) AS "totalCount"
-      FROM
-        "RankedSpecs" rs
-      JOIN
-        "Character" c ON rs."characterId" = c."id"
-      LEFT JOIN
-        "Guild" g ON c."guildId" = g."id"
-      WHERE
-        rs."specRank" = 1
-        ${specFilter}
-      GROUP BY
-        c."id", g."id", rs."spec", rs."avgTodayPercent"
-      ORDER BY
-        rs."avgTodayPercent" DESC
-      LIMIT ${input.limit} OFFSET ${input.offset};`;
+      const rankedCharactersWithTotalCount = await db
+        .with(rankedSpecs)
+        .select({
+          id: rankedSpecs.characterId,
+          name: rankedSpecs.characterName,
+          guildName: guild.name,
+          guildId: guild.wclId,
+          region: rankedSpecs.characterServerRegion,
+          realm: rankedSpecs.characterServerSlug,
+          lastRankUpdate: rankedSpecs.characterLastRankUpdate,
+          class: rankedSpecs.characterClass,
+          spec: rankedSpecs.spec,
+          todayPercent: sql<string>`ROUND(${rankedSpecs.avgTodayPercent}, 2)`,
+          rank: sql<number>`CAST(DENSE_RANK() OVER (ORDER BY MAX(${rankedSpecs.avgTodayPercent}) DESC) AS INT)`.mapWith(
+            Number
+          ),
+          totalCount: sql<number>`COUNT(*) OVER ()`.mapWith(Number),
+        })
+        .from(rankedSpecs)
+        .leftJoin(guild, eq(rankedSpecs.characterGuildId, guild.id))
+        .where(
+          and(
+            eq(rankedSpecs.specRank, 1),
+            input.spec ? ilike(rankedSpecs.spec, input.spec) : undefined
+          )
+        )
+        .groupBy(
+          ({
+            id,
+            guildId,
+            spec,
+            name,
+            guildName,
+            lastRankUpdate,
+            realm,
+            region,
+            todayPercent,
+            class: className,
+          }) => [
+            id,
+            guildId,
+            spec,
+            name,
+            guildName,
+            lastRankUpdate,
+            className,
+            realm,
+            region,
+            todayPercent,
+          ]
+        )
+        .orderBy(({ todayPercent }) => desc(todayPercent))
+        .limit(input.limit)
+        .offset(input.offset);
 
       const totalCount =
         Number(rankedCharactersWithTotalCount[0]?.totalCount) ?? 0;
@@ -129,7 +159,6 @@ export const rankRouter = router({
 
           return {
             ...bestRank,
-            // Convert from Prisma.Decimal to string
             todayPercent: String(todayPercent),
           };
         }
