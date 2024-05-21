@@ -64,9 +64,10 @@ export const columns = [
     header: () => <span>Guild</span>,
     cell: ({ getValue, row }) => {
       const guildName = getValue();
+      const guildId = row.original.guildId;
 
-      if (!guildName) return 'Sem guild';
-      return <GuildLink guildName={guildName} guildId={row.original.guildId} />;
+      if (!guildName || !guildId) return 'Sem guild';
+      return <GuildLink guildName={guildName} guildId={guildId} />;
     },
     minSize: 250,
   }),

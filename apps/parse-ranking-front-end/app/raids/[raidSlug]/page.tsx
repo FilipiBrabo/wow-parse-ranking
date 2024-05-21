@@ -2,7 +2,7 @@ import { z } from 'zod';
 
 import { serverClient } from '../../_trpc/serverClient';
 import { PAGINATION_LIMIT } from '../../constants';
-import { RanksTable } from '../../ranks/components/ranks-table';
+import { RaidRanksTable } from './_components/raid-ranks-table';
 import { columns } from './_components/table-columns';
 
 interface PageProps {
@@ -28,5 +28,5 @@ export default async function Raid({ searchParams, params }: PageProps) {
     raidSlug: params.raidSlug,
   });
 
-  return <RanksTable columns={columns} data={ranks} />;
+  return <RaidRanksTable columns={columns} data={ranks} />;
 }
