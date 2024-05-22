@@ -1,13 +1,17 @@
 import { SiGithub } from '@icons-pack/react-simple-icons';
-import { Button } from '@parse-ranking/shadcn-ui';
-import { Menu } from 'lucide-react';
-import Image from 'next/image';
 import Link from 'next/link';
 
-import { NavItem } from './nav-item';
+import {
+  ExpandableNavItem,
+  NavItem,
+} from '../../app/_components/nav-bar/nav-item';
+import { serverClient } from '../../app/_trpc/serverClient';
+import { MobileNav } from './mobile-nav';
+import { NavLink } from './nav-item';
+import { SiteLogo } from './site-logo';
 import { ThemeButton } from './theme-button';
 
-export function Header() {
+export async function Header() {
   const navItems = [
     {
       href: 'https://github.com/FilipiBrabo/wow-parse-ranking',
@@ -15,28 +19,33 @@ export function Header() {
     },
   ];
 
+  // TODO: This was copied from Sidebar. Maybe it's a good idea to extract
+  const expansions = await serverClient.expansions.getAll();
+
+  const items: (NavItem | ExpandableNavItem)[] = expansions.map(
+    (expansion) => ({
+      to: '',
+      title: expansion.name ?? '',
+      items: expansion.raid.map((raid) => ({
+        to: `/raids/${raid.slug}`,
+        title: raid.name,
+      })),
+    })
+  );
+
   return (
     <header className="sticky top-0 bg-background z-50 w-full shadow-sm">
       <div className="container flex items-center justify-between max-w-screen-xl mx-auto h-16 px-6 md:px-8">
-        <Button className="lg:hidden" variant="ghost" size="icon">
-          <Menu />
-        </Button>
+        <MobileNav items={items} />
         <Link href="/" className="flex items-center gap-1">
-          <div className="w-8 h-8 md:w-10 md:h-10 relative">
-            <Image
-              src="/images/wow-token.png"
-              fill={true}
-              sizes="(max-width: 768px) 2rem, 2.5rem"
-              alt="Logo"
-            />
-          </div>
+          <SiteLogo />
           <div className="font-bold">Ranking Brasileiro</div>
         </Link>
 
         <div className="flex  gap-2 items-center">
           <nav className="flex items-center">
             {navItems.map((item) => (
-              <NavItem key={item.href} href={item.href} icon={item.icon} />
+              <NavLink key={item.href} href={item.href} icon={item.icon} />
             ))}
           </nav>
           <ThemeButton />

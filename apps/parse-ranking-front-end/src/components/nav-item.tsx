@@ -6,7 +6,7 @@ type NavItemProps = {
   icon: ReactNode;
 };
 
-export function NavItem({ href, icon }: NavItemProps) {
+export function NavLink({ href, icon }: NavItemProps) {
   return (
     <a
       target="_blank"
