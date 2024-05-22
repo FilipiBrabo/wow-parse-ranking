@@ -20,15 +20,12 @@ export interface ExpandableNavItem extends NavItem {
   items?: ExpandableNavItem[];
 }
 
-interface ExpandableNavItemsProps {
-  items?: (ExpandableNavItem | NavItem)[];
-}
-
 interface LeafNavItemProps {
   item: NavItem;
+  onClick?: () => void;
 }
 
-function LeafNavItem({ item }: LeafNavItemProps) {
+function LeafNavItem({ item, onClick }: LeafNavItemProps) {
   const pathname = usePathname();
 
   const isActive = pathname === item.to;
@@ -40,13 +37,21 @@ function LeafNavItem({ item }: LeafNavItemProps) {
         'pl-2 text-base text-slate-400 hover:text-foreground',
         isActive && 'text-blue-400 hover:text-blue-400'
       )}
+      onClick={() => onClick?.()}
     >
       {item.title}
     </Link>
   );
 }
+interface ExpandableNavItemsProps {
+  items?: (ExpandableNavItem | NavItem)[];
+  onItemClick?: () => void;
+}
 
-export function ExpandableNavItems({ items }: ExpandableNavItemsProps) {
+export function ExpandableNavItems({
+  items,
+  onItemClick,
+}: ExpandableNavItemsProps) {
   const pathname = usePathname();
 
   // TODO: Refactor, this will need to support N layers of nested items.
@@ -74,7 +79,10 @@ export function ExpandableNavItems({ items }: ExpandableNavItemsProps) {
                 className="text-lg font-semibold"
                 key={item.title}
               >
-                <ExpandableNavItems items={item.items} />
+                <ExpandableNavItems
+                  items={item.items}
+                  onItemClick={onItemClick}
+                />
               </AccordionContent>
             </AccordionItem>
           );
@@ -82,7 +90,7 @@ export function ExpandableNavItems({ items }: ExpandableNavItemsProps) {
 
         return (
           <div key={item.title} className="mb-2 last:mb-0">
-            <LeafNavItem item={item} />
+            <LeafNavItem item={item} onClick={onItemClick} />
           </div>
         );
       })}
