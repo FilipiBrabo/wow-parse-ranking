@@ -9,6 +9,7 @@ import { appRouter } from '../../../../src/server';
 //     router: appRouter,
 //     createContext: () => ({}),
 //   });
+export const dynamic = 'force-dynamic';
 
 export async function GET(req: Request) {
   return fetchRequestHandler({
