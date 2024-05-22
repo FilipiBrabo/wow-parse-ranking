@@ -149,8 +149,7 @@ export const rankRouter = router({
         .limit(input.limit)
         .offset(input.offset);
 
-      const totalCount =
-        Number(rankedCharactersWithTotalCount[0]?.totalCount) ?? 0;
+      const totalCount = rankedCharactersWithTotalCount[0]?.totalCount ?? 0;
 
       const rankedCharacters = rankedCharactersWithTotalCount.map(
         (rankWithCount) => {
