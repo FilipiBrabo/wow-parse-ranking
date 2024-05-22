@@ -11,7 +11,7 @@ import { appRouter } from '../../../../src/server';
 //   });
 
 export async function GET(req: Request) {
-  fetchRequestHandler({
+  return fetchRequestHandler({
     endpoint: '/api/trpc',
     req,
     router: appRouter,
@@ -20,7 +20,7 @@ export async function GET(req: Request) {
 }
 
 export async function POST(req: Request) {
-  fetchRequestHandler({
+  return fetchRequestHandler({
     endpoint: '/api/trpc',
     req,
     router: appRouter,
