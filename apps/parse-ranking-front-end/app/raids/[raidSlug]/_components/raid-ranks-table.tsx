@@ -26,15 +26,15 @@ type Paginated<T> = {
   offset: number;
 };
 
-interface RanksTableProps<TData, TValue> {
+interface RaidRanksTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[];
   data: Paginated<TData>;
 }
 
-export function RanksTable<TData, TValue>({
+export function RaidRanksTable<TData, TValue>({
   columns,
   data,
-}: RanksTableProps<TData, TValue>) {
+}: RaidRanksTableProps<TData, TValue>) {
   const pageCount = Math.ceil(data.limit / data.total) || 1;
 
   const table = useReactTable({
@@ -96,7 +96,7 @@ export function RanksTable<TData, TValue>({
                   colSpan={columns.length}
                   className="h-24 text-center"
                 >
-                  No results.
+                  Nenhum resultado encontrado
                 </TableCell>
               </TableRow>
             )}

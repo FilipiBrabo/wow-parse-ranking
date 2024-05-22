@@ -8,8 +8,8 @@ import {
 import Image from 'next/image';
 import { usePathname, useRouter, useSearchParams } from 'next/navigation';
 
-import { WOW_CLASSES } from '../../../constants';
-import { querifyString } from '../../utils/querify-string';
+import { WOW_CLASSES } from '../../../../../app/constants';
+import { querifyString } from '../../../../../src/utils/querify-string';
 
 export function SpecFilter() {
   const searchParams = useSearchParams();

@@ -138,3 +138,5 @@ export const WOW_CLASSES = [
     ],
   },
 ];
+
+export const PAGINATION_LIMIT = 15;

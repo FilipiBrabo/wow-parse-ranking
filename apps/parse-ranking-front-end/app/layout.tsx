@@ -7,6 +7,7 @@ import { Inter as FontSans } from 'next/font/google';
 
 import { Header } from '../src/components/header';
 import { ThemeProvider } from '../src/components/theme-provider';
+import { SidebarNav } from './_components/sidebar-nav';
 
 const fontSans = FontSans({
   subsets: ['latin'],
@@ -51,8 +52,11 @@ export default function RootLayout({
           disableTransitionOnChange
         >
           <Header />
-          <main className="flex justify-center mx-6 my-4">
-            <div className="max-w-2xl flex-1">{children}</div>
+          <main className="flex mx-auto max-w-screen-xl px-6 md:px-8">
+            <aside className="w-80 hidden lg:block flex-shrink-0">
+              <SidebarNav />
+            </aside>
+            <div className="flex-1">{children}</div>
           </main>
         </ThemeProvider>
         <Analytics />

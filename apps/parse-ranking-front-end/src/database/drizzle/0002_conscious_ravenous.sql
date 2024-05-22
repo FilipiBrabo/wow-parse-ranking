@@ -1,0 +1,1 @@
+ALTER TABLE "Expansion" ADD COLUMN "order" integer DEFAULT 0;

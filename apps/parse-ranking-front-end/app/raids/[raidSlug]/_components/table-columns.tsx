@@ -9,13 +9,13 @@ import {
 import { ColumnDef, createColumnHelper } from '@tanstack/react-table';
 import { startCase } from 'lodash';
 
-import { CharacterLink } from '../../../src/components/character-link';
-import { GuildLink } from '../../../src/components/guild-link';
-import { SpecIcon } from '../../../src/components/SpecIcon';
-import { RouterOutput } from '../../../src/server';
-import { getRankColor } from '../../../src/utils/getRankColor';
+import { CharacterLink } from '../../../../src/components/character-link';
+import { GuildLink } from '../../../../src/components/guild-link';
+import { SpecIcon } from '../../../../src/components/SpecIcon';
+import { RouterOutput } from '../../../../src/server';
+import { getRankColor } from '../../../../src/utils/getRankColor';
 
-type Character = RouterOutput['rank']['list']['items'][number];
+type Character = RouterOutput['rank']['getRanks']['items'][number];
 
 const columnHelper = createColumnHelper<Character>();
 
@@ -64,9 +64,10 @@ export const columns = [
     header: () => <span>Guild</span>,
     cell: ({ getValue, row }) => {
       const guildName = getValue();
+      const guildId = row.original.guildId;
 
-      if (!guildName) return 'Sem guild';
-      return <GuildLink guildName={guildName} guildId={row.original.guildId} />;
+      if (!guildName || !guildId) return 'Sem guild';
+      return <GuildLink guildName={guildName} guildId={guildId} />;
     },
     minSize: 250,
   }),
