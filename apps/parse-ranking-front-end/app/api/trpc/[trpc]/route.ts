@@ -1,26 +1,13 @@
-// const handler = (req: Request) =>
-//   fetchRequestHandler({
-//     endpoint: '/api/trpc',
-//     req,
-//     router: appRouter,
-//     createContext: () => ({}),
-//   });
-// export const dynamic = 'force-dynamic';
+import { fetchRequestHandler } from '@trpc/server/adapters/fetch';
 
-// export async function GET(req: Request) {
-//   return fetchRequestHandler({
-//     endpoint: '/api/trpc',
-//     req,
-//     router: appRouter,
-//     createContext: () => ({}),
-//   });
-// }
+import { appRouter } from '../../../../src/server';
 
-// export async function POST(req: Request) {
-//   return fetchRequestHandler({
-//     endpoint: '/api/trpc',
-//     req,
-//     router: appRouter,
-//     createContext: () => ({}),
-//   });
-// }
+const handler = (req: Request) =>
+  fetchRequestHandler({
+    endpoint: '/api/trpc',
+    req,
+    router: appRouter,
+    createContext: () => ({}),
+  });
+
+export { handler as GET, handler as POST };
