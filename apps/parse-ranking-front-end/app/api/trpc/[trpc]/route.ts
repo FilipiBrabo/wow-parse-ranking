@@ -1,3 +1,7 @@
+import { fetchRequestHandler } from '@trpc/server/adapters/fetch';
+
+import { appRouter } from '../../../../src/server';
+
 // const handler = (req: Request) =>
 //   fetchRequestHandler({
 //     endpoint: '/api/trpc',
@@ -6,10 +10,20 @@
 //     createContext: () => ({}),
 //   });
 
-import { NextResponse } from 'next/server';
+export async function GET(req: Request) {
+  fetchRequestHandler({
+    endpoint: '/api/trpc',
+    req,
+    router: appRouter,
+    createContext: () => ({}),
+  });
+}
 
-// export { handler as GET, handler as POST };
-
-export async function GET() {
-  return new NextResponse('Hello World');
+export async function POST(req: Request) {
+  fetchRequestHandler({
+    endpoint: '/api/trpc',
+    req,
+    router: appRouter,
+    createContext: () => ({}),
+  });
 }
