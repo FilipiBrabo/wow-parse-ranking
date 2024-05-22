@@ -15,16 +15,16 @@ const nextConfig = {
 
   async redirects() {
     return [
-      // {
-      //   source: '/ranks',
-      //   destination: '/raids/icecrown-citadel',
-      //   permanent: true,
-      // },
-      // {
-      //   source: '/',
-      //   destination: '/raids/icecrown-citadel',
-      //   permanent: true,
-      // },
+      {
+        source: '/ranks',
+        destination: '/raids/icecrown-citadel',
+        permanent: true,
+      },
+      {
+        source: '/',
+        destination: '/raids/icecrown-citadel',
+        permanent: true,
+      },
     ];
   },
   compiler: {
