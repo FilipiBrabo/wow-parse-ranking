@@ -2,9 +2,7 @@
   "name": "@wow-parse-ranking/source",
   "version": "0.0.0",
   "license": "MIT",
-  "scripts": {
-    "postinstall": "cd ./apps/parse-ranking-back-end && npx prisma generate"
-  },
+  "scripts": {},
   "private": true,
   "dependencies": {
     "@apollo/client": "^3.8.1",
