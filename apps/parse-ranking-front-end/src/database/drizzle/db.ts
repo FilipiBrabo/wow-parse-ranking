@@ -1,24 +1,16 @@
-import { drizzle } from 'drizzle-orm/node-postgres';
-import { Client } from 'pg';
+import { drizzle } from 'drizzle-orm/postgres-js';
+import postgres from 'postgres';
 import { z } from 'zod';
 
 import * as schema from './schema';
 
 const envSchema = z.object({
   DATABASE_URL: z.string(),
-  DB_PORT: z.coerce.number(),
-  DB_USERNAME: z.string(),
-  DB_PASSWORD: z.string(),
-  DB_NAME: z.string(),
 });
 
 const env = envSchema.parse(process.env);
 
-export const client = new Client({
-  connectionString: env.DATABASE_URL,
-});
-
-await client.connect();
+const client = postgres(env.DATABASE_URL);
 
 // { schema } is used for relational queries
 export const db = drizzle(client, { schema });
