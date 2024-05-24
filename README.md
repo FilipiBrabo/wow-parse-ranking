@@ -6,26 +6,26 @@ WoW Parse Rank is a project dedicated to ranking Brazilian players of World of W
 
 ## Project Structure
 
-The project is organized as a monorepo using [Nx](https://nx.dev/), including a backend application and a frontend.
+The project is organized as a monorepo using [Nx](https://nx.dev/), including a backend and a frontend application.
 
 ### Backend
 
-The backend application is built with [NestJS](https://nestjs.com/) and uses [Prisma](https://www.prisma.io/) to interact with a PostgreSQL database. To facilitate environment setup, a Docker Compose file is available to start the PostgreSQL database, along with a seed file to populate it with initial data.
+Built with [NestJS](https://nestjs.com/) and uses [Prisma](https://www.prisma.io/) to interact with a PostgreSQL database. To facilitate environment setup, a Docker Compose file is available to start the PostgreSQL database, along with a seed file to populate it with initial data.
 
 #### Main Technologies:
 - [NestJS](https://nestjs.com/)
 - [Prisma](https://www.prisma.io/)
 - [PostgreSQL](https://www.postgresql.org/)
-- [Docker Compose](https://docs.docker.com/compose/)
+- [Docker](https://docs.docker.com/)
 
 #### Features:
 - Retrieval and filtering of data from the Warcraft Logs API
 - Ranking of players
-- Provision of results through an endpoint
+- Provision of results through endpoints
 
 ### Frontend
 
-The frontend application is developed using Next.js in conjunction with ShadcnUI. Its main function is to display the ranked data provided by the backend.
+Developed using Next.js in conjunction with ShadcnUI. Its main function is to display the ranked data provided by the backend.
 
 #### Main Technologies:
 - [Next.js](https://nextjs.org/)
