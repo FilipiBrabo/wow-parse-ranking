@@ -92,7 +92,10 @@ export const character = pgTable(
   },
   (table) => {
     return {
-      nameKey: uniqueIndex('Character_name_key').on(table.name),
+      nameServerIdx: uniqueIndex('name_server_idx').on(
+        table.name,
+        table.serverSlug
+      ),
       wclIdKey: uniqueIndex('Character_wclId_key').on(table.wclId),
     };
   }
@@ -103,7 +106,8 @@ export const raid = pgTable(
   {
     id: serial('id').primaryKey().notNull(),
     name: text('name').notNull(),
-    partition: integer('partition').notNull(),
+    partitions: integer('partitions').array(),
+    activePartition: integer('active_partition').notNull(),
     slug: text('slug'),
     expansionId: integer('expansionId'),
   },

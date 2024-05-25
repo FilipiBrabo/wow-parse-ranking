@@ -36,6 +36,20 @@
       "when": 1715910206281,
       "tag": "0004_soft_dakota_north",
       "breakpoints": true
+    },
+    {
+      "idx": 5,
+      "version": "6",
+      "when": 1716599323006,
+      "tag": "0005_ancient_stryfe",
+      "breakpoints": true
+    },
+    {
+      "idx": 6,
+      "version": "6",
+      "when": 1716601939209,
+      "tag": "0006_wise_demogoblin",
+      "breakpoints": true
     }
   ]
 }

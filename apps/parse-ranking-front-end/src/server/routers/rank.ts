@@ -57,7 +57,7 @@ export const rankRouter = router({
           .from(ranking)
           .innerJoin(encounter, eq(ranking.encounterId, encounter.id))
           .innerJoin(character, eq(ranking.characterId, character.id))
-          .leftJoin(raid, eq(raid.partition, ranking.partition))
+          .leftJoin(raid, eq(raid.activePartition, ranking.partition))
           .groupBy(
             ({
               spec,
@@ -89,7 +89,7 @@ export const rankRouter = router({
               input.guildId ? eq(guild.id, input.guildId) : undefined,
               input.partition
                 ? eq(ranking.partition, input.partition)
-                : eq(raid.partition, ranking.partition)
+                : eq(raid.activePartition, ranking.partition)
             )
           )
       );
