@@ -1,1 +1,1 @@
-ALTER TABLE "Raid" ADD COLUMN "slug" text;
+ALTER TABLE "Raid" ADD COLUMN IF NOT EXISTS "slug" text;
