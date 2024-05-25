@@ -110,6 +110,7 @@ export const raid = pgTable(
     activePartition: integer('active_partition').notNull(),
     slug: text('slug'),
     expansionId: integer('expansionId'),
+    isActive: boolean('is_active').notNull().default(false),
   },
   (table) => {
     return {

@@ -1,0 +1,536 @@
+{
+  "id": "d4a07f55-5700-4034-a0f0-6a13796b6d5b",
+  "prevId": "0512c0dd-83bf-4163-9d84-fba7a3ed7b2c",
+  "version": "6",
+  "dialect": "postgresql",
+  "tables": {
+    "public.Character": {
+      "name": "Character",
+      "schema": "",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "serial",
+          "primaryKey": true,
+          "notNull": true
+        },
+        "name": {
+          "name": "name",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "wclId": {
+          "name": "wclId",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "guildId": {
+          "name": "guildId",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "class": {
+          "name": "class",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "serverRegion": {
+          "name": "serverRegion",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "serverSlug": {
+          "name": "serverSlug",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "lastRankUpdate": {
+          "name": "lastRankUpdate",
+          "type": "timestamp(3)",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "isActive": {
+          "name": "isActive",
+          "type": "boolean",
+          "primaryKey": false,
+          "notNull": true,
+          "default": true
+        },
+        "isBrazilian": {
+          "name": "isBrazilian",
+          "type": "boolean",
+          "primaryKey": false,
+          "notNull": true,
+          "default": true
+        }
+      },
+      "indexes": {
+        "name_server_idx": {
+          "name": "name_server_idx",
+          "columns": [
+            "name",
+            "serverSlug"
+          ],
+          "isUnique": true
+        },
+        "Character_wclId_key": {
+          "name": "Character_wclId_key",
+          "columns": [
+            "wclId"
+          ],
+          "isUnique": true
+        }
+      },
+      "foreignKeys": {
+        "Character_guildId_Guild_id_fk": {
+          "name": "Character_guildId_Guild_id_fk",
+          "tableFrom": "Character",
+          "tableTo": "Guild",
+          "columnsFrom": [
+            "guildId"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "set null",
+          "onUpdate": "cascade"
+        }
+      },
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {}
+    },
+    "public.Encounter": {
+      "name": "Encounter",
+      "schema": "",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "serial",
+          "primaryKey": true,
+          "notNull": true
+        },
+        "name": {
+          "name": "name",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "wclId": {
+          "name": "wclId",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "size": {
+          "name": "size",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "difficulty": {
+          "name": "difficulty",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "isActive": {
+          "name": "isActive",
+          "type": "boolean",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "raidId": {
+          "name": "raidId",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true
+        }
+      },
+      "indexes": {
+        "Encounter_name_key": {
+          "name": "Encounter_name_key",
+          "columns": [
+            "name"
+          ],
+          "isUnique": true
+        },
+        "Encounter_wclId_key": {
+          "name": "Encounter_wclId_key",
+          "columns": [
+            "wclId"
+          ],
+          "isUnique": true
+        }
+      },
+      "foreignKeys": {
+        "Encounter_raidId_Raid_id_fk": {
+          "name": "Encounter_raidId_Raid_id_fk",
+          "tableFrom": "Encounter",
+          "tableTo": "Raid",
+          "columnsFrom": [
+            "raidId"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "restrict",
+          "onUpdate": "cascade"
+        }
+      },
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {}
+    },
+    "public.Expansion": {
+      "name": "Expansion",
+      "schema": "",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "serial",
+          "primaryKey": true,
+          "notNull": true
+        },
+        "name": {
+          "name": "name",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "order": {
+          "name": "order",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": false,
+          "default": 0
+        },
+        "slug": {
+          "name": "slug",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {},
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {}
+    },
+    "public.Guild": {
+      "name": "Guild",
+      "schema": "",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "serial",
+          "primaryKey": true,
+          "notNull": true
+        },
+        "name": {
+          "name": "name",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "wclId": {
+          "name": "wclId",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "serverRegion": {
+          "name": "serverRegion",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "serverSlug": {
+          "name": "serverSlug",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "lastCharacterUpdate": {
+          "name": "lastCharacterUpdate",
+          "type": "timestamp(3)",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "isBrazilian": {
+          "name": "isBrazilian",
+          "type": "boolean",
+          "primaryKey": false,
+          "notNull": true,
+          "default": false
+        }
+      },
+      "indexes": {
+        "Guild_name_key": {
+          "name": "Guild_name_key",
+          "columns": [
+            "name"
+          ],
+          "isUnique": true
+        },
+        "Guild_wclId_key": {
+          "name": "Guild_wclId_key",
+          "columns": [
+            "wclId"
+          ],
+          "isUnique": true
+        }
+      },
+      "foreignKeys": {},
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {}
+    },
+    "public._prisma_migrations": {
+      "name": "_prisma_migrations",
+      "schema": "",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "varchar(36)",
+          "primaryKey": true,
+          "notNull": true
+        },
+        "checksum": {
+          "name": "checksum",
+          "type": "varchar(64)",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "finished_at": {
+          "name": "finished_at",
+          "type": "timestamp with time zone",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "migration_name": {
+          "name": "migration_name",
+          "type": "varchar(255)",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "logs": {
+          "name": "logs",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "rolled_back_at": {
+          "name": "rolled_back_at",
+          "type": "timestamp with time zone",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "started_at": {
+          "name": "started_at",
+          "type": "timestamp with time zone",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "now()"
+        },
+        "applied_steps_count": {
+          "name": "applied_steps_count",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true,
+          "default": 0
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {},
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {}
+    },
+    "public.Raid": {
+      "name": "Raid",
+      "schema": "",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "serial",
+          "primaryKey": true,
+          "notNull": true
+        },
+        "name": {
+          "name": "name",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "partitions": {
+          "name": "partitions",
+          "type": "integer[]",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "active_partition": {
+          "name": "active_partition",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "slug": {
+          "name": "slug",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "expansionId": {
+          "name": "expansionId",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "is_active": {
+          "name": "is_active",
+          "type": "boolean",
+          "primaryKey": false,
+          "notNull": true,
+          "default": false
+        }
+      },
+      "indexes": {
+        "Raid_name_key": {
+          "name": "Raid_name_key",
+          "columns": [
+            "name"
+          ],
+          "isUnique": true
+        }
+      },
+      "foreignKeys": {},
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {}
+    },
+    "public.Ranking": {
+      "name": "Ranking",
+      "schema": "",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "serial",
+          "primaryKey": true,
+          "notNull": true
+        },
+        "characterId": {
+          "name": "characterId",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "todayPercent": {
+          "name": "todayPercent",
+          "type": "double precision",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "lockedIn": {
+          "name": "lockedIn",
+          "type": "boolean",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "spec": {
+          "name": "spec",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "reportCode": {
+          "name": "reportCode",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "duration": {
+          "name": "duration",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "amount": {
+          "name": "amount",
+          "type": "double precision",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "encounterId": {
+          "name": "encounterId",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "partition": {
+          "name": "partition",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "fightId": {
+          "name": "fightId",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": false
+        }
+      },
+      "indexes": {
+        "Ranking_characterId_encounterId_spec_partition_key": {
+          "name": "Ranking_characterId_encounterId_spec_partition_key",
+          "columns": [
+            "characterId",
+            "spec",
+            "encounterId",
+            "partition"
+          ],
+          "isUnique": true
+        }
+      },
+      "foreignKeys": {
+        "Ranking_characterId_Character_id_fk": {
+          "name": "Ranking_characterId_Character_id_fk",
+          "tableFrom": "Ranking",
+          "tableTo": "Character",
+          "columnsFrom": [
+            "characterId"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "restrict",
+          "onUpdate": "cascade"
+        },
+        "Ranking_encounterId_Encounter_id_fk": {
+          "name": "Ranking_encounterId_Encounter_id_fk",
+          "tableFrom": "Ranking",
+          "tableTo": "Encounter",
+          "columnsFrom": [
+            "encounterId"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "restrict",
+          "onUpdate": "cascade"
+        }
+      },
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {}
+    }
+  },
+  "enums": {},
+  "schemas": {},
+  "_meta": {
+    "columns": {},
+    "schemas": {},
+    "tables": {}
+  }
+}
