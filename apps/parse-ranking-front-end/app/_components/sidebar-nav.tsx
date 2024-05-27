@@ -1,4 +1,4 @@
-import { serverClient } from '../_trpc/serverClient';
+import { serverClient } from '../_trpc/server-client';
 import {
   ExpandableNavItem,
   ExpandableNavItems,

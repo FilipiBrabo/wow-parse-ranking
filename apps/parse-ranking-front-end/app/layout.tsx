@@ -8,6 +8,7 @@ import { Inter as FontSans } from 'next/font/google';
 import { Header } from '../src/components/header';
 import { ThemeProvider } from '../src/components/theme-provider';
 import { SidebarNav } from './_components/sidebar-nav';
+import { TRPCProvider } from './_trpc/trpc-provider';
 
 const fontSans = FontSans({
   subsets: ['latin'],
@@ -46,19 +47,21 @@ export default function RootLayout({
           fontSans.variable
         )}
       >
-        <ThemeProvider
-          attribute="class"
-          defaultTheme="dark"
-          disableTransitionOnChange
-        >
-          <Header />
-          <main className="flex mx-auto max-w-screen-xl px-6 md:px-8">
-            <aside className="w-80 hidden lg:block flex-shrink-0">
-              <SidebarNav />
-            </aside>
-            <div className="flex-1">{children}</div>
-          </main>
-        </ThemeProvider>
+        <TRPCProvider>
+          <ThemeProvider
+            attribute="class"
+            defaultTheme="dark"
+            disableTransitionOnChange
+          >
+            <Header />
+            <main className="flex mx-auto max-w-screen-xl px-6 md:px-8">
+              <aside className="w-80 hidden lg:block flex-shrink-0">
+                <SidebarNav />
+              </aside>
+              <div className="flex-1">{children}</div>
+            </main>
+          </ThemeProvider>
+        </TRPCProvider>
         <Analytics />
       </body>
     </html>

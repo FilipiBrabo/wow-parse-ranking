@@ -5,7 +5,7 @@ import {
   ExpandableNavItem,
   NavItem,
 } from '../../app/_components/nav-bar/nav-item';
-import { serverClient } from '../../app/_trpc/serverClient';
+import { serverClient } from '../../app/_trpc/server-client';
 import { MobileNav } from './mobile-nav';
 import { NavLink } from './nav-item';
 import { SiteLogo } from './site-logo';
