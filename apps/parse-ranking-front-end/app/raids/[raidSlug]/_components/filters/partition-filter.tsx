@@ -1,3 +1,5 @@
+'use client';
+
 import {
   Select,
   SelectContent,
@@ -5,25 +7,30 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@parse-ranking/shadcn-ui';
-import { usePathname, useRouter, useSearchParams } from 'next/navigation';
+import {
+  useParams,
+  usePathname,
+  useRouter,
+  useSearchParams,
+} from 'next/navigation';
 
-export type Partition = {
-  label: string;
-  value: number;
-};
+import { trpc } from '../../../../_trpc/client';
 
-type PartitionFilterProps = {
-  partitions: Partition[];
-};
-
-export function PartitionFilter({ partitions }: PartitionFilterProps) {
+export function PartitionFilter() {
+  const params = useParams<{ raidSlug: string }>();
   const searchParams = useSearchParams();
   const pathName = usePathname();
   const router = useRouter();
 
+  const { data: partitions } = trpc.raids.listPartitions.useQuery({
+    raidSlug: params.raidSlug,
+  });
+
   const selectedPartition =
     searchParams.get('partition') ??
-    String(Math.max(...partitions.map((p) => p.value)));
+    partitions?.find((p) => p.isCurrent)?.wclId.toString();
+
+  console.log({ selectedPartition, partitions });
 
   const handleSelectPartition = (partition?: string) => {
     if (!partition) return;
@@ -34,6 +41,10 @@ export function PartitionFilter({ partitions }: PartitionFilterProps) {
 
     router.push(pathName + '?' + newSearchParams.toString());
   };
+
+  if (!partitions?.length) {
+    return null;
+  }
 
   return (
     <Select
@@ -53,9 +64,9 @@ export function PartitionFilter({ partitions }: PartitionFilterProps) {
           };
         }}
       >
-        {partitions.map((partition) => (
-          <SelectItem key={partition.value} value={String(partition.value)}>
-            {partition.label}
+        {partitions?.map((partition) => (
+          <SelectItem key={partition.wclId} value={String(partition.wclId)}>
+            {partition.name}
           </SelectItem>
         ))}
       </SelectContent>

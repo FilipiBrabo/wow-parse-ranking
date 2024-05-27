@@ -6,6 +6,7 @@ import {
   character,
   encounter,
   guild,
+  partition,
   raid,
   ranking,
 } from '../../database/drizzle/schema';
@@ -43,7 +44,7 @@ export const rankRouter = router({
             characterLastRankUpdate: character.lastRankUpdate,
             characterGuildId: character.guildId,
             characterClass: character.class,
-
+            partition: ranking.partition,
             spec: ranking.spec,
             avgTodayPercent:
               sql`SUM(CAST(${ranking.todayPercent} AS NUMERIC)) / ${encounterIds.length}`.as(
@@ -57,11 +58,10 @@ export const rankRouter = router({
           .from(ranking)
           .innerJoin(encounter, eq(ranking.encounterId, encounter.id))
           .innerJoin(character, eq(ranking.characterId, character.id))
-          .leftJoin(raid, eq(raid.activePartition, ranking.partition))
+          .innerJoin(partition, eq(ranking.partition, partition.wclId))
           .groupBy(
             ({
               spec,
-
               characterId,
               characterName,
               characterServerRegion,
@@ -69,6 +69,7 @@ export const rankRouter = router({
               characterLastRankUpdate,
               characterGuildId,
               characterClass,
+              partition,
             }) => [
               spec,
               characterId,
@@ -78,6 +79,7 @@ export const rankRouter = router({
               characterLastRankUpdate,
               characterGuildId,
               characterClass,
+              partition,
             ]
           )
           .where(
@@ -87,9 +89,7 @@ export const rankRouter = router({
               inArray(encounter.id, encounterIds),
               input.class ? ilike(character.class, input.class) : undefined,
               input.guildId ? eq(guild.id, input.guildId) : undefined,
-              input.partition
-                ? eq(ranking.partition, input.partition)
-                : eq(raid.activePartition, ranking.partition)
+              input.partition ? eq(partition.wclId, input.partition) : undefined
             )
           )
       );

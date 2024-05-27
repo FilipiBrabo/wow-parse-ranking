@@ -1,6 +1,6 @@
 import { z } from 'zod';
 
-import { serverClient } from '../../_trpc/serverClient';
+import { serverClient } from '../../_trpc/server-client';
 import { PAGINATION_LIMIT } from '../../constants';
 import { RaidRanksTable } from './_components/raid-ranks-table';
 import { columns } from './_components/table-columns';

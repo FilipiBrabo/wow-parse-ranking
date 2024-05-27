@@ -1,6 +1,7 @@
 import { inferRouterInputs, inferRouterOutputs } from '@trpc/server';
 
 import { expansionsRouter } from './routers/expansions';
+import { raidsRouter } from './routers/raids';
 import { rankRouter } from './routers/rank';
 import { createCallerFactory, publicProcedure, router } from './trpc';
 
@@ -8,6 +9,7 @@ export const appRouter = router({
   hello: publicProcedure.query(() => 'Hello from tRPC'),
   rank: rankRouter,
   expansions: expansionsRouter,
+  raids: raidsRouter,
 });
 
 export const createCaller = createCallerFactory(appRouter);

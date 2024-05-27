@@ -4,21 +4,10 @@ import Link from 'next/link';
 import { usePathname, useSearchParams } from 'next/navigation';
 
 import { ClassFilter } from './filters/class-filter';
-import { Partition, PartitionFilter } from './filters/partition-filter';
+import { PartitionFilter } from './filters/partition-filter';
 import { SpecFilter } from './filters/spec-filter';
 
-type RankFilterProps = {
-  partitions?: Partition[];
-};
-
-// TODO: this should come from api
-const ICC_PARTITIONS: Partition[] = [
-  { label: 'P4', value: 4 },
-  { label: 'P4 (Buff)', value: 5 },
-  { label: 'P4.5', value: 6 },
-];
-
-export function RankFilters({ partitions = ICC_PARTITIONS }: RankFilterProps) {
+export function RankFilters() {
   const searchParams = useSearchParams();
   const pathName = usePathname();
 
@@ -45,15 +34,9 @@ export function RankFilters({ partitions = ICC_PARTITIONS }: RankFilterProps) {
         </Button>
       </div>
       <div className="flex flex-col gap-2 md:flex-row md:gap-4">
-        <div className="flex items-center gap-2">
-          <PartitionFilter partitions={partitions} />
-        </div>
-        <div className="flex items-center gap-2">
-          <ClassFilter />
-        </div>
-        <div className="flex items-center gap-2">
-          <SpecFilter />
-        </div>
+        <PartitionFilter />
+        <ClassFilter />
+        <SpecFilter />
       </div>
     </div>
   );

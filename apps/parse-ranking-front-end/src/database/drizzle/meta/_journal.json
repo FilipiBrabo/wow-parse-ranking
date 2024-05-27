@@ -57,6 +57,13 @@
       "when": 1716602362483,
       "tag": "0007_lying_war_machine",
       "breakpoints": true
+    },
+    {
+      "idx": 8,
+      "version": "6",
+      "when": 1716606386821,
+      "tag": "0008_silly_nova",
+      "breakpoints": true
     }
   ]
 }
