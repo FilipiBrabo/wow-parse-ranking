@@ -3,12 +3,18 @@
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { httpBatchLink } from '@trpc/client';
 import { ReactNode, useState } from 'react';
+import { z } from 'zod';
 
 import { trpc } from './client';
 
 interface TRPCProviderProps {
   children: ReactNode;
 }
+const env = z
+  .object({
+    NEXT_PUBLIC_API_URL: z.string(),
+  })
+  .parse({ NEXT_PUBLIC_API_URL: process.env.NEXT_PUBLIC_API_URL });
 
 export function TRPCProvider({ children }: TRPCProviderProps) {
   const [queryClient] = useState(() => new QueryClient());
@@ -16,7 +22,7 @@ export function TRPCProvider({ children }: TRPCProviderProps) {
     trpc.createClient({
       links: [
         httpBatchLink({
-          url: 'http://localhost:3000/api/trpc',
+          url: env.NEXT_PUBLIC_API_URL,
         }),
       ],
     })

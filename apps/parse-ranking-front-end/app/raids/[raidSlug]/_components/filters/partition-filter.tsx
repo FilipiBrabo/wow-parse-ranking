@@ -30,8 +30,6 @@ export function PartitionFilter() {
     searchParams.get('partition') ??
     partitions?.find((p) => p.isCurrent)?.wclId.toString();
 
-  console.log({ selectedPartition, partitions });
-
   const handleSelectPartition = (partition?: string) => {
     if (!partition) return;
 
