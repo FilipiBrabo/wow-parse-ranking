@@ -5,7 +5,8 @@
   "scripts": {},
   "private": true,
   "dependencies": {
-    "@apollo/client": "^3.8.1",
+    "@apollo/client": "3.10.4",
+    "@apollo/experimental-nextjs-app-support": "^0.11.0",
     "@icons-pack/react-simple-icons": "^9.3.0",
     "@nestjs/common": "^10.0.2",
     "@nestjs/core": "^10.0.2",

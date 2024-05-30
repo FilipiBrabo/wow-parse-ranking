@@ -1,5 +1,6 @@
 import { inferRouterInputs, inferRouterOutputs } from '@trpc/server';
 
+import { charactersRouter } from './routers/characters';
 import { expansionsRouter } from './routers/expansions';
 import { raidsRouter } from './routers/raids';
 import { rankRouter } from './routers/rank';
@@ -10,6 +11,7 @@ export const appRouter = router({
   rank: rankRouter,
   expansions: expansionsRouter,
   raids: raidsRouter,
+  characters: charactersRouter,
 });
 
 export const createCaller = createCallerFactory(appRouter);
