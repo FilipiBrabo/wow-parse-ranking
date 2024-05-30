@@ -53,7 +53,7 @@ export function PartitionFilter() {
         <SelectValue placeholder="Partição" />
       </SelectTrigger>
       <SelectContent
-        // Workaround to stop touch event to leak to underneath elements
+        // Workaround to stop touch event leaking to underneath elements
         // https://github.com/radix-ui/primitives/issues/1658#issuecomment-1664079551
         ref={(ref) => {
           if (!ref) return;
