@@ -55,8 +55,8 @@ export const rankRouter = router({
               ),
           })
           .from(ranking)
-          .leftJoin(encounter, eq(ranking.encounterId, encounter.id))
-          .leftJoin(character, eq(ranking.characterId, character.id))
+          .innerJoin(encounter, eq(ranking.encounterId, encounter.id))
+          .innerJoin(character, eq(ranking.characterId, character.id))
           .groupBy(
             ({
               spec,
