@@ -6,7 +6,6 @@ import {
   character,
   encounter,
   guild,
-  partition,
   raid,
   ranking,
 } from '../../database/drizzle/schema';
@@ -56,9 +55,8 @@ export const rankRouter = router({
               ),
           })
           .from(ranking)
-          .innerJoin(encounter, eq(ranking.encounterId, encounter.id))
-          .innerJoin(character, eq(ranking.characterId, character.id))
-          .innerJoin(partition, eq(ranking.partition, partition.wclId))
+          .leftJoin(encounter, eq(ranking.encounterId, encounter.id))
+          .leftJoin(character, eq(ranking.characterId, character.id))
           .groupBy(
             ({
               spec,
@@ -89,7 +87,9 @@ export const rankRouter = router({
               inArray(encounter.id, encounterIds),
               input.class ? ilike(character.class, input.class) : undefined,
               input.guildId ? eq(guild.id, input.guildId) : undefined,
-              input.partition ? eq(partition.wclId, input.partition) : undefined
+              input.partition
+                ? eq(ranking.partition, input.partition)
+                : undefined
             )
           )
       );
