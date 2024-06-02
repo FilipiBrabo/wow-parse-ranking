@@ -42,7 +42,7 @@ async function getCharactersToUpdate() {
       and(eq(dbCharacter.isActive, true), eq(dbCharacter.isBrazilian, true))
     )
     .orderBy(sql`${dbCharacter.lastRankUpdate} asc nulls first`)
-    .limit(1);
+    .limit(15);
 }
 
 async function getActiveEncounters() {
