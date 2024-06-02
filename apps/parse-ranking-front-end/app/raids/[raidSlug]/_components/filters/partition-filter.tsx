@@ -40,7 +40,7 @@ export function PartitionFilter() {
     router.push(pathName + '?' + newSearchParams.toString());
   };
 
-  if (!partitions?.length) {
+  if (!partitions?.length || partitions.length === 1) {
     return null;
   }
 
