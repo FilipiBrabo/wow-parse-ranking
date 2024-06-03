@@ -54,7 +54,7 @@ export default function RootLayout({
             disableTransitionOnChange
           >
             <Header />
-            <main className="flex mx-auto max-w-screen-xl px-6 md:px-8">
+            <main className="flex mx-auto max-w-screen-xl px-6 md:px-8 py-2">
               <aside className="w-80 hidden lg:block flex-shrink-0">
                 <SidebarNav />
               </aside>
