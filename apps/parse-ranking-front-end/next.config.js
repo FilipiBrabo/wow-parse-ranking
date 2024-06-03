@@ -17,12 +17,12 @@ const nextConfig = {
     return [
       {
         source: '/ranks',
-        destination: '/raids/icecrown-citadel',
+        destination: '/',
         permanent: true,
       },
       {
         source: '/',
-        destination: '/raids/icecrown-citadel',
+        destination: '/raids/blackwing-descent',
         permanent: true,
       },
     ];
