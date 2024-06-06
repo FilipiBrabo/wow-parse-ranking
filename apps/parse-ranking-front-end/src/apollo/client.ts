@@ -1,7 +1,7 @@
 import { ApolloClient, HttpLink, InMemoryCache } from '@apollo/client';
 import { registerApolloClient } from '@apollo/experimental-nextjs-app-support';
 
-export const { getClient } = registerApolloClient(() => {
+export const { getClient: getApolloClient } = registerApolloClient(() => {
   return new ApolloClient({
     link: new HttpLink({
       uri: 'https://classic.warcraftlogs.com/api/v2/client',

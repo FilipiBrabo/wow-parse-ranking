@@ -1,6 +1,6 @@
 import { and, eq, sql } from 'drizzle-orm';
 
-import { getClient } from '../../apollo/client';
+import { getApolloClient } from '../../apollo/client';
 import { db } from '../../database/drizzle/db';
 import {
   character as dbCharacter,
@@ -128,7 +128,7 @@ async function fetchWclCharacterRankings(
     encounters
   );
 
-  const apolloClient = getClient();
+  const apolloClient = getApolloClient();
   // TODO: handle error
   const {
     data: {
