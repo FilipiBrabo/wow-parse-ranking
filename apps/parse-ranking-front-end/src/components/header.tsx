@@ -35,11 +35,13 @@ export async function Header() {
 
   return (
     <header className="sticky top-0 bg-background z-50 w-full shadow-sm">
-      <div className="container flex items-center justify-between max-w-screen-xl mx-auto h-16 px-6 md:px-8">
+      <div className="container flex items-center gap-8 justify-between max-w-screen-xl mx-auto h-16 px-6 lg:px-8">
         <MobileNav items={items} />
         <Link href="/" className="flex items-center gap-1">
           <SiteLogo />
-          <div className="font-bold">Ranking Brasileiro</div>
+          <span className="font-bold whitespace-nowrap">
+            Ranking Brasileiro
+          </span>
         </Link>
 
         <div className="flex  gap-2 items-center">

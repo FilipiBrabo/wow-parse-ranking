@@ -20,7 +20,7 @@ export async function SidebarNav() {
   );
 
   return (
-    <div className="pr-8">
+    <div>
       <ExpandableNavItems items={navItems} />
     </div>
   );
