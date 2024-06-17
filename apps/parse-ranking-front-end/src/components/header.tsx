@@ -34,12 +34,12 @@ export async function Header() {
   );
 
   return (
-    <header className="sticky top-0 bg-background z-50 w-full shadow-sm">
-      <div className="container flex items-center gap-8 justify-between max-w-screen-xl mx-auto h-16 px-6 lg:px-8">
+    <header className="sticky top-0 bg-background z-50 shadow-sm w-screen">
+      <div className="container flex items-center justify-between max-w-screen-xl mx-auto h-16 px-4 sm:px-6 lg:px-8">
         <MobileNav items={items} />
         <Link href="/" className="flex items-center gap-1">
           <SiteLogo />
-          <span className="font-bold whitespace-nowrap">
+          <span className="hidden md:block font-bold whitespace-nowrap">
             Ranking Brasileiro
           </span>
         </Link>

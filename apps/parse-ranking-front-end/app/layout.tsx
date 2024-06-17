@@ -54,11 +54,13 @@ export default function RootLayout({
             disableTransitionOnChange
           >
             <Header />
-            <main className="flex mx-auto max-w-screen-xl py-2">
-              <aside className="w-80 hidden lg:block flex-shrink-0 pl-6 lg:pl-8">
+            <main className="max-w-screen-xl py-2 mx-auto">
+              <aside className="w-[18rem] hidden lg:block flex-shrink-0 pl-4 sm:pl-6 lg:pl-8 fixed overflow-y-auto bottom-0 right-auto top-16 stable-scrollbar-gutter px-2">
                 <SidebarNav />
               </aside>
-              <div className="flex-1 px-6 lg:px-8">{children}</div>
+              <div className="px-4 sm:px-6 lg:px-8 lg:pl-[20rem] h-full">
+                {children}
+              </div>
             </main>
           </ThemeProvider>
         </TRPCProvider>

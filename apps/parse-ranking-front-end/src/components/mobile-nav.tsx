@@ -31,7 +31,10 @@ export function MobileNav({ items }: MobileNavProps) {
           <Menu />
         </Button>
       </SheetTrigger>
-      <SheetContent side="left">
+      <SheetContent
+        side="left"
+        className="overflow-y-auto stable-scrollbar-gutter"
+      >
         <SheetTitle className="flex gap-2 items-center">
           <SiteLogo />
           Ranking Brasileiro
