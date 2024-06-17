@@ -27,7 +27,7 @@ export function MobileNav({ items }: MobileNavProps) {
   return (
     <Sheet open={isOpen} onOpenChange={setIsOpen}>
       <SheetTrigger asChild>
-        <Button className="lg:hidden justify-start" variant="ghost" size="icon">
+        <Button className="lg:hidden" variant="ghost" size="icon">
           <Menu />
         </Button>
       </SheetTrigger>
