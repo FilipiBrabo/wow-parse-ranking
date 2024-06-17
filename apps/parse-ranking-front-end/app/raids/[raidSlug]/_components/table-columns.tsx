@@ -38,7 +38,7 @@ export const columns = [
               </div>
             </TooltipTrigger>
             <TooltipContent>
-              <span>{startCase(`${row.original.class} - ${getValue()}`)}</span>
+              <span>{startCase(`${getValue()} ${row.original.class}`)}</span>
             </TooltipContent>
           </Tooltip>
         </TooltipProvider>
