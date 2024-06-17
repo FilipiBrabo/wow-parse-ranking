@@ -34,8 +34,8 @@ function LeafNavItem({ item, onClick }: LeafNavItemProps) {
     <Link
       href={item.to}
       className={cn(
-        'pl-2 text-base text-slate-400 hover:text-foreground',
-        isActive && 'text-blue-400 hover:text-blue-400'
+        'flex items-center px-3 h-9 rounded text-muted-foreground w-full hover:bg-muted hover:text-foreground',
+        isActive && 'bg-muted text-foreground'
       )}
       onClick={() => onClick?.()}
     >
@@ -72,13 +72,10 @@ export function ExpandableNavItems({
         if (isExpandable) {
           return (
             <AccordionItem key={item.title} value={item.title}>
-              <AccordionTrigger className="font-bold text-lg">
+              <AccordionTrigger className="font-bold text-md px-0 py-4">
                 {item.title}
               </AccordionTrigger>
-              <AccordionContent
-                className="text-lg font-semibold"
-                key={item.title}
-              >
+              <AccordionContent className="font-semibold pb-2" key={item.title}>
                 <ExpandableNavItems
                   items={item.items}
                   onItemClick={onItemClick}
@@ -89,7 +86,7 @@ export function ExpandableNavItems({
         }
 
         return (
-          <div key={item.title} className="mb-2 last:mb-0">
+          <div key={item.title} className="mb-1 last:mb-0 p-0">
             <LeafNavItem item={item} onClick={onItemClick} />
           </div>
         );
