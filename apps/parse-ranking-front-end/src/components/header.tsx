@@ -36,7 +36,9 @@ export async function Header() {
   return (
     <header className="sticky top-0 bg-background z-50 shadow-sm">
       <div className="container flex items-center justify-between max-w-screen-xl mx-auto h-16 px-4 sm:px-6 lg:px-8">
-        <MobileNav items={items} />
+        <div className="lg:hidden w-20">
+          <MobileNav items={items} />
+        </div>
         <Link href="/" className="flex items-center gap-1">
           <SiteLogo />
           <span className="hidden md:block font-bold whitespace-nowrap">
@@ -44,7 +46,7 @@ export async function Header() {
           </span>
         </Link>
 
-        <div className="flex  gap-2 items-center">
+        <div className="flex gap-2 items-center w-20">
           <nav className="flex items-center">
             {navItems.map((item) => (
               <NavLink key={item.href} href={item.href} icon={item.icon} />
