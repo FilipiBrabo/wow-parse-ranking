@@ -1,3 +1,5 @@
+'use client';
+
 import { Button } from '@parse-ranking/shadcn-ui';
 import { FilterX, SlidersHorizontal } from 'lucide-react';
 import Link from 'next/link';
