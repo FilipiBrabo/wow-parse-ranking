@@ -26,9 +26,7 @@ export function PartitionFilter() {
     raidSlug: params.raidSlug,
   });
 
-  const selectedPartition =
-    searchParams.get('partition') ??
-    partitions?.find((p) => p.isCurrent)?.wclId.toString();
+  const selectedPartition = searchParams.get('partition');
 
   const handleSelectPartition = (partition?: string) => {
     if (!partition) return;
