@@ -1,0 +1,1 @@
+DROP INDEX IF EXISTS "Guild_name_key";

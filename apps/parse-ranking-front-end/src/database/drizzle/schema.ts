@@ -43,7 +43,6 @@ export const guild = pgTable(
   },
   (table) => {
     return {
-      nameKey: uniqueIndex('Guild_name_key').on(table.name),
       wclIdKey: uniqueIndex('Guild_wclId_key').on(table.wclId),
     };
   }
