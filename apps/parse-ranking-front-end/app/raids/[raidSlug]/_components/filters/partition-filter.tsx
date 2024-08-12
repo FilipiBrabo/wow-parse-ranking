@@ -7,24 +7,20 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@parse-ranking/shadcn-ui';
-import {
-  useParams,
-  usePathname,
-  useRouter,
-  useSearchParams,
-} from 'next/navigation';
+import { usePathname, useRouter, useSearchParams } from 'next/navigation';
 
-import { trpc } from '../../../../_trpc/client';
+import { RouterOutput } from '../../../../../src/server';
 
-export function PartitionFilter() {
-  const params = useParams<{ raidSlug: string }>();
+export type Partition = RouterOutput['raids']['listPartitions'][0];
+
+interface PartitionFilterProps {
+  partitions: Partition[];
+}
+
+export function PartitionFilter({ partitions }: PartitionFilterProps) {
   const searchParams = useSearchParams();
   const pathName = usePathname();
   const router = useRouter();
-
-  const { data: partitions } = trpc.raids.listPartitions.useQuery({
-    raidSlug: params.raidSlug,
-  });
 
   const selectedPartition = searchParams.get('partition');
 

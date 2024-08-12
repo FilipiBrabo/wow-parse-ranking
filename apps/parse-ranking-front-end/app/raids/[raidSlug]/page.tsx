@@ -32,9 +32,13 @@ export default async function Raid({ searchParams, params }: PageProps) {
     raidSlug: params.raidSlug,
   });
 
+  const partitions = await serverClient.raids.listPartitions({
+    raidSlug: params.raidSlug,
+  });
+
   return (
     <div className="space-y-4">
-      <RankFilters />
+      <RankFilters partitions={partitions} />
       <Suspense key={JSON.stringify(searchParams)} fallback={<TableSkeleton />}>
         <Await promise={ranksPromise}>
           {(ranks) => <RaidRanksTable columns={columns} data={ranks} />}

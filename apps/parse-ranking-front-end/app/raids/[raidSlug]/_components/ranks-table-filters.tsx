@@ -6,10 +6,14 @@ import Link from 'next/link';
 import { usePathname, useSearchParams } from 'next/navigation';
 
 import { ClassFilter } from './filters/class-filter';
-import { PartitionFilter } from './filters/partition-filter';
+import { Partition, PartitionFilter } from './filters/partition-filter';
 import { SpecFilter } from './filters/spec-filter';
 
-export function RankFilters() {
+interface RankFiltersProps {
+  partitions: Partition[];
+}
+
+export function RankFilters({ partitions }: RankFiltersProps) {
   const searchParams = useSearchParams();
   const pathName = usePathname();
 
@@ -36,7 +40,7 @@ export function RankFilters() {
         </Button>
       </div>
       <div className="flex flex-col gap-2 md:flex-row md:gap-4">
-        <PartitionFilter />
+        <PartitionFilter partitions={partitions} />
         <ClassFilter />
         <SpecFilter />
       </div>
