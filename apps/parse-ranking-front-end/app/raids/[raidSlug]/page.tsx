@@ -10,10 +10,13 @@ import { columns } from './_components/table-columns';
 import { TableSkeleton } from './_components/table-skeleton';
 
 interface PageProps {
-  params: { raidSlug: string };
-  searchParams: { [key: string]: string | string[] | undefined };
+  params: Promise<{ raidSlug: string }>;
+  searchParams: Promise<{ [key: string]: string | string[] | undefined }>;
 }
-export default async function Raid({ searchParams, params }: PageProps) {
+
+export default async function Raid(props: PageProps) {
+  const params = await props.params;
+  const searchParams = await props.searchParams;
   const { page, ...filters } = searchParams;
 
   const offset = z.coerce
