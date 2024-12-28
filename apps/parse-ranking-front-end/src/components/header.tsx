@@ -1,4 +1,3 @@
-import { SiGithub } from '@icons-pack/react-simple-icons';
 import Link from 'next/link';
 
 import {
@@ -6,6 +5,7 @@ import {
   NavItem,
 } from '../../app/_components/nav-bar/nav-item';
 import { serverClient } from '../../app/_trpc/server-client';
+import { GithubIcon } from './github-icon';
 import { MobileNav } from './mobile-nav';
 import { NavLink } from './nav-item';
 import { SiteLogo } from './site-logo';
@@ -15,7 +15,7 @@ export async function Header() {
   const navItems = [
     {
       href: 'https://github.com/FilipiBrabo/wow-parse-ranking',
-      icon: <SiGithub size="20" />,
+      icon: <GithubIcon className="w-5 h-5" />,
     },
   ];
 

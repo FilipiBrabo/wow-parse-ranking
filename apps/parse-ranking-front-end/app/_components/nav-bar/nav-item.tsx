@@ -34,7 +34,7 @@ function LeafNavItem({ item, onClick }: LeafNavItemProps) {
     <Link
       href={item.to}
       className={cn(
-        'flex items-center px-3 h-9 rounded text-muted-foreground w-full hover:bg-muted hover:text-foreground',
+        'flex items-center px-3 h-9 rounded text-muted-foreground w-full hover:bg-muted hover:text-foreground transition-all',
         isActive && 'bg-muted text-foreground'
       )}
       onClick={() => onClick?.()}

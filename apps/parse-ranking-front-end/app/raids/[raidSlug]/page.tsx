@@ -1,3 +1,4 @@
+import { Skeleton } from '@parse-ranking/shadcn-ui';
 import { Suspense } from 'react';
 import { z } from 'zod';
 
@@ -6,14 +7,15 @@ import { PAGINATION_LIMIT } from '../../constants';
 import { Await } from './_components/await';
 import { RaidRanksTable } from './_components/raid-ranks-table';
 import { RankFilters } from './_components/ranks-table-filters';
-import { columns } from './_components/table-columns';
-import { TableSkeleton } from './_components/table-skeleton';
 
 interface PageProps {
-  params: { raidSlug: string };
-  searchParams: { [key: string]: string | string[] | undefined };
+  params: Promise<{ raidSlug: string }>;
+  searchParams: Promise<{ [key: string]: string | string[] | undefined }>;
 }
-export default async function Raid({ searchParams, params }: PageProps) {
+
+export default async function Raid(props: PageProps) {
+  const params = await props.params;
+  const searchParams = await props.searchParams;
   const { page, ...filters } = searchParams;
 
   const offset = z.coerce
@@ -32,16 +34,24 @@ export default async function Raid({ searchParams, params }: PageProps) {
     raidSlug: params.raidSlug,
   });
 
-  const partitions = await serverClient.raids.listPartitions({
-    raidSlug: params.raidSlug,
+  const raidPromise = serverClient.raids.getRaid({
+    slug: params.raidSlug,
   });
 
   return (
     <div className="space-y-4">
-      <RankFilters partitions={partitions} />
-      <Suspense key={JSON.stringify(searchParams)} fallback={<TableSkeleton />}>
+      <Suspense fallback={<Skeleton className="h-7 w-56 rounded-full" />}>
+        <Await promise={raidPromise}>
+          {(raid) => <h1 className="text-lg font-bold">{raid.name}</h1>}
+        </Await>
+      </Suspense>
+      <RankFilters raidSlug={params.raidSlug} />
+      <Suspense
+        key={JSON.stringify(searchParams)}
+        fallback={<RaidRanksTable loading={true} />}
+      >
         <Await promise={ranksPromise}>
-          {(ranks) => <RaidRanksTable columns={columns} data={ranks} />}
+          {(ranks) => <RaidRanksTable data={ranks} />}
         </Await>
       </Suspense>
     </div>
