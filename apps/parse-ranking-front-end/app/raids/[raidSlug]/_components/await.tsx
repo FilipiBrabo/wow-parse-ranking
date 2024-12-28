@@ -5,7 +5,8 @@ export async function Await<T>({
   children,
 }: {
   promise: Promise<T>;
-  children: (data: T) => React.ReactNode;
+  // TODO: use ReactNode instead (we have a type error when using it)
+  children: (data: T) => React.JSX.Element;
 }) {
   const data = await promise;
 
