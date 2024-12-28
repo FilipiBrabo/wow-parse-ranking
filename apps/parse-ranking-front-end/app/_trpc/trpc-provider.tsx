@@ -10,6 +10,11 @@ import { trpc } from './client';
 interface TRPCProviderProps {
   children: ReactNode;
 }
+const env = z
+  .object({
+    NEXT_PUBLIC_API_URL: z.string(),
+  })
+  .parse({ NEXT_PUBLIC_API_URL: process.env.NEXT_PUBLIC_API_URL });
 
 export function TRPCProvider({ children }: TRPCProviderProps) {
   const [queryClient] = useState(() => new QueryClient());
@@ -17,7 +22,7 @@ export function TRPCProvider({ children }: TRPCProviderProps) {
     trpc.createClient({
       links: [
         httpBatchLink({
-          url: `${window.location.origin}/api/trpc`,
+          url: env.NEXT_PUBLIC_API_URL,
         }),
       ],
     })
