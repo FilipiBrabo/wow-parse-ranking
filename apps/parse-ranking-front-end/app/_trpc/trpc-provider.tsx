@@ -13,8 +13,21 @@ interface TRPCProviderProps {
 const env = z
   .object({
     NEXT_PUBLIC_API_URL: z.string(),
+    VERCEL_URL: z.string().optional(),
   })
   .parse({ NEXT_PUBLIC_API_URL: process.env.NEXT_PUBLIC_API_URL });
+
+const getBaseUrl = () => {
+  if (typeof window !== 'undefined') {
+    return window.location.origin;
+  }
+  // Vercel preview deployments
+  if (env.VERCEL_URL) {
+    return `https://${env.VERCEL_URL}`;
+  }
+  // Fallback
+  return env.NEXT_PUBLIC_API_URL;
+};
 
 export function TRPCProvider({ children }: TRPCProviderProps) {
   const [queryClient] = useState(() => new QueryClient());
@@ -22,7 +35,7 @@ export function TRPCProvider({ children }: TRPCProviderProps) {
     trpc.createClient({
       links: [
         httpBatchLink({
-          url: env.NEXT_PUBLIC_API_URL,
+          url: `${getBaseUrl()}/api/trpc`,
         }),
       ],
     })
