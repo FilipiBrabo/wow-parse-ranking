@@ -70,6 +70,7 @@ export function SpecFilter() {
       })}
       value={selectedSpec ?? ''}
       onChange={handleSelectSpec}
+      disabled={!availableSpecs.length}
     />
   );
 }

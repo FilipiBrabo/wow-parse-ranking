@@ -14,7 +14,7 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from '@parse-ranking/shadcn-ui';
-import { Check, ChevronsUpDown } from 'lucide-react';
+import { Check, ChevronDownIcon } from 'lucide-react';
 import * as React from 'react';
 
 interface TableFilterProps {
@@ -24,6 +24,7 @@ interface TableFilterProps {
     label: React.ReactNode;
   }[];
   value: string;
+  disabled?: boolean;
   onChange: (value: string) => void;
 }
 
@@ -32,6 +33,7 @@ export function TableFilter({
   options,
   value,
   onChange,
+  disabled,
 }: TableFilterProps) {
   const [open, setOpen] = React.useState(false);
   const [innerValue, setInnerValue] = React.useState(value);
@@ -53,6 +55,7 @@ export function TableFilter({
           role="combobox"
           aria-expanded={open}
           className="w-fit justify-between gap-2 text-xs"
+          disabled={disabled}
         >
           <span className="font-semibold">{name}</span>
 
@@ -62,7 +65,7 @@ export function TableFilter({
               {selectedOption.label}
             </>
           )}
-          <ChevronsUpDown className="w-4 h-4 opacity-50" />
+          <ChevronDownIcon className="w-4 h-4 opacity-50" />
         </Button>
       </PopoverTrigger>
       <PopoverContent className="w-52 p-0">

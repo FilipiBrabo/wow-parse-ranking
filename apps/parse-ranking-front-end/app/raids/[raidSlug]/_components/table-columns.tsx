@@ -22,7 +22,13 @@ const columnHelper = createColumnHelper<Character>();
 export const columns = [
   columnHelper.accessor('rank', {
     header: () => <span>Rank</span>,
-    cell: ({ getValue }) => <span>{getValue()}</span>,
+    cell: ({ getValue, table }) => {
+      const rank = getValue();
+      const totalRows = (table.options.meta as any)?.totalRows as number;
+      const percentile = ((totalRows - rank + 1) / totalRows) * 100;
+
+      return <span className={`text-${getRankColor(percentile)}`}>{rank}</span>;
+    },
     maxSize: 100,
   }),
   columnHelper.accessor('spec', {

@@ -68,6 +68,9 @@ export function RaidRanksTable<TData>({
     manualPagination: true,
     pageCount,
     manualFiltering: true,
+    meta: {
+      totalRows: data?.total || 0,
+    },
   });
 
   return (
