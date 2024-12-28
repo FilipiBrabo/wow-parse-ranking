@@ -1,12 +1,5 @@
 'use client';
 
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from '@parse-ranking/shadcn-ui';
 import Image from 'next/image';
 import { usePathname, useRouter, useSearchParams } from 'next/navigation';
 
@@ -22,12 +15,14 @@ export function ClassFilter() {
   const selectedClass = searchParams.get('class');
 
   const handleSelectClass = (className?: string) => {
-    if (!className) return;
-
     const newSearchParams = new URLSearchParams(searchParams.toString());
     newSearchParams.delete('page');
     newSearchParams.delete('spec');
-    newSearchParams.set('class', className);
+    newSearchParams.delete('class');
+
+    if (className) {
+      newSearchParams.set('class', className);
+    }
 
     router.push(pathName + '?' + newSearchParams.toString());
   };

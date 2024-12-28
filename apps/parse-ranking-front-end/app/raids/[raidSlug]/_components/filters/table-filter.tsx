@@ -36,16 +36,13 @@ export function TableFilter({
   disabled,
 }: TableFilterProps) {
   const [open, setOpen] = React.useState(false);
-  const [innerValue, setInnerValue] = React.useState(value);
 
   const handleChange = (value: string) => {
-    setInnerValue(value === innerValue ? '' : value);
-
     setOpen(false);
     onChange(value);
   };
 
-  const selectedOption = options.find((option) => option.value === innerValue);
+  const selectedOption = options.find((option) => option.value === value);
 
   return (
     <Popover open={open} onOpenChange={setOpen}>
@@ -89,24 +86,27 @@ export function TableFilter({
                     <Check
                       className={cn(
                         'ml-auto',
-                        innerValue === option.value
-                          ? 'opacity-100'
-                          : 'opacity-0'
+                        value === option.value ? 'opacity-100' : 'opacity-0'
                       )}
                     />
                   </CommandItem>
                 ))}
               </CommandGroup>
             </div>
-            <CommandSeparator />
-            <CommandGroup>
-              <CommandItem
-                onSelect={() => handleChange('')}
-                className="justify-center transition-all"
-              >
-                Limpar
-              </CommandItem>
-            </CommandGroup>
+
+            {selectedOption && (
+              <>
+                <CommandSeparator />
+                <CommandGroup>
+                  <CommandItem
+                    onSelect={() => handleChange('')}
+                    className="justify-center transition-all"
+                  >
+                    Limpar
+                  </CommandItem>
+                </CommandGroup>
+              </>
+            )}
           </CommandList>
         </Command>
       </PopoverContent>

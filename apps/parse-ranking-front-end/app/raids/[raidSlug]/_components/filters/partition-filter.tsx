@@ -1,6 +1,5 @@
 'use client';
 
-import { Loader2Icon } from 'lucide-react';
 import { usePathname, useRouter, useSearchParams } from 'next/navigation';
 
 import { RouterOutput } from '../../../../../src/server';
@@ -18,19 +17,20 @@ export function PartitionFilter({ raidSlug }: PartitionFilterProps) {
   const pathName = usePathname();
   const router = useRouter();
 
-  // TODO: we could start this fetch on the server with PPR
-  const { data, isInitialLoading } = trpc.raids.listPartitions.useQuery({
+  const { data } = trpc.raids.listPartitions.useQuery({
     raidSlug,
   });
 
   const selectedPartition = searchParams.get('partition');
 
   const handleSelectPartition = (partition?: string) => {
-    if (!partition) return;
-
     const newSearchParams = new URLSearchParams(searchParams.toString());
     newSearchParams.delete('page');
-    newSearchParams.set('partition', partition);
+    newSearchParams.delete('partition');
+
+    if (partition) {
+      newSearchParams.set('partition', partition);
+    }
 
     router.push(pathName + '?' + newSearchParams.toString());
   };

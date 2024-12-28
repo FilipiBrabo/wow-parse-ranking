@@ -45,7 +45,7 @@ export default async function Raid(props: PageProps) {
           {(raid) => <h1 className="text-lg font-bold">{raid.name}</h1>}
         </Await>
       </Suspense>
-      <RankFilters raidSlug={params.raidSlug} currentPage={Number(page)} />
+      <RankFilters raidSlug={params.raidSlug} />
       <Suspense
         key={JSON.stringify(searchParams)}
         fallback={<RaidRanksTable loading={true} />}
