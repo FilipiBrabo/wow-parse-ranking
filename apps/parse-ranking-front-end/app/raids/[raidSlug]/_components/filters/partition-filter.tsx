@@ -1,17 +1,11 @@
 'use client';
 
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from '@parse-ranking/shadcn-ui';
 import { Loader2Icon } from 'lucide-react';
 import { usePathname, useRouter, useSearchParams } from 'next/navigation';
 
 import { RouterOutput } from '../../../../../src/server';
 import { trpc } from '../../../../_trpc/client';
+import { TableFilter } from './table-filter';
 
 export type Partition = RouterOutput['raids']['listPartitions'][0];
 
@@ -44,33 +38,18 @@ export function PartitionFilter({ raidSlug }: PartitionFilterProps) {
   const selectValue = selectedPartition && data ? selectedPartition : undefined;
 
   return (
-    <Select onValueChange={handleSelectPartition} value={selectValue}>
-      <SelectTrigger>
-        <SelectValue placeholder="Partição" />
-      </SelectTrigger>
-      <SelectContent
-        // Workaround to stop touch event leaking to underneath elements
-        // https://github.com/radix-ui/primitives/issues/1658#issuecomment-1664079551
-        ref={(ref) => {
-          if (!ref) return;
-          ref.ontouchstart = (e) => {
-            e.preventDefault();
-          };
-        }}
-      >
-        {isInitialLoading || !data ? (
-          <div className="p-2 text-sm flex items-center">
-            <Loader2Icon className="animate-spin mr-1 w-4 h-4" />
-            Carregando...
-          </div>
-        ) : (
-          data.map((partition) => (
-            <SelectItem key={partition.wclId} value={String(partition.wclId)}>
-              {partition.name}
-            </SelectItem>
-          ))
-        )}
-      </SelectContent>
-    </Select>
+    <TableFilter
+      name="Partição"
+      options={
+        data
+          ? data.map((partition) => ({
+              value: String(partition.wclId),
+              label: partition.name,
+            }))
+          : [{ value: 'loading', label: 'Carregando...' }]
+      }
+      value={selectValue ?? ''}
+      onChange={handleSelectPartition}
+    />
   );
 }

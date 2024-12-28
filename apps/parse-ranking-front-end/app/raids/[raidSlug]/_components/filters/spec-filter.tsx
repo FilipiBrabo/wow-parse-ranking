@@ -12,6 +12,7 @@ import { usePathname, useRouter, useSearchParams } from 'next/navigation';
 
 import { WOW_CLASSES } from '../../../../../app/constants';
 import { querifyString } from '../../../../../src/utils/querify-string';
+import { TableFilter } from './table-filter';
 
 export function SpecFilter() {
   const searchParams = useSearchParams();
@@ -30,48 +31,45 @@ export function SpecFilter() {
       : searchParams.get('spec');
 
   const handleSelectSpec = (spec?: string) => {
-    if (!spec) return;
     const newSearchParams = new URLSearchParams(searchParams.toString());
     newSearchParams.delete('page');
-    newSearchParams.set('spec', spec);
+    newSearchParams.delete('spec');
+
+    if (spec) {
+      newSearchParams.set('spec', spec);
+    }
 
     router.push(pathName + '?' + newSearchParams.toString());
   };
 
   return (
-    <Select
-      onValueChange={handleSelectSpec}
-      value={selectedSpec ?? ''}
-      disabled={!availableSpecs?.length}
-    >
-      <SelectTrigger disabled={!availableSpecs?.length}>
-        <SelectValue placeholder="Spec" />
-      </SelectTrigger>
-      <SelectContent
-        // Workaround to stop touch event to leak to underneath elements
-        // https://github.com/radix-ui/primitives/issues/1658#issuecomment-1664079551
-        ref={(ref) => {
-          if (!ref) return;
-          ref.ontouchstart = (e) => {
-            e.preventDefault();
-          };
-        }}
-      >
-        {availableSpecs?.map((spec) => (
-          <SelectItem key={spec.name} value={querifyString(spec.name)}>
-            <div className="flex items-center gap-2">
+    <TableFilter
+      name="Spec"
+      options={availableSpecs.map((spec) => {
+        const label = (
+          <div className="flex items-center gap-2">
+            <div className="relative w-4 h-4">
               <Image
-                width={16}
-                height={16}
+                fill
+                sizes="16px"
                 quality={100}
                 src={spec.icon}
                 alt={`Ícone da spec ${spec.name}`}
+                loading="eager"
+                className="object-contain"
               />
-              {spec.name}
             </div>
-          </SelectItem>
-        ))}
-      </SelectContent>
-    </Select>
+            {spec.name}
+          </div>
+        );
+
+        return {
+          value: querifyString(spec.name),
+          label,
+        };
+      })}
+      value={selectedSpec ?? ''}
+      onChange={handleSelectSpec}
+    />
   );
 }

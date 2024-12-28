@@ -28,4 +28,17 @@ export const raidsRouter = router({
           )
           .orderBy((partition) => partition.wclId)
     ),
+  getRaid: publicProcedure.input(z.object({ slug: z.string() })).query(
+    async ({ input }) =>
+      await db
+        .select()
+        .from(raid)
+        .where(eq(raid.slug, input.slug))
+        .then(([raid]) => {
+          if (!raid) {
+            throw new Error('Raid not found');
+          }
+          return raid;
+        })
+  ),
 });

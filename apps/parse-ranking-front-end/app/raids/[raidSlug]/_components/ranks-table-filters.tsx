@@ -9,7 +9,7 @@ interface RankFiltersProps {
 
 export function RankFilters({ raidSlug }: RankFiltersProps) {
   return (
-    <div className="flex flex-col gap-2 md:flex-row md:gap-4">
+    <div className="flex flex-row gap-2 overflow-auto">
       <PartitionFilter raidSlug={raidSlug} />
       <ClassFilter />
       <SpecFilter />

@@ -1,3 +1,4 @@
+import { Skeleton } from '@parse-ranking/shadcn-ui';
 import { Suspense } from 'react';
 import { z } from 'zod';
 
@@ -33,8 +34,17 @@ export default async function Raid(props: PageProps) {
     raidSlug: params.raidSlug,
   });
 
+  const raidPromise = serverClient.raids.getRaid({
+    slug: params.raidSlug,
+  });
+
   return (
     <div className="space-y-4">
+      <Suspense fallback={<Skeleton className="h-7 w-56 rounded-full" />}>
+        <Await promise={raidPromise}>
+          {(raid) => <h1 className="text-lg font-bold">{raid.name}</h1>}
+        </Await>
+      </Suspense>
       <RankFilters raidSlug={params.raidSlug} currentPage={Number(page)} />
       <Suspense
         key={JSON.stringify(searchParams)}

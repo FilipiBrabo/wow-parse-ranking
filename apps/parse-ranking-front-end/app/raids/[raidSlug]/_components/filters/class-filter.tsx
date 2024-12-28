@@ -12,6 +12,7 @@ import { usePathname, useRouter, useSearchParams } from 'next/navigation';
 
 import { WOW_CLASSES } from '../../../../../app/constants';
 import { querifyString } from '../../../../../src/utils/querify-string';
+import { TableFilter } from './table-filter';
 
 export function ClassFilter() {
   const searchParams = useSearchParams();
@@ -32,35 +33,33 @@ export function ClassFilter() {
   };
 
   return (
-    <Select onValueChange={handleSelectClass} value={selectedClass ?? ''}>
-      <SelectTrigger>
-        <SelectValue placeholder="Classe" />
-      </SelectTrigger>
-      <SelectContent
-        // Workaround to stop touch event to leak to underneath elements
-        // https://github.com/radix-ui/primitives/issues/1658#issuecomment-1664079551
-        ref={(ref) => {
-          if (!ref) return;
-          ref.ontouchstart = (e) => {
-            e.preventDefault();
-          };
-        }}
-      >
-        {WOW_CLASSES.map((wowClass) => (
-          <SelectItem key={wowClass.name} value={querifyString(wowClass.name)}>
-            <div className="flex items-center gap-2">
+    <TableFilter
+      name="Classe"
+      options={WOW_CLASSES.map((wowClass) => {
+        const label = (
+          <div className="flex items-center gap-2">
+            <div className="relative w-4 h-4">
               <Image
-                width={16}
-                height={16}
+                fill
+                sizes="16px"
                 quality={100}
                 src={wowClass.icon}
                 alt={`Ícone da classe ${wowClass.name}`}
+                loading="eager"
+                className="object-contain"
               />
-              {wowClass.name}
             </div>
-          </SelectItem>
-        ))}
-      </SelectContent>
-    </Select>
+            {wowClass.name}
+          </div>
+        );
+
+        return {
+          value: querifyString(wowClass.name),
+          label,
+        };
+      })}
+      value={selectedClass ?? ''}
+      onChange={handleSelectClass}
+    />
   );
 }
