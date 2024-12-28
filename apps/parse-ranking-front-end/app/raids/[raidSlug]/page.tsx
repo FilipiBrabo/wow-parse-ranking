@@ -6,8 +6,6 @@ import { PAGINATION_LIMIT } from '../../constants';
 import { Await } from './_components/await';
 import { RaidRanksTable } from './_components/raid-ranks-table';
 import { RankFilters } from './_components/ranks-table-filters';
-import { columns } from './_components/table-columns';
-import { TableSkeleton } from './_components/table-skeleton';
 
 interface PageProps {
   params: Promise<{ raidSlug: string }>;
@@ -35,16 +33,15 @@ export default async function Raid(props: PageProps) {
     raidSlug: params.raidSlug,
   });
 
-  const partitions = await serverClient.raids.listPartitions({
-    raidSlug: params.raidSlug,
-  });
-
   return (
     <div className="space-y-4">
-      <RankFilters partitions={partitions} />
-      <Suspense key={JSON.stringify(searchParams)} fallback={<TableSkeleton />}>
+      <RankFilters raidSlug={params.raidSlug} currentPage={Number(page)} />
+      <Suspense
+        key={JSON.stringify(searchParams)}
+        fallback={<RaidRanksTable loading={true} />}
+      >
         <Await promise={ranksPromise}>
-          {(ranks) => <RaidRanksTable columns={columns} data={ranks} />}
+          {(ranks) => <RaidRanksTable data={ranks} />}
         </Await>
       </Suspense>
     </div>

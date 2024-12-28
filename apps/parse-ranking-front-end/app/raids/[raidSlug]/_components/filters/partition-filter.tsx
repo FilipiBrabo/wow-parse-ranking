@@ -7,20 +7,27 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@parse-ranking/shadcn-ui';
+import { Loader2Icon } from 'lucide-react';
 import { usePathname, useRouter, useSearchParams } from 'next/navigation';
 
 import { RouterOutput } from '../../../../../src/server';
+import { trpc } from '../../../../_trpc/client';
 
 export type Partition = RouterOutput['raids']['listPartitions'][0];
 
 interface PartitionFilterProps {
-  partitions: Partition[];
+  raidSlug: string;
 }
 
-export function PartitionFilter({ partitions }: PartitionFilterProps) {
+export function PartitionFilter({ raidSlug }: PartitionFilterProps) {
   const searchParams = useSearchParams();
   const pathName = usePathname();
   const router = useRouter();
+
+  // TODO: we could start this fetch on the server with PPR
+  const { data, isInitialLoading } = trpc.raids.listPartitions.useQuery({
+    raidSlug,
+  });
 
   const selectedPartition = searchParams.get('partition');
 
@@ -34,15 +41,10 @@ export function PartitionFilter({ partitions }: PartitionFilterProps) {
     router.push(pathName + '?' + newSearchParams.toString());
   };
 
-  if (!partitions?.length || partitions.length === 1) {
-    return null;
-  }
+  const selectValue = selectedPartition && data ? selectedPartition : undefined;
 
   return (
-    <Select
-      onValueChange={handleSelectPartition}
-      value={selectedPartition ?? ''}
-    >
+    <Select onValueChange={handleSelectPartition} value={selectValue}>
       <SelectTrigger>
         <SelectValue placeholder="Partição" />
       </SelectTrigger>
@@ -56,11 +58,18 @@ export function PartitionFilter({ partitions }: PartitionFilterProps) {
           };
         }}
       >
-        {partitions?.map((partition) => (
-          <SelectItem key={partition.wclId} value={String(partition.wclId)}>
-            {partition.name}
-          </SelectItem>
-        ))}
+        {isInitialLoading || !data ? (
+          <div className="p-2 text-sm flex items-center">
+            <Loader2Icon className="animate-spin mr-1 w-4 h-4" />
+            Carregando...
+          </div>
+        ) : (
+          data.map((partition) => (
+            <SelectItem key={partition.wclId} value={String(partition.wclId)}>
+              {partition.name}
+            </SelectItem>
+          ))
+        )}
       </SelectContent>
     </Select>
   );

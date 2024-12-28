@@ -19,9 +19,5 @@ export async function SidebarNav() {
     })
   );
 
-  return (
-    <div>
-      <ExpandableNavItems items={navItems} />
-    </div>
-  );
+  return <ExpandableNavItems items={navItems} />;
 }
