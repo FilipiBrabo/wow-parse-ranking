@@ -14,7 +14,6 @@ export function ExternalLink({ href, title, className }: ExternalLinkProps) {
       href={href}
     >
       {title}
-      {/* <ExternalLinkIcon size="12" /> */}
     </a>
   );
 }

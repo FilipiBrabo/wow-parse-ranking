@@ -1,9 +1,20 @@
-import { and, eq, sql } from 'drizzle-orm';
+import {
+  and,
+  asc,
+  count,
+  eq,
+  getTableColumns,
+  ilike,
+  or,
+  sql,
+} from 'drizzle-orm';
+import { z } from 'zod';
 
 import { getApolloClient } from '../../apollo/client';
 import { db } from '../../database/drizzle/db';
 import {
   character as dbCharacter,
+  guild,
   partition,
   ranking,
 } from '../../database/drizzle/schema';
@@ -11,6 +22,7 @@ import { getWclCharacterRankingsQuery } from '../gql-queries';
 import { publicProcedure, router } from '../trpc';
 import { WclCharacterRankingsResponse } from '../types';
 import { getBestRanks } from '../utils';
+import { characterSchema } from '../../lib/schemas/character-schema';
 
 type Characters = Awaited<ReturnType<typeof getCharactersToUpdate>>;
 export type Character = Characters[number];
@@ -32,6 +44,76 @@ export const charactersRouter = router({
 
     return charactersToUpdate;
   }),
+
+  listAll: publicProcedure
+    .input(
+      z.object({
+        query: z.string(),
+        page: z.number(),
+      })
+    )
+    .query(async ({ input }) => {
+      const LIMIT = 15;
+      const offset = (input.page - 1) * LIMIT;
+
+      const characters = await db
+        .select({
+          ...getTableColumns(dbCharacter),
+          guild: {
+            ...getTableColumns(guild),
+          },
+        })
+        .from(dbCharacter)
+        .leftJoin(guild, eq(dbCharacter.guildId, guild.id))
+        .where(
+          or(
+            ilike(dbCharacter.name, `%${input.query}%`),
+            ilike(dbCharacter.serverRegion, `%${input.query}%`),
+            ilike(guild.name, `%${input.query}%`)
+          )
+        )
+        .orderBy(asc(dbCharacter.name))
+        .limit(LIMIT)
+        .offset(offset);
+
+      const total = await db
+        .select({ count: count() })
+        .from(dbCharacter)
+        .leftJoin(guild, eq(dbCharacter.guildId, guild.id))
+        .where(
+          or(
+            ilike(dbCharacter.name, `%${input.query}%`),
+            ilike(dbCharacter.serverRegion, `%${input.query}%`),
+            ilike(guild.name, `%${input.query}%`)
+          )
+        );
+
+      return {
+        items: characters,
+        limit: LIMIT,
+        offset,
+        total: total[0]?.count ?? 0,
+      };
+    }),
+  delete: publicProcedure
+    .input(z.object({ id: z.number() }))
+    .mutation(async ({ input }) => {
+      await db.delete(dbCharacter).where(eq(dbCharacter.id, input.id));
+    }),
+  update: publicProcedure
+    .input(z.object({ id: z.number(), data: characterSchema }))
+    .mutation(async ({ input }) => {
+      await db
+        .update(dbCharacter)
+        .set(input.data)
+        .where(eq(dbCharacter.id, input.id));
+    }),
+
+  create: publicProcedure
+    .input(z.object({ data: characterSchema }))
+    .mutation(async ({ input }) => {
+      await db.insert(dbCharacter).values(input.data);
+    }),
 });
 
 async function getCharactersToUpdate() {

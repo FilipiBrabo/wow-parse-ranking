@@ -3,8 +3,8 @@
 import Image from 'next/image';
 import { usePathname, useRouter, useSearchParams } from 'next/navigation';
 
-import { WOW_CLASSES } from '../../../../../app/constants';
-import { querifyString } from '../../../../../src/utils/querify-string';
+import { WOW_CLASSES } from '../../../../../constants';
+import { querifyString } from '../../../../../../src/utils/querify-string';
 import { TableFilter } from './table-filter';
 
 export function SpecFilter() {
@@ -15,12 +15,11 @@ export function SpecFilter() {
   const selectedClass = searchParams.get('class');
 
   const availableSpecs =
-    WOW_CLASSES.find((c) => querifyString(c.name) === selectedClass)?.specs ??
-    [];
+    WOW_CLASSES.find((c) => querifyString(c.id) === selectedClass)?.specs ?? [];
 
   const selectedSpec =
     availableSpecs.length === 1
-      ? querifyString(availableSpecs[0]?.name ?? '')
+      ? querifyString(availableSpecs[0]?.id ?? '')
       : searchParams.get('spec');
 
   const handleSelectSpec = (spec?: string) => {
@@ -47,17 +46,17 @@ export function SpecFilter() {
                 sizes="16px"
                 quality={100}
                 src={spec.icon}
-                alt={`Ícone da spec ${spec.name}`}
+                alt={`Ícone da spec ${spec.label}`}
                 loading="eager"
                 className="object-contain"
               />
             </div>
-            {spec.name}
+            {spec.label}
           </div>
         );
 
         return {
-          value: querifyString(spec.name),
+          value: querifyString(spec.id),
           label,
         };
       })}

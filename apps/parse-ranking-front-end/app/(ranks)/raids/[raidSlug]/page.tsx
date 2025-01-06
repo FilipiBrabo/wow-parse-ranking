@@ -2,9 +2,9 @@ import { Skeleton } from '@parse-ranking/shadcn-ui';
 import { Suspense } from 'react';
 import { z } from 'zod';
 
-import { serverClient } from '../../_trpc/server-client';
-import { PAGINATION_LIMIT } from '../../constants';
-import { Await } from './_components/await';
+import { serverClient } from '../../../_trpc/server-client';
+import { PAGINATION_LIMIT } from '../../../constants';
+import { Await } from '../../../../src/components/await';
 import { RaidRanksTable } from './_components/raid-ranks-table';
 import { RankFilters } from './_components/ranks-table-filters';
 

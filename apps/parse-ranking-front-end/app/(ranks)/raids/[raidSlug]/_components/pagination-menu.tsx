@@ -13,11 +13,15 @@ export type PaginationMenuProps = {
   limit: number;
 };
 
-export function PaginationMenu({ total, offset, limit }: PaginationMenuProps) {
+export async function PaginationMenu({
+  total,
+  offset,
+  limit,
+}: PaginationMenuProps) {
   const pathname = usePathname();
   const searchParams = useSearchParams();
 
-  const currentPage = Math.floor(offset / limit) + 1;
+  const currentPage = Number(searchParams.get('page')) || 1;
   const pageCount = Math.ceil(total / limit) || 1;
 
   const previousPage = Math.max(currentPage - 1, 1);

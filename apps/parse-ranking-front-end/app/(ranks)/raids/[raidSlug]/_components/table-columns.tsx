@@ -9,11 +9,11 @@ import {
 import { ColumnDef, createColumnHelper } from '@tanstack/react-table';
 import { startCase } from 'lodash';
 
-import { CharacterLink } from '../../../../src/components/character-link';
-import { GuildLink } from '../../../../src/components/guild-link';
-import { SpecIcon } from '../../../../src/components/SpecIcon';
-import { RouterOutput } from '../../../../src/server';
-import { getRankColor } from '../../../../src/utils/getRankColor';
+import { CharacterLink } from '../../../../../src/components/character-link';
+import { GuildLink } from '../../../../../src/components/guild-link';
+import { SpecIcon } from '../../../../../src/components/SpecIcon';
+import { RouterOutput } from '../../../../../src/server';
+import { getRankColor } from '../../../../../src/utils/getRankColor';
 
 type Character = RouterOutput['rank']['getRanks']['items'][number];
 

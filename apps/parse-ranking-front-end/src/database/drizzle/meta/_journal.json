@@ -71,6 +71,13 @@
       "when": 1723504556756,
       "tag": "0009_overconfident_wildside",
       "breakpoints": true
+    },
+    {
+      "idx": 10,
+      "version": "6",
+      "when": 1735791925562,
+      "tag": "0010_brief_kid_colt",
+      "breakpoints": true
     }
   ]
 }

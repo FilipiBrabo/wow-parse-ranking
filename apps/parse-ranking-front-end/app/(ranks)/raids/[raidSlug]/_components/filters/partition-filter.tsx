@@ -2,8 +2,8 @@
 
 import { usePathname, useRouter, useSearchParams } from 'next/navigation';
 
-import { RouterOutput } from '../../../../../src/server';
-import { trpc } from '../../../../_trpc/client';
+import { RouterOutput } from '../../../../../../src/server';
+import { trpc } from '../../../../../_trpc/client';
 import { TableFilter } from './table-filter';
 
 export type Partition = RouterOutput['raids']['listPartitions'][0];
