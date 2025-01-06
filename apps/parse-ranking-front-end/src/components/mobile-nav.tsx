@@ -14,7 +14,7 @@ import {
   ExpandableNavItem,
   ExpandableNavItems,
   NavItem,
-} from '../../app/_components/nav-bar/nav-item';
+} from '../../app/(ranks)/_components/nav-bar/nav-item';
 import { SiteLogo } from './site-logo';
 
 interface MobileNavProps {

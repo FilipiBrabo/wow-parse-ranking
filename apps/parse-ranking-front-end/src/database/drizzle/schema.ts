@@ -56,6 +56,7 @@ export const encounter = pgTable(
     wclId: integer('wclId').notNull(),
     size: integer('size').notNull(),
     difficulty: integer('difficulty').notNull(),
+    // TODO: remove this field
     isActive: boolean('isActive').notNull(),
     raidId: integer('raidId')
       .notNull()
@@ -147,7 +148,7 @@ export const ranking = pgTable(
     characterId: integer('characterId')
       .notNull()
       .references(() => character.id, {
-        onDelete: 'restrict',
+        onDelete: 'cascade',
         onUpdate: 'cascade',
       }),
     todayPercent: doublePrecision('todayPercent').notNull(),
@@ -159,7 +160,7 @@ export const ranking = pgTable(
     encounterId: integer('encounterId')
       .notNull()
       .references(() => encounter.id, {
-        onDelete: 'restrict',
+        onDelete: 'cascade',
         onUpdate: 'cascade',
       }),
     partition: integer('partition').notNull(),

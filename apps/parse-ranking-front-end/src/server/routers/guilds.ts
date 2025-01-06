@@ -16,6 +16,11 @@ const ONE_WEEK_MILLISECONDS = 7 * 24 * 60 * 60 * 1000;
 export type Guild = NonNullable<Awaited<ReturnType<typeof getGuildToUpdate>>>;
 
 export const guildsRouter = router({
+  listAll: publicProcedure.query(async () => {
+    return await db.query.guild.findMany({
+      orderBy: (guild, { asc }) => [asc(guild.name)],
+    });
+  }),
   updateCharacters: publicProcedure.query(async () => {
     const guild = await getGuildToUpdate();
 

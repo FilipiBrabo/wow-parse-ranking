@@ -1,13 +1,11 @@
 import './global.css';
 
-import { cn } from '@parse-ranking/shadcn-ui';
+import { cn, Toaster } from '@parse-ranking/shadcn-ui';
 import { Analytics } from '@vercel/analytics/react';
 import { Metadata } from 'next';
 import { Inter as FontSans } from 'next/font/google';
 
-import { Header } from '../src/components/header';
 import { ThemeProvider } from '../src/components/theme-provider';
-import { SidebarNav } from './_components/sidebar-nav';
 import { TRPCProvider } from './_trpc/trpc-provider';
 
 const fontSans = FontSans({
@@ -48,18 +46,13 @@ export default function RootLayout({
         )}
       >
         <TRPCProvider>
+          <Toaster />
           <ThemeProvider
             attribute="class"
             defaultTheme="dark"
             disableTransitionOnChange
           >
-            <Header />
-            <main className="max-w-screen-xl py-2 mx-auto px-4 sm:px-6 lg:px-8">
-              <aside className="w-[18rem] hidden lg:block flex-shrink-0 fixed overflow-y-auto bottom-0 right-auto top-16 stable-scrollbar-gutter">
-                <SidebarNav />
-              </aside>
-              <div className="lg:pl-[20rem] h-full">{children}</div>
-            </main>
+            {children}
           </ThemeProvider>
         </TRPCProvider>
         <Analytics />

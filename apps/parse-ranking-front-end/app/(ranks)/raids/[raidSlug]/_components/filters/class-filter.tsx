@@ -3,8 +3,8 @@
 import Image from 'next/image';
 import { usePathname, useRouter, useSearchParams } from 'next/navigation';
 
-import { WOW_CLASSES } from '../../../../../app/constants';
-import { querifyString } from '../../../../../src/utils/querify-string';
+import { WOW_CLASSES } from '../../../../../constants';
+import { querifyString } from '../../../../../../src/utils/querify-string';
 import { TableFilter } from './table-filter';
 
 export function ClassFilter() {
@@ -39,17 +39,17 @@ export function ClassFilter() {
                 sizes="16px"
                 quality={100}
                 src={wowClass.icon}
-                alt={`Ícone da classe ${wowClass.name}`}
+                alt={`Ícone da classe ${wowClass.label}`}
                 loading="eager"
                 className="object-contain"
               />
             </div>
-            {wowClass.name}
+            {wowClass.label}
           </div>
         );
 
         return {
-          value: querifyString(wowClass.name),
+          value: querifyString(wowClass.label),
           label,
         };
       })}

@@ -2,141 +2,170 @@ export const ICC_RANKINGS_TAG = 'icc-rankings-tag';
 
 export const WOW_CLASSES = [
   {
-    name: 'Death Knight',
+    id: 'DeathKnight',
+    label: 'Death Knight',
     icon: '/images/classes/deathknight.jpg',
     specs: [
       {
-        name: 'BloodDPS',
+        id: 'BloodDPS',
+        label: 'Blood DPS',
         icon: '/images/specs/deathknight-blooddps.jpg',
       },
       {
-        name: 'Frost',
+        id: 'Frost',
+        label: 'Frost',
         icon: '/images/specs/deathknight-frost.jpg',
       },
       {
-        name: 'Unholy',
+        id: 'Unholy',
+        label: 'Unholy',
         icon: '/images/specs/deathknight-unholy.jpg',
       },
     ],
   },
   {
-    name: 'Druid',
+    id: 'Druid',
+    label: 'Druid',
     icon: '/images/classes/druid.jpg',
     specs: [
       {
-        name: 'Balance',
+        id: 'Balance',
+        label: 'Balance',
         icon: '/images/specs/druid-balance.jpg',
       },
       {
-        name: 'Feral',
+        id: 'Feral',
+        label: 'Feral',
         icon: '/images/specs/druid-feral.jpg',
       },
     ],
   },
   {
-    name: 'Hunter',
+    id: 'Hunter',
+    label: 'Hunter',
     icon: '/images/classes/hunter.jpg',
     specs: [
       {
-        name: 'Marksmanship',
+        id: 'Marksmanship',
+        label: 'Marksmanship',
         icon: '/images/specs/hunter-marksmanship.jpg',
       },
       {
-        name: 'Survival',
+        id: 'Survival',
+        label: 'Survival',
         icon: '/images/specs/hunter-survival.jpg',
       },
     ],
   },
   {
-    name: 'Mage',
+    id: 'Mage',
+    label: 'Mage',
     icon: '/images/classes/mage.jpg',
     specs: [
       {
-        name: 'Arcane',
+        id: 'Arcane',
+        label: 'Arcane',
         icon: '/images/specs/mage-arcane.jpg',
       },
       {
-        name: 'Fire',
+        id: 'Fire',
+        label: 'Fire',
         icon: '/images/specs/mage-fire.jpg',
       },
     ],
   },
   {
-    name: 'Paladin',
+    id: 'Paladin',
+    label: 'Paladin',
     icon: '/images/classes/paladin.jpg',
     specs: [
       {
-        name: 'Retribution',
+        id: 'Retribution',
+        label: 'Retribution',
         icon: '/images/specs/paladin-retribution.jpg',
       },
     ],
   },
   {
-    name: 'Priest',
+    id: 'Priest',
+    label: 'Priest',
     icon: '/images/classes/priest.jpg',
     specs: [
       {
-        name: 'Shadow',
+        id: 'Shadow',
+        label: 'Shadow',
         icon: '/images/specs/priest-shadow.jpg',
       },
     ],
   },
   {
-    name: 'Rogue',
+    id: 'Rogue',
+    label: 'Rogue',
     icon: '/images/classes/rogue.jpg',
     specs: [
       {
-        name: 'Assassination',
+        id: 'Assassination',
+        label: 'Assassination',
         icon: '/images/specs/rogue-assassination.jpg',
       },
       {
-        name: 'Combat',
+        id: 'Combat',
+        label: 'Combat',
         icon: '/images/specs/rogue-combat.jpg',
       },
     ],
   },
   {
-    name: 'Shaman',
+    id: 'Shaman',
+    label: 'Shaman',
     icon: '/images/classes/shaman.jpg',
     specs: [
       {
-        name: 'Elemental',
+        id: 'Elemental',
+        label: 'Elemental',
         icon: '/images/specs/shaman-elemental.jpg',
       },
       {
-        name: 'Enhancement',
+        id: 'Enhancement',
+        label: 'Enhancement',
         icon: '/images/specs/shaman-enhancement.jpg',
       },
     ],
   },
   {
-    name: 'Warlock',
+    id: 'Warlock',
+    label: 'Warlock',
     icon: '/images/classes/warlock.jpg',
     specs: [
       {
-        name: 'Affliction',
+        id: 'Affliction',
+        label: 'Affliction',
         icon: '/images/specs/warlock-affliction.jpg',
       },
       {
-        name: 'Demonology',
+        id: 'Demonology',
+        label: 'Demonology',
         icon: '/images/specs/warlock-demonology.jpg',
       },
     ],
   },
   {
-    name: 'Warrior',
+    id: 'Warrior',
+    label: 'Warrior',
     icon: '/images/classes/warrior.jpg',
     specs: [
       {
-        name: 'Arms',
+        id: 'Arms',
+        label: 'Arms',
         icon: '/images/specs/warrior-arms.jpg',
       },
       {
-        name: 'Fury',
+        id: 'Fury',
+        label: 'Fury',
         icon: '/images/specs/warrior-fury.jpg',
       },
     ],
   },
-];
+] as const;
 
 export const PAGINATION_LIMIT = 15;

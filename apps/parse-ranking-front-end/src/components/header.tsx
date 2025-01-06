@@ -3,7 +3,7 @@ import Link from 'next/link';
 import {
   ExpandableNavItem,
   NavItem,
-} from '../../app/_components/nav-bar/nav-item';
+} from '../../app/(ranks)/_components/nav-bar/nav-item';
 import { serverClient } from '../../app/_trpc/server-client';
 import { GithubIcon } from './github-icon';
 import { MobileNav } from './mobile-nav';
