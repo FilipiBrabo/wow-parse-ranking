@@ -3,13 +3,13 @@
   "style": "new-york",
   "rsc": true,
   "tailwind": {
-    "config": "apps/**/tailwind.config.js",
-    "css": "apps/**/app/global.css",
+    "config": "tailwind.config.js",
+    "css": "app/global.css",
     "baseColor": "stone",
     "cssVariables": true
   },
   "aliases": {
-    "components": "@parse-ranking/shadcn-ui/components",
-    "utils": "@parse-ranking/shadcn-ui/utils"
+    "components": "@/components/ui",
+    "utils": "@/lib/utils"
   }
 }
