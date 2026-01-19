@@ -54,11 +54,11 @@ export default function RootLayout({
             disableTransitionOnChange
           >
             <Header />
-            <main className="max-w-screen-xl py-2 mx-auto px-4 sm:px-6 lg:px-8">
-              <aside className="w-[18rem] hidden lg:block flex-shrink-0 fixed overflow-y-auto bottom-0 right-auto top-16 stable-scrollbar-gutter">
+            <main className="max-w-(--breakpoint-xl) py-2 mx-auto px-4 sm:px-6 lg:px-8">
+              <aside className="w-[18rem] hidden lg:block shrink-0 fixed overflow-y-auto bottom-0 right-auto top-16 stable-scrollbar-gutter">
                 <SidebarNav />
               </aside>
-              <div className="lg:pl-[20rem] h-full">{children}</div>
+              <div className="lg:pl-80 h-full">{children}</div>
             </main>
           </ThemeProvider>
         </TRPCProvider>

@@ -34,8 +34,8 @@ export async function Header() {
   );
 
   return (
-    <header className="sticky top-0 bg-background z-50 shadow-sm">
-      <div className="container flex items-center justify-between max-w-screen-xl mx-auto h-16 px-4 sm:px-6 lg:px-8">
+    <header className="sticky top-0 bg-background z-50 shadow-xs">
+      <div className="container flex items-center justify-between max-w-(--breakpoint-xl) mx-auto h-16 px-4 sm:px-6 lg:px-8">
         <div className="lg:hidden w-20">
           <MobileNav items={items} />
         </div>
