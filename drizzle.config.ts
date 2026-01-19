@@ -1,6 +1,6 @@
-import 'dotenv/config'; // make sure to install dotenv package
+import 'dotenv/config'; 
 
-import { Config, defineConfig } from 'drizzle-kit';
+import { defineConfig } from 'drizzle-kit';
 import { z } from 'zod';
 
 const envSchema = z.object({
@@ -9,10 +9,10 @@ const envSchema = z.object({
 
 const env = envSchema.parse(process.env);
 
-export default {
+export default defineConfig({
   dialect: 'postgresql',
-  out: './apps/parse-ranking-front-end/src/database/drizzle',
-  schema: './apps/parse-ranking-front-end/src/database/drizzle/schema.ts',
+  out: './src/database/drizzle',
+  schema: './src/database/drizzle/schema.ts',
   dbCredentials: {
     url: env.DATABASE_URL,
   },
@@ -20,4 +20,4 @@ export default {
   verbose: true,
   // Always ask for confirmation
   strict: true,
-};
+});

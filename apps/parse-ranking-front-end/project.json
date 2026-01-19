@@ -1,8 +1,0 @@
-{
-  "name": "parse-ranking-front-end",
-  "$schema": "../../node_modules/nx/schemas/project-schema.json",
-  "sourceRoot": "apps/parse-ranking-front-end",
-  "projectType": "application",
-  "tags": [],
-  "targets": {}
-}
