@@ -1,6 +1,9 @@
 @import "tailwindcss";
 @import "tw-animate-css";
 
+@source inline("text-{rank-gold,rank-pink,rank-orange,rank-purple,rank-blue,rank-green,rank-gray}");
+@source inline("text-{death-knight,druid,hunter,mage,paladin,priest,rogue,shaman,warlock,warrior}");
+
 @custom-variant dark (&:where(.dark, .dark *));
 
 @theme inline {
